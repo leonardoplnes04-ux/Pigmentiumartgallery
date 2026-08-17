@@ -65,6 +65,9 @@ export const artworks: Artwork[] = [
   // Obras reales del artista (serie Aviario) — título, año y ficha técnica
   // son provisionales: el año se leyó de la firma visible en cada pieza
   // ("2do" + año abreviado); dimensiones pendientes de confirmar con el artista.
+  // criticReviews: placeholder — texto plausible atribuido a un rol
+  // genérico (nunca a un nombre o publicación real), a reemplazar cuando
+  // haya citas reales de críticos.
   {
     id: "obra-07",
     title: "Guardián del jardín",
@@ -74,6 +77,14 @@ export const artworks: Artwork[] = [
     image: "/images/obra-guardian-del-jardin.jpg",
     seriesId: "serie-aviario",
     status: "inquire",
+    criticReviews: [
+      {
+        critic: "Por confirmar",
+        role: "Crítica de arte independiente",
+        quote:
+          "Una composición que hace convivir la ternura de la infancia con la ferocidad silenciosa del ave que la vigila — el gesto protector queda ambiguo a propósito.",
+      },
+    ],
   },
   {
     id: "obra-08",
@@ -84,6 +95,14 @@ export const artworks: Artwork[] = [
     image: "/images/obra-el-encuentro.jpg",
     seriesId: "serie-aviario",
     status: "inquire",
+    criticReviews: [
+      {
+        critic: "Por confirmar",
+        role: "Curador independiente",
+        quote:
+          "La paleta cálida y la geometría casi decorativa del fondo funcionan como un umbral: dos figuras infantiles cruzándolo, ajenas a la carga simbólica que las rodea.",
+      },
+    ],
   },
   {
     id: "obra-09",
@@ -94,6 +113,14 @@ export const artworks: Artwork[] = [
     image: "/images/obra-aves-nocturnas.jpg",
     seriesId: "serie-aviario",
     status: "inquire",
+    criticReviews: [
+      {
+        critic: "Por confirmar",
+        role: "Revista de arte contemporáneo",
+        quote:
+          "El fondo oscuro no resta color, lo concentra: cada ave parece iluminada desde dentro, como si la noche fuera solo un recurso compositivo.",
+      },
+    ],
   },
   {
     id: "obra-10",
@@ -104,6 +131,14 @@ export const artworks: Artwork[] = [
     image: "/images/obra-jardin-estelar.jpg",
     seriesId: "serie-aviario",
     status: "inquire",
+    criticReviews: [
+      {
+        critic: "Por confirmar",
+        role: "Crítica de arte independiente",
+        quote:
+          "Hay algo de bestiario heráldico en cómo se disponen las aves alrededor de ese eje central — la composición pide ser leída como un mapa, no solo como una escena.",
+      },
+    ],
   },
   {
     id: "obra-11",
@@ -114,6 +149,14 @@ export const artworks: Artwork[] = [
     image: "/images/obra-colibries-de-cristal.jpg",
     seriesId: "serie-aviario",
     status: "inquire",
+    criticReviews: [
+      {
+        critic: "Por confirmar",
+        role: "Curador independiente",
+        quote:
+          "El motivo floral repetido no decora, estructura: organiza el ritmo visual con la precisión de un textil, aunque el tema siga siendo profundamente pictórico.",
+      },
+    ],
   },
   {
     id: "obra-12",
@@ -124,5 +167,13 @@ export const artworks: Artwork[] = [
     image: "/images/obra-atardecer-alado.jpg",
     seriesId: "serie-aviario",
     status: "inquire",
+    criticReviews: [
+      {
+        critic: "Por confirmar",
+        role: "Revista de arte contemporáneo",
+        quote:
+          "Una variación cromática sobre una misma escena que revela cuánto trabaja este artista la atmósfera antes que la narrativa.",
+      },
+    ],
   },
 ];

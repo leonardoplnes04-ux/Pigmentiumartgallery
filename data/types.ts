@@ -1,5 +1,11 @@
 export type ArtworkStatus = "available" | "sold" | "inquire";
 
+export interface CriticReview {
+  critic: string;
+  role: string;
+  quote: string;
+}
+
 export interface Artwork {
   id: string;
   title: string;
@@ -7,8 +13,10 @@ export interface Artwork {
   medium: string;
   dimensions: string;
   image: string;
+  additionalImages?: string[];
   seriesId: string;
   status: ArtworkStatus;
+  criticReviews?: CriticReview[];
 }
 
 export interface Series {

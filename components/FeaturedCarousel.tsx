@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { motion, useAnimationControls, useMotionValue } from "framer-motion";
 import type { Artwork } from "@/data/types";
 
@@ -155,45 +156,47 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
               }}
               className="shrink-0 select-none"
             >
-              <motion.article
-                animate={{
-                  scale: i === index ? 1 : 0.88,
-                  opacity: i === index ? 1 : 0.45,
-                }}
-                whileHover={i === index ? { y: -6 } : undefined}
-                transition={{ type: "spring", stiffness: 300, damping: 24 }}
-                className="group relative h-[300px] overflow-hidden rounded-2xl bg-line shadow-lg shadow-ink/10 sm:h-[380px] lg:h-[460px]"
-              >
-                {/* Natural aspect ratio kept per artwork — fixed height,
-                    width auto, so portrait and landscape pieces don't get
-                    stretched or cropped to match each other. */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={artwork.image}
-                  alt={artwork.title}
-                  draggable={false}
-                  onLoad={measure}
-                  className="h-full w-auto max-w-[80vw] transition-transform duration-700 ease-out group-hover:scale-105"
-                />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/0 to-ink/0" />
+              <Link href={`/obra/${artwork.id}`} className="block" draggable={false}>
+                <motion.article
+                  animate={{
+                    scale: i === index ? 1 : 0.88,
+                    opacity: i === index ? 1 : 0.45,
+                  }}
+                  whileHover={i === index ? { y: -6 } : undefined}
+                  transition={{ type: "spring", stiffness: 300, damping: 24 }}
+                  className="group relative h-[300px] overflow-hidden rounded-2xl bg-line shadow-lg shadow-ink/10 sm:h-[380px] lg:h-[460px]"
+                >
+                  {/* Natural aspect ratio kept per artwork — fixed height,
+                      width auto, so portrait and landscape pieces don't get
+                      stretched or cropped to match each other. */}
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={artwork.image}
+                    alt={artwork.title}
+                    draggable={false}
+                    onLoad={measure}
+                    className="h-full w-auto max-w-[80vw] transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/0 to-ink/0" />
 
-                {/* glassmorphism caption panel */}
-                <div className="absolute inset-x-3 bottom-3 rounded-xl border border-white/25 bg-white/10 px-4 py-3 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.35)] backdrop-blur-md backdrop-saturate-150">
-                  <div className="flex items-baseline justify-between gap-3">
-                    <div className="min-w-0">
-                      <h3 className="truncate font-serif text-lg text-white">
-                        {artwork.title}
-                      </h3>
-                      <p className="truncate text-xs text-white/80">
-                        {artwork.medium}, {artwork.year}
-                      </p>
+                  {/* glassmorphism caption panel */}
+                  <div className="absolute inset-x-3 bottom-3 rounded-xl border border-white/25 bg-white/10 px-4 py-3 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.35)] backdrop-blur-md backdrop-saturate-150">
+                    <div className="flex items-baseline justify-between gap-3">
+                      <div className="min-w-0">
+                        <h3 className="truncate font-serif text-lg text-white">
+                          {artwork.title}
+                        </h3>
+                        <p className="truncate text-xs text-white/80">
+                          {artwork.medium}, {artwork.year}
+                        </p>
+                      </div>
+                      <span className="shrink-0 rounded-full border border-white/30 bg-white/10 px-2.5 py-1 text-[10px] uppercase tracking-widest text-white">
+                        {statusLabels[artwork.status]}
+                      </span>
                     </div>
-                    <span className="shrink-0 rounded-full border border-white/30 bg-white/10 px-2.5 py-1 text-[10px] uppercase tracking-widest text-white">
-                      {statusLabels[artwork.status]}
-                    </span>
                   </div>
-                </div>
-              </motion.article>
+                </motion.article>
+              </Link>
             </div>
           ))}
         </motion.div>
