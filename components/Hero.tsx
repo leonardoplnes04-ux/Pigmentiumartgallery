@@ -6,7 +6,7 @@ import { artist } from "@/data/artist";
 
 // How long the still image holds before the "painting comes to life"
 // crossfade into the video begins.
-const VIDEO_DELAY_MS = 4000;
+const VIDEO_DELAY_MS = 1500;
 const CROSSFADE_MS = 1500;
 
 export default function Hero() {
