@@ -2,11 +2,11 @@ import { seriesList } from "@/data/series";
 
 export default function SeriesGrid() {
   return (
-    <section className="mx-auto max-w-6xl px-6 py-24">
+    <section className="mx-auto max-w-6xl px-5 py-16 sm:px-6 sm:py-20 md:py-24">
       <p className="text-xs uppercase tracking-widest text-muted">Series</p>
-      <h2 className="mt-2 font-serif text-3xl">Cuerpos de obra</h2>
+      <h2 className="mt-2 font-serif text-2xl sm:text-3xl">Cuerpos de obra</h2>
 
-      <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
+      <div className="mt-8 grid grid-cols-1 gap-8 sm:mt-12 md:grid-cols-2">
         {seriesList.map((series) => (
           <article key={series.id} className="group">
             <div className="relative aspect-[16/10] overflow-hidden bg-line">

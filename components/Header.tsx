@@ -15,8 +15,11 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-background">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
-        <Link href="/" className="font-serif text-lg uppercase tracking-wide">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 sm:px-6 sm:py-5">
+        <Link
+          href="/"
+          className="font-serif text-sm uppercase leading-tight tracking-wide sm:text-lg"
+        >
           {site.name}
         </Link>
 
@@ -46,14 +49,14 @@ export default function Header() {
           aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen((open) => !open)}
-          className="text-xs uppercase tracking-widest md:hidden"
+          className="shrink-0 text-xs uppercase tracking-widest md:hidden"
         >
           {menuOpen ? "Cerrar" : "Menú"}
         </button>
       </div>
 
       {menuOpen && (
-        <nav className="flex flex-col gap-4 border-t border-line px-6 py-4 md:hidden">
+        <nav className="flex flex-col gap-4 border-t border-line px-5 py-4 sm:px-6 md:hidden">
           {navLinks.map((link) => (
             <Link key={link.href} href={link.href} className="text-xs uppercase tracking-widest">
               {link.label}

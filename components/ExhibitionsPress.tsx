@@ -2,14 +2,14 @@ import { exhibitions } from "@/data/exhibitions";
 
 export default function ExhibitionsPress() {
   return (
-    <section className="border-t border-line px-6 py-24">
+    <section className="border-t border-line px-5 py-16 sm:px-6 sm:py-20 md:py-24">
       <div className="mx-auto max-w-6xl">
         <p className="text-xs uppercase tracking-widest text-muted">Exposiciones y prensa</p>
-        <h2 className="mt-2 font-serif text-3xl">Trayectoria</h2>
+        <h2 className="mt-2 font-serif text-2xl sm:text-3xl">Trayectoria</h2>
 
-        <ul className="mt-12 divide-y divide-line">
+        <ul className="mt-8 divide-y divide-line sm:mt-12">
           {exhibitions.map((item) => (
-            <li key={item.id} className="grid grid-cols-1 gap-2 py-6 md:grid-cols-[120px_1fr]">
+            <li key={item.id} className="grid grid-cols-1 gap-2 py-5 sm:py-6 md:grid-cols-[120px_1fr]">
               <p className="text-xs uppercase tracking-widest text-muted">{item.date}</p>
               <div>
                 {item.link ? (

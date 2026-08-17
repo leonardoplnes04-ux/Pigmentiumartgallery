@@ -22,8 +22,8 @@ export default function Footer() {
   }
 
   return (
-    <footer className="border-t border-line bg-background px-6 py-16">
-      <div className="mx-auto flex max-w-6xl flex-col gap-12 md:flex-row md:justify-between">
+    <footer className="border-t border-line bg-background px-5 py-12 sm:px-6 sm:py-16">
+      <div className="mx-auto flex max-w-6xl flex-col gap-8 sm:gap-12 md:flex-row md:justify-between">
         <div>
           <p className="font-serif text-lg uppercase tracking-wide">{site.name}</p>
           <p className="mt-2 max-w-xs text-sm text-muted">{artist.tagline}</p>
@@ -70,7 +70,7 @@ export default function Footer() {
         </form>
       </div>
 
-      <p className="mx-auto mt-12 max-w-6xl text-xs text-muted">
+      <p className="mx-auto mt-10 max-w-6xl text-xs text-muted sm:mt-12">
         © {new Date().getFullYear()} {site.name}. Todos los derechos reservados.
       </p>
     </footer>
