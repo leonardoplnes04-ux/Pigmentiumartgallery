@@ -11,57 +11,66 @@ const statusLabels: Record<Artwork["status"], string> = {
 };
 
 const AUTOPLAY_DELAY_MS = 4200;
-const GAP_PX = 24; // must match the track's gap-6
 
 export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) {
-  const containerRef = useRef<HTMLDivElement>(null);
+  // viewportRef clips the draggable track so dragging never expands the
+  // page's layout; trackRef/itemRefs measure real (variable) card widths.
+  const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const itemRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const x = useMotionValue(0);
   const controls = useAnimationControls();
 
   const [index, setIndex] = useState(0);
   const [maxDrag, setMaxDrag] = useState(0);
-  const [itemStep, setItemStep] = useState(0);
+  const [offsets, setOffsets] = useState<number[]>([]);
   const [paused, setPaused] = useState(false);
 
   const count = artworks.length;
 
   const measure = useCallback(() => {
-    if (!containerRef.current || !trackRef.current || !itemRef.current) return;
-    const containerWidth = containerRef.current.offsetWidth;
+    if (!viewportRef.current || !trackRef.current) return;
+    const viewportWidth = viewportRef.current.offsetWidth;
     const trackWidth = trackRef.current.scrollWidth;
-    setMaxDrag(Math.max(trackWidth - containerWidth, 0));
-    setItemStep(itemRef.current.offsetWidth + GAP_PX);
+    setMaxDrag(Math.max(trackWidth - viewportWidth, 0));
+    setOffsets(itemRefs.current.map((el) => el?.offsetLeft ?? 0));
   }, []);
 
   useEffect(() => {
     measure();
+    // Cards keep each artwork's own aspect ratio, so their real width is
+    // only known once the image loads — re-measure on any layout change,
+    // not just window resize.
+    const observer = new ResizeObserver(measure);
+    if (trackRef.current) observer.observe(trackRef.current);
     window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, [measure]);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [measure, count]);
 
   const goTo = useCallback(
     (next: number, stiffness = 260, damping = 32) => {
       const clamped = Math.max(0, Math.min(next, count - 1));
-      const target = -Math.min(clamped * itemStep, maxDrag);
+      const target = -Math.min(offsets[clamped] ?? 0, maxDrag);
       setIndex(clamped);
       controls.start({
         x: target,
         transition: { type: "spring", stiffness, damping, mass: 0.6 },
       });
     },
-    [controls, count, itemStep, maxDrag]
+    [controls, count, offsets, maxDrag]
   );
 
-  // Autoplay — pauses on hover, drag, or before layout is measured.
+  // Autoplay — pauses on hover/drag or before layout is measured.
   useEffect(() => {
-    if (paused || itemStep === 0) return;
+    if (paused || offsets.length === 0) return;
     const id = setInterval(() => {
       setIndex((prev) => {
         const next = prev + 1 >= count ? 0 : prev + 1;
-        const target = -Math.min(next * itemStep, maxDrag);
+        const target = -Math.min(offsets[next] ?? 0, maxDrag);
         controls.start({
           x: target,
           transition: { type: "spring", stiffness: 220, damping: 30, mass: 0.7 },
@@ -70,16 +79,24 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
       });
     }, AUTOPLAY_DELAY_MS);
     return () => clearInterval(id);
-  }, [paused, itemStep, maxDrag, count, controls]);
+  }, [paused, offsets, maxDrag, count, controls]);
 
   const handleDragEnd = () => {
-    const nearest = Math.round(-x.get() / (itemStep || 1));
+    const current = -x.get();
+    let nearest = 0;
+    let smallestDiff = Infinity;
+    offsets.forEach((offset, i) => {
+      const diff = Math.abs(offset - current);
+      if (diff < smallestDiff) {
+        smallestDiff = diff;
+        nearest = i;
+      }
+    });
     goTo(nearest, 200, 26);
   };
 
   return (
     <div
-      ref={containerRef}
       className="relative"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
@@ -88,58 +105,68 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
       <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-background to-transparent sm:w-16" />
       <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-background to-transparent sm:w-16" />
 
-      <motion.div
-        ref={trackRef}
-        className="flex cursor-grab gap-6 active:cursor-grabbing"
-        drag="x"
-        style={{ x }}
-        animate={controls}
-        dragConstraints={{ left: -maxDrag, right: 0 }}
-        dragElastic={0.14}
-        dragTransition={{ power: 0.25, timeConstant: 220 }}
-        onDragStart={() => setPaused(true)}
-        onDragEnd={handleDragEnd}
-      >
-        {artworks.map((artwork, i) => (
-          <div
-            key={artwork.id}
-            ref={i === 0 ? itemRef : undefined}
-            className="w-[78vw] shrink-0 select-none sm:w-[46vw] lg:w-[30vw]"
-          >
-            <motion.article
-              whileHover={{ y: -6 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-line shadow-lg shadow-ink/10"
+      {/* overflow-hidden viewport: clips the drag so it never pushes the
+          rest of the page sideways, even mid-elastic-overshoot */}
+      <div ref={viewportRef} className="overflow-hidden">
+        <motion.div
+          ref={trackRef}
+          className="flex cursor-grab gap-6 active:cursor-grabbing"
+          drag="x"
+          style={{ x, touchAction: "pan-y" }}
+          animate={controls}
+          dragConstraints={{ left: -maxDrag, right: 0 }}
+          dragElastic={0.12}
+          dragTransition={{ power: 0.25, timeConstant: 220 }}
+          onDragStart={() => setPaused(true)}
+          onDragEnd={handleDragEnd}
+        >
+          {artworks.map((artwork, i) => (
+            <div
+              key={artwork.id}
+              ref={(el) => {
+                itemRefs.current[i] = el;
+              }}
+              className="shrink-0 select-none"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={artwork.image}
-                alt={artwork.title}
-                draggable={false}
-                className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-              />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/0 to-ink/0" />
+              <motion.article
+                whileHover={{ y: -6 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="group relative h-[360px] overflow-hidden rounded-2xl bg-line shadow-lg shadow-ink/10 sm:h-[440px] lg:h-[520px]"
+              >
+                {/* Natural aspect ratio kept per artwork — fixed height,
+                    width auto, so portrait and landscape pieces don't get
+                    stretched or cropped to match each other. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={artwork.image}
+                  alt={artwork.title}
+                  draggable={false}
+                  onLoad={measure}
+                  className="h-full w-auto max-w-[80vw] transition-transform duration-700 ease-out group-hover:scale-105"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/0 to-ink/0" />
 
-              {/* glassmorphism caption panel */}
-              <div className="absolute inset-x-3 bottom-3 rounded-xl border border-white/25 bg-white/10 px-4 py-3 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.35)] backdrop-blur-md backdrop-saturate-150">
-                <div className="flex items-baseline justify-between gap-3">
-                  <div className="min-w-0">
-                    <h3 className="truncate font-serif text-lg text-white">
-                      {artwork.title}
-                    </h3>
-                    <p className="truncate text-xs text-white/80">
-                      {artwork.medium}, {artwork.year}
-                    </p>
+                {/* glassmorphism caption panel */}
+                <div className="absolute inset-x-3 bottom-3 rounded-xl border border-white/25 bg-white/10 px-4 py-3 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.35)] backdrop-blur-md backdrop-saturate-150">
+                  <div className="flex items-baseline justify-between gap-3">
+                    <div className="min-w-0">
+                      <h3 className="truncate font-serif text-lg text-white">
+                        {artwork.title}
+                      </h3>
+                      <p className="truncate text-xs text-white/80">
+                        {artwork.medium}, {artwork.year}
+                      </p>
+                    </div>
+                    <span className="shrink-0 rounded-full border border-white/30 bg-white/10 px-2.5 py-1 text-[10px] uppercase tracking-widest text-white">
+                      {statusLabels[artwork.status]}
+                    </span>
                   </div>
-                  <span className="shrink-0 rounded-full border border-white/30 bg-white/10 px-2.5 py-1 text-[10px] uppercase tracking-widest text-white">
-                    {statusLabels[artwork.status]}
-                  </span>
                 </div>
-              </div>
-            </motion.article>
-          </div>
-        ))}
-      </motion.div>
+              </motion.article>
+            </div>
+          ))}
+        </motion.div>
+      </div>
 
       {/* prev/next glass controls */}
       <button

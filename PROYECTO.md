@@ -26,6 +26,8 @@ Todo lo relacionado con este proyecto vive aquí:
 
 - **2026-08-17**: "Obra destacada" pasa de grid estático a carrusel con física de arrastre (drag + inercia con spring, vía Framer Motion) y tarjetas con efecto de vidrio esmerilado (glassmorphism: `backdrop-blur` + borde/tinte translúcido) sobre cada imagen. Autoplay que se pausa al interactuar, botones prev/next y dots, todos con el mismo tratamiento de vidrio. El carrusel solo muestra las obras reales (serie Aviario); los placeholders siguen visibles en el catálogo completo (`/obra`) pero no en la sección destacada. Nueva dependencia: `framer-motion`.
 
+- **2026-08-17**: Dos correcciones al carrusel de obra destacada: (1) cada tarjeta ahora respeta el tamaño/proporción real de su imagen (alto fijo, ancho automático) en vez de forzar un recorte 4:5 uniforme — piezas apaisadas y verticales conviven sin deformarse; (2) se envuelve el track arrastrable en un contenedor `overflow-hidden` y se fija `touch-action: pan-y`, ya que el drag no estaba clippeado y desbordaba el layout de toda la página al arrastrar/scrollear sobre el carrusel.
+
 ## Próximos pasos
 - Confirmar con el artista: títulos definitivos, año y dimensiones exactas de las obras de la serie Aviario; reemplazar o retirar los placeholders restantes de Interiores/Derivas.
 - Más adelante: construir subpáginas (Obra, Sobre mí, Contacto) con este contenido real; decidir si se integra un CMS headless.
