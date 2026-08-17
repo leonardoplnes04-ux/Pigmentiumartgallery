@@ -36,6 +36,8 @@ Todo lo relacionado con este proyecto vive aquí:
 
 - **2026-08-17**: Se corrige el Hero para que la obra se vea completa. El contenedor era `h-[90vh]` (muy alto/angosto en móvil) mientras que el video/imagen es panorámico (1344×768, 7:4) — ese desfase de proporción hacía que `object-cover` recortara fuerte y en pantallas angostas terminara mostrando sobre todo el fondo negro del video en vez del cuadro. Se cambia el contenedor a `aspect-[7/4]` (con tope `max-h-[85vh]`) y `object-cover` → `object-contain`, así la pieza completa siempre es visible, sin recortes ni "cuadro negro".
 
+- **2026-08-17**: Se corrige de verdad el "cuadro negro" del video: el fondo de esa esquina no era negro sólido sino una textura oscura (ramas), así que la caja negra plana que tapaba el watermark quedaba como un parche visible y notorio — eso era lo que el usuario seguía viendo. Se reemplaza por el filtro `delogo` de ffmpeg (reconstruye la zona interpolando la textura de alrededor en vez de rellenar con un color plano). Reencodeado y verificado en varios puntos del video (inicio, medio, fin): ya no se ve ninguna caja, solo un leve rastro de interpolación imperceptible sobre la textura oscura.
+
 ## Próximos pasos
 - Confirmar con el artista: títulos definitivos, año y dimensiones exactas de las obras de la serie Aviario; reemplazar o retirar los placeholders restantes de Interiores/Derivas.
 - Más adelante: construir subpáginas (Obra, Sobre mí, Contacto) con este contenido real; decidir si se integra un CMS headless.
