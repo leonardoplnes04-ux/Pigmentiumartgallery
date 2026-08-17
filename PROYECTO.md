@@ -32,6 +32,8 @@ Todo lo relacionado con este proyecto vive aquí:
 
 - **2026-08-17**: El Hero pasa de imagen estática a imagen + video: se mantiene la foto fija ~4s y luego hace crossfade (1.5s) hacia un video en loop del mismo cuadro ("cobra vida"). Video en autoplay/muted/loop/playsInline; si el navegador bloquea el autoplay, la imagen se queda de fondo sin romper nada. Nuevo campo `artist.heroVideo` en el modelo de datos; Hero.tsx pasa a ser client component por el timer y el control del `<video>`.
 
+- **2026-08-17**: Se detecta y elimina el watermark "DeeVid AI" (herramienta con la que se generó el video) en la esquina superior derecha del video del Hero. Se instala ffmpeg (winget) y se tapa esa zona con una caja negra sólida — coincide con el fondo negro del video en ese punto, queda invisible. Video reemplazado en `public/videos/hero-segundo-planes.mp4`.
+
 ## Próximos pasos
 - Confirmar con el artista: títulos definitivos, año y dimensiones exactas de las obras de la serie Aviario; reemplazar o retirar los placeholders restantes de Interiores/Derivas.
 - Más adelante: construir subpáginas (Obra, Sobre mí, Contacto) con este contenido real; decidir si se integra un CMS headless.
