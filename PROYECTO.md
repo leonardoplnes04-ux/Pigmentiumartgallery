@@ -24,6 +24,8 @@ Todo lo relacionado con este proyecto vive aquí:
 - **2026-08-17**: Se agrega una foto real del artista como imagen de fondo del Hero, detrás del nombre "Segundo Planes" (`artist.heroImage`, nuevo campo en `data/types.ts`).
 - **2026-08-17**: Primeras obras reales del artista incorporadas al catálogo (6 piezas, todas con aves/flora/figuras infantiles). Como el contenido no encajaba temáticamente con las series placeholder ("Interiores"/"Derivas"), se crea una tercera serie real: **Aviario** (`serie-aviario` en `data/series.ts`). Ficha técnica (año, medio, dimensiones) es provisional — el año se leyó de la firma visible en cada obra ("2do" + año abreviado); dimensiones y títulos definitivos pendientes de confirmar con el artista. Los 6 placeholders de Interiores/Derivas se conservan sin tocar.
 
+- **2026-08-17**: "Obra destacada" pasa de grid estático a carrusel con física de arrastre (drag + inercia con spring, vía Framer Motion) y tarjetas con efecto de vidrio esmerilado (glassmorphism: `backdrop-blur` + borde/tinte translúcido) sobre cada imagen. Autoplay que se pausa al interactuar, botones prev/next y dots, todos con el mismo tratamiento de vidrio. El carrusel solo muestra las obras reales (serie Aviario); los placeholders siguen visibles en el catálogo completo (`/obra`) pero no en la sección destacada. Nueva dependencia: `framer-motion`.
+
 ## Próximos pasos
 - Confirmar con el artista: títulos definitivos, año y dimensiones exactas de las obras de la serie Aviario; reemplazar o retirar los placeholders restantes de Interiores/Derivas.
 - Más adelante: construir subpáginas (Obra, Sobre mí, Contacto) con este contenido real; decidir si se integra un CMS headless.
