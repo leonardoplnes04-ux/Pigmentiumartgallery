@@ -1,7 +1,67 @@
-# Galería Digital — Artista Contemporáneo
+# Galería Digital — PIGMENTIUM ART GALLERY (Segundo Planes)
 
-## Estado
-Diseño de la página principal aprobado (2026-08-16). Contenido con datos placeholder — artista real aún sin definir. Construyendo la home con Next.js + TypeScript + Tailwind.
+## Resumen para retomar (actualizado 2026-08-17)
+
+**Qué es:** galería digital para el artista plástico contemporáneo Segundo
+Planes, marca del sitio "PIGMENTIUM ART GALLERY". Home construida y
+funcional; subpáginas (`/obra`, `/sobre-mi`, `/exposiciones`, `/contacto`)
+son stubs "Próximamente" (`components/ComingSoonPage.tsx`).
+
+**Cómo levantarlo:**
+```
+cd C:\Users\leona\DARTGALLERY
+npm run dev
+```
+→ `http://localhost:3000`. `npx tsc --noEmit` para chequear tipos antes de
+dar por cerrado cualquier cambio.
+
+**Stack:** Next.js 15 (App Router) + TypeScript + Tailwind CSS 3 +
+Framer Motion (carrusel). Componentes de servidor por defecto; `"use client"`
+solo donde hay estado/interactividad (`Header`, `Footer`, `Hero`,
+`FeaturedCarousel`).
+
+**Repo remoto:** https://github.com/leonardoplnes04-ux/Pigmentiumartgallery
+(rama `main`). Pusheado y al día — listo para importar en Vercel
+(vercel.com/new), Next.js se detecta automático, sin config extra.
+**Todavía no se hizo el deploy a Vercel.**
+
+**Estructura de datos (`data/*.ts`)** — todo el contenido vive separado de
+los componentes para poder reemplazarlo sin tocar código:
+- `data/site.ts` → marca del sitio ("PIGMENTIUM ART GALLERY").
+- `data/artist.ts` / `data/types.ts` → identidad del artista (nombre, bio,
+  tagline, `heroImage`, `heroVideo`, email, redes). Bio/tagline **siguen
+  siendo placeholder**, pendientes de redacción real.
+- `data/artworks.ts` → 12 obras: `obra-01..06` son placeholders (SVG de
+  colores, series "Interiores"/"Derivas", **no reales, sin usar en la home**)
+  y `obra-07..12` son las 6 obras reales del artista (serie **Aviario**,
+  imágenes en `public/images/obra-*.jpg`). Ficha técnica de las reales
+  (año/medio/dimensiones) es **provisional**: año leído de la firma en cada
+  pieza, dimensiones y títulos definitivos pendientes de confirmar con el
+  artista.
+- `data/series.ts` → 3 series: "Interiores", "Derivas" (placeholder),
+  "Aviario" (real).
+- `data/exhibitions.ts` → 3 entradas placeholder, sin tocar.
+
+**Componentes clave:**
+- `components/Hero.tsx` → imagen fija (`public/images/hero-segundo-planes.jpg`)
+  que a los 1.5s hace crossfade a un video en loop
+  (`public/videos/hero-segundo-planes.mp4`, sin watermark, limpiado con
+  ffmpeg/delogo). Contenedor `aspect-[7/4]` + `object-contain` para que la
+  obra nunca se recorte; `min-h-[380px]` para que el texto no quede
+  apretado en mobile.
+- `components/FeaturedCarousel.tsx` → carrusel de "Obra destacada": solo
+  muestra las 6 obras reales (filtra por `!image.includes("placeholder")`),
+  drag con física spring (Framer Motion), un clic = una obra centrada con
+  las vecinas asomando a los costados, tarjetas glassmorphism
+  (`backdrop-blur`), cada tarjeta respeta la proporción real de su imagen.
+- Resto de secciones (`ArtistStatement`, `SeriesGrid`, `ExhibitionsPress`,
+  `ContactBanner`, `Footer`, `Header`) ya tienen pasada de responsividad
+  mobile (padding/tipografía escalados con `sm:`/`md:`).
+
+**Pendiente / próximos pasos** (ver detalle en "Próximos pasos" al final):
+confirmar ficha técnica real de la serie Aviario, decidir qué hacer con los
+placeholders de Interiores/Derivas, construir las subpáginas reales, y
+hacer el primer deploy a Vercel cuando el usuario lo pida.
 
 ## Propósito de esta carpeta
 Todo lo relacionado con este proyecto vive aquí:
