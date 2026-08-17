@@ -18,12 +18,13 @@ function findArtwork(id: string) {
   return realArtworks.find((artwork) => artwork.id === id);
 }
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
-}): Metadata {
-  const artwork = findArtwork(params.id);
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const artwork = findArtwork(id);
   if (!artwork) return {};
   return {
     title: `${artwork.title} — ${artist.name}`,
@@ -31,8 +32,13 @@ export function generateMetadata({
   };
 }
 
-export default function ArtworkPage({ params }: { params: { id: string } }) {
-  const artwork = findArtwork(params.id);
+export default async function ArtworkPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const artwork = findArtwork(id);
   if (!artwork) notFound();
 
   return (
