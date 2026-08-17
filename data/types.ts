@@ -33,6 +33,7 @@ export interface Artist {
   shortBio: string;
   longBio: string;
   portraitImage: string;
+  heroImage: string;
   email: string;
   socials: {
     instagram?: string;

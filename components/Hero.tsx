@@ -1,16 +1,13 @@
 import Link from "next/link";
 import { artist } from "@/data/artist";
-import { artworks } from "@/data/artworks";
 
 export default function Hero() {
-  const featured = artworks[0];
-
   return (
     <section className="relative flex h-[90vh] min-h-[560px] items-end overflow-hidden">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={featured.image}
-        alt={featured.title}
+        src={artist.heroImage}
+        alt={`Obra destacada de ${artist.name}`}
         className="absolute inset-0 h-full w-full object-cover"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent" />
