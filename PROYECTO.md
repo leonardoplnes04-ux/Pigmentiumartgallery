@@ -30,6 +30,8 @@ Todo lo relacionado con este proyecto vive aquí:
 
 - **2026-08-17**: Carrusel de obra destacada pasa de filmstrip libre a modo "un clic = una obra": el ítem activo se centra en el viewport (fórmula de centrado basada en el ancho real de cada tarjeta) y las vecinas quedan asomando a los costados con menor escala/opacidad. Viewport angostado (`max-w-420/560/680px`) para que solo quepa una obra a foco completo más los bordes de sus vecinas; mismo cálculo de centrado se usa al hacer clic, en autoplay y al soltar el drag (snap al centro más cercano).
 
+- **2026-08-17**: El Hero pasa de imagen estática a imagen + video: se mantiene la foto fija ~4s y luego hace crossfade (1.5s) hacia un video en loop del mismo cuadro ("cobra vida"). Video en autoplay/muted/loop/playsInline; si el navegador bloquea el autoplay, la imagen se queda de fondo sin romper nada. Nuevo campo `artist.heroVideo` en el modelo de datos; Hero.tsx pasa a ser client component por el timer y el control del `<video>`.
+
 ## Próximos pasos
 - Confirmar con el artista: títulos definitivos, año y dimensiones exactas de las obras de la serie Aviario; reemplazar o retirar los placeholders restantes de Interiores/Derivas.
 - Más adelante: construir subpáginas (Obra, Sobre mí, Contacto) con este contenido real; decidir si se integra un CMS headless.

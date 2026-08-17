@@ -10,6 +10,7 @@ export const artist: Artist = {
     "Segundo Planes (n. 1987) es un artista plástico contemporáneo cuya práctica gira en torno a la pintura, el collage y la instalación. Su obra explora la memoria, el paisaje doméstico y la relación entre cuerpo y espacio a través de una paleta cromática intensa y superficies trabajadas en múltiples capas. Ha expuesto en galerías y espacios independientes, y su trabajo forma parte de colecciones privadas.",
   portraitImage: "/images/placeholder-portrait.svg",
   heroImage: "/images/hero-segundo-planes.jpg",
+  heroVideo: "/videos/hero-segundo-planes.mp4",
   email: "hola@pigmentium.example",
   socials: {
     instagram: "https://instagram.com/pigmentium",
