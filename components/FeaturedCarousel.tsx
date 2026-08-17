@@ -12,9 +12,15 @@ const statusLabels: Record<Artwork["status"], string> = {
 
 const AUTOPLAY_DELAY_MS = 4200;
 
+interface ItemLayout {
+  left: number;
+  width: number;
+}
+
 export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) {
   // viewportRef clips the draggable track so dragging never expands the
-  // page's layout; trackRef/itemRefs measure real (variable) card widths.
+  // page's layout; trackRef/itemRefs measure real (variable) card widths
+  // so the active card can be centered — leaving its neighbors peeking in.
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -24,7 +30,7 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
 
   const [index, setIndex] = useState(0);
   const [maxDrag, setMaxDrag] = useState(0);
-  const [offsets, setOffsets] = useState<number[]>([]);
+  const [layout, setLayout] = useState<ItemLayout[]>([]);
   const [paused, setPaused] = useState(false);
 
   const count = artworks.length;
@@ -34,7 +40,12 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
     const viewportWidth = viewportRef.current.offsetWidth;
     const trackWidth = trackRef.current.scrollWidth;
     setMaxDrag(Math.max(trackWidth - viewportWidth, 0));
-    setOffsets(itemRefs.current.map((el) => el?.offsetLeft ?? 0));
+    setLayout(
+      itemRefs.current.map((el) => ({
+        left: el?.offsetLeft ?? 0,
+        width: el?.offsetWidth ?? 0,
+      }))
+    );
   }, []);
 
   useEffect(() => {
@@ -51,42 +62,58 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
     };
   }, [measure, count]);
 
+  // Target x that centers item `i` in the viewport, clamped to the track's
+  // real bounds — this is what makes the previous/next card peek in from
+  // the sides instead of the active card sitting flush against the edge.
+  const centerTarget = useCallback(
+    (i: number) => {
+      const item = layout[i];
+      if (!viewportRef.current || !item) return 0;
+      const viewportWidth = viewportRef.current.offsetWidth;
+      const raw = item.left + item.width / 2 - viewportWidth / 2;
+      return -Math.max(0, Math.min(raw, maxDrag));
+    },
+    [layout, maxDrag]
+  );
+
   const goTo = useCallback(
     (next: number, stiffness = 260, damping = 32) => {
       const clamped = Math.max(0, Math.min(next, count - 1));
-      const target = -Math.min(offsets[clamped] ?? 0, maxDrag);
       setIndex(clamped);
       controls.start({
-        x: target,
+        x: centerTarget(clamped),
         transition: { type: "spring", stiffness, damping, mass: 0.6 },
       });
     },
-    [controls, count, offsets, maxDrag]
+    [controls, count, centerTarget]
   );
 
-  // Autoplay — pauses on hover/drag or before layout is measured.
+  // Autoplay — advances exactly one artwork at a time, pauses on
+  // hover/drag or before layout is measured.
   useEffect(() => {
-    if (paused || offsets.length === 0) return;
+    if (paused || layout.length === 0) return;
     const id = setInterval(() => {
       setIndex((prev) => {
         const next = prev + 1 >= count ? 0 : prev + 1;
-        const target = -Math.min(offsets[next] ?? 0, maxDrag);
         controls.start({
-          x: target,
+          x: centerTarget(next),
           transition: { type: "spring", stiffness: 220, damping: 30, mass: 0.7 },
         });
         return next;
       });
     }, AUTOPLAY_DELAY_MS);
     return () => clearInterval(id);
-  }, [paused, offsets, maxDrag, count, controls]);
+  }, [paused, layout, count, controls, centerTarget]);
 
   const handleDragEnd = () => {
-    const current = -x.get();
+    if (!viewportRef.current || layout.length === 0) return;
+    const viewportWidth = viewportRef.current.offsetWidth;
+    // The track-space point currently sitting at the viewport's center.
+    const focalPoint = viewportWidth / 2 - x.get();
     let nearest = 0;
     let smallestDiff = Infinity;
-    offsets.forEach((offset, i) => {
-      const diff = Math.abs(offset - current);
+    layout.forEach((item, i) => {
+      const diff = Math.abs(item.left + item.width / 2 - focalPoint);
       if (diff < smallestDiff) {
         smallestDiff = diff;
         nearest = i;
@@ -97,13 +124,13 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
 
   return (
     <div
-      className="relative"
+      className="relative mx-auto w-full max-w-[420px] sm:max-w-[560px] lg:max-w-[680px]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* edge fades hint that the carousel scrolls further */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-8 bg-gradient-to-r from-background to-transparent sm:w-16" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-8 bg-gradient-to-l from-background to-transparent sm:w-16" />
+      {/* edge fades hint that the neighboring pieces peek in from here */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-6 bg-gradient-to-r from-background to-transparent sm:w-10" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-6 bg-gradient-to-l from-background to-transparent sm:w-10" />
 
       {/* overflow-hidden viewport: clips the drag so it never pushes the
           rest of the page sideways, even mid-elastic-overshoot */}
@@ -129,9 +156,13 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
               className="shrink-0 select-none"
             >
               <motion.article
-                whileHover={{ y: -6 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="group relative h-[360px] overflow-hidden rounded-2xl bg-line shadow-lg shadow-ink/10 sm:h-[440px] lg:h-[520px]"
+                animate={{
+                  scale: i === index ? 1 : 0.88,
+                  opacity: i === index ? 1 : 0.45,
+                }}
+                whileHover={i === index ? { y: -6 } : undefined}
+                transition={{ type: "spring", stiffness: 300, damping: 24 }}
+                className="group relative h-[300px] overflow-hidden rounded-2xl bg-line shadow-lg shadow-ink/10 sm:h-[380px] lg:h-[460px]"
               >
                 {/* Natural aspect ratio kept per artwork — fixed height,
                     width auto, so portrait and landscape pieces don't get
@@ -173,7 +204,7 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
         type="button"
         aria-label="Obra anterior"
         onClick={() => goTo(index - 1)}
-        className="absolute left-2 top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-white/20 text-lg text-ink shadow-md backdrop-blur-md transition hover:bg-white/50 sm:flex"
+        className="absolute left-2 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-white/20 text-lg text-ink shadow-md backdrop-blur-md transition hover:bg-white/50"
       >
         ‹
       </button>
@@ -181,7 +212,7 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
         type="button"
         aria-label="Obra siguiente"
         onClick={() => goTo(index + 1)}
-        className="absolute right-2 top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-white/20 text-lg text-ink shadow-md backdrop-blur-md transition hover:bg-white/50 sm:flex"
+        className="absolute right-2 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-white/20 text-lg text-ink shadow-md backdrop-blur-md transition hover:bg-white/50"
       >
         ›
       </button>
