@@ -21,7 +21,9 @@ Todo lo relacionado con este proyecto vive aquí:
 - **2026-08-16**: Brainstorming de la página principal. Usuario aprueba diseño, contenido placeholder, propósito (exhibición + consultas), y stack Next.js/TS/Tailwind. Se escribe el spec en `docs/specs/2026-08-16-homepage-design.md`.
 - **2026-08-16/17**: Se construye la home directamente (sin esperar al flujo completo de plan formal) para que el usuario la viera corriendo en local cuanto antes. Servidor de desarrollo levantado en `http://localhost:3000`.
 - **2026-08-17**: Se separa "marca de la galería" de "nombre del artista" en el modelo de datos (`data/site.ts` nuevo). Galería: **PIGMENTIUM**. Artista: **Segundo Planes** (bio/tagline siguen siendo placeholder, redactadas ahora en masculino). Header, footer y `<title>` usan la marca de la galería; hero y sección "sobre mí" siguen mostrando el nombre del artista.
+- **2026-08-17**: Se agrega una foto real del artista como imagen de fondo del Hero, detrás del nombre "Segundo Planes" (`artist.heroImage`, nuevo campo en `data/types.ts`).
+- **2026-08-17**: Primeras obras reales del artista incorporadas al catálogo (6 piezas, todas con aves/flora/figuras infantiles). Como el contenido no encajaba temáticamente con las series placeholder ("Interiores"/"Derivas"), se crea una tercera serie real: **Aviario** (`serie-aviario` en `data/series.ts`). Ficha técnica (año, medio, dimensiones) es provisional — el año se leyó de la firma visible en cada obra ("2do" + año abreviado); dimensiones y títulos definitivos pendientes de confirmar con el artista. Los 6 placeholders de Interiores/Derivas se conservan sin tocar.
 
 ## Próximos pasos
-- Escribir plan de implementación y construir la home según el spec.
-- Más adelante: definir artista real y reemplazar contenido placeholder; construir subpáginas (Obra, Sobre mí, Contacto); decidir si se integra un CMS headless.
+- Confirmar con el artista: títulos definitivos, año y dimensiones exactas de las obras de la serie Aviario; reemplazar o retirar los placeholders restantes de Interiores/Derivas.
+- Más adelante: construir subpáginas (Obra, Sobre mí, Contacto) con este contenido real; decidir si se integra un CMS headless.

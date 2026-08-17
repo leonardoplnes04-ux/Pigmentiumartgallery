@@ -16,4 +16,11 @@ export const seriesList: Series[] = [
       "Paisajes fragmentados que registran el movimiento y la memoria del territorio.",
     coverImage: "/images/placeholder-artwork-04.svg",
   },
+  {
+    id: "serie-aviario",
+    name: "Aviario",
+    description:
+      "Un bestiario pictórico donde aves, flora y figuras infantiles conviven en composiciones densas y multicapa.",
+    coverImage: "/images/obra-guardian-del-jardin.jpg",
+  },
 ];
