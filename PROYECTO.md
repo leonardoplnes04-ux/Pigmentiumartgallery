@@ -34,6 +34,8 @@ Todo lo relacionado con este proyecto vive aquí:
 
 - **2026-08-17**: Se detecta y elimina el watermark "DeeVid AI" (herramienta con la que se generó el video) en la esquina superior derecha del video del Hero. Se instala ffmpeg (winget) y se tapa esa zona con una caja negra sólida — coincide con el fondo negro del video en ese punto, queda invisible. Video reemplazado en `public/videos/hero-segundo-planes.mp4`.
 
+- **2026-08-17**: Se corrige el Hero para que la obra se vea completa. El contenedor era `h-[90vh]` (muy alto/angosto en móvil) mientras que el video/imagen es panorámico (1344×768, 7:4) — ese desfase de proporción hacía que `object-cover` recortara fuerte y en pantallas angostas terminara mostrando sobre todo el fondo negro del video en vez del cuadro. Se cambia el contenedor a `aspect-[7/4]` (con tope `max-h-[85vh]`) y `object-cover` → `object-contain`, así la pieza completa siempre es visible, sin recortes ni "cuadro negro".
+
 ## Próximos pasos
 - Confirmar con el artista: títulos definitivos, año y dimensiones exactas de las obras de la serie Aviario; reemplazar o retirar los placeholders restantes de Interiores/Derivas.
 - Más adelante: construir subpáginas (Obra, Sobre mí, Contacto) con este contenido real; decidir si se integra un CMS headless.

@@ -30,12 +30,18 @@ export default function Hero() {
   }, [showVideo]);
 
   return (
-    <section className="relative flex h-[90vh] min-h-[560px] items-end overflow-hidden">
+    // Container matches the artwork's own aspect ratio (video is 1344×768,
+    // i.e. 7:4) instead of a fixed 90vh — that mismatch was forcing
+    // object-cover to crop hard on narrow screens, often landing on the
+    // video's black background instead of the painting. object-contain
+    // below is a second guarantee: the full piece always stays visible,
+    // never cropped, even on the rare screen where max-h clamps in.
+    <section className="relative flex aspect-[7/4] max-h-[85vh] w-full items-end overflow-hidden bg-background">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={artist.heroImage}
         alt={`Obra destacada de ${artist.name}`}
-        className={`absolute inset-0 h-full w-full object-cover transition-opacity ease-in-out ${
+        className={`absolute inset-0 h-full w-full object-contain transition-opacity ease-in-out ${
           showVideo ? "opacity-0" : "opacity-100"
         }`}
         style={{ transitionDuration: `${CROSSFADE_MS}ms` }}
@@ -48,7 +54,7 @@ export default function Hero() {
         playsInline
         preload="auto"
         aria-hidden="true"
-        className={`absolute inset-0 h-full w-full object-cover transition-opacity ease-in-out ${
+        className={`absolute inset-0 h-full w-full object-contain transition-opacity ease-in-out ${
           showVideo ? "opacity-100" : "opacity-0"
         }`}
         style={{ transitionDuration: `${CROSSFADE_MS}ms` }}
