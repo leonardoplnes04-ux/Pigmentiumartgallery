@@ -19,6 +19,8 @@ Todo lo relacionado con este proyecto vive aquí:
 ## Bitácora
 - **2026-08-16**: Se crea la carpeta del proyecto.
 - **2026-08-16**: Brainstorming de la página principal. Usuario aprueba diseño, contenido placeholder, propósito (exhibición + consultas), y stack Next.js/TS/Tailwind. Se escribe el spec en `docs/specs/2026-08-16-homepage-design.md`.
+- **2026-08-16/17**: Se construye la home directamente (sin esperar al flujo completo de plan formal) para que el usuario la viera corriendo en local cuanto antes. Servidor de desarrollo levantado en `http://localhost:3000`.
+- **2026-08-17**: Se separa "marca de la galería" de "nombre del artista" en el modelo de datos (`data/site.ts` nuevo). Galería: **PIGMENTIUM**. Artista: **Segundo Planes** (bio/tagline siguen siendo placeholder, redactadas ahora en masculino). Header, footer y `<title>` usan la marca de la galería; hero y sección "sobre mí" siguen mostrando el nombre del artista.
 
 ## Próximos pasos
 - Escribir plan de implementación y construir la home según el spec.
