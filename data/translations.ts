@@ -33,6 +33,7 @@ export interface UiStrings {
   exhibitions: {
     eyebrow: string;
     title: string;
+    filterAll: string; // "All artists" tab, only shown when the gallery has more than one
   };
   contact: {
     eyebrow: string;
@@ -127,6 +128,7 @@ export const translations: Record<Language, UiStrings> = {
     exhibitions: {
       eyebrow: "Exposiciones y prensa",
       title: "Trayectoria",
+      filterAll: "Todos",
     },
     contact: {
       eyebrow: "Contacto",
@@ -219,6 +221,7 @@ export const translations: Record<Language, UiStrings> = {
     exhibitions: {
       eyebrow: "Exhibitions & press",
       title: "Trajectory",
+      filterAll: "All",
     },
     contact: {
       eyebrow: "Contact",

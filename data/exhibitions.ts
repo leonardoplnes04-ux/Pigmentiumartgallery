@@ -11,6 +11,7 @@ export const exhibitions: Exhibition[] = [
       es: "Primera exhibición individual de la serie Interiores.",
       en: "First solo exhibition of the Interiors series.",
     },
+    artistId: "segundo-planes",
   },
   {
     id: "exp-02",
@@ -21,6 +22,7 @@ export const exhibitions: Exhibition[] = [
       es: "Selección de obras de la serie Derivas en una muestra colectiva de paisaje contemporáneo.",
       en: "A selection of works from the Drifts series in a group exhibition of contemporary landscape.",
     },
+    artistId: "segundo-planes",
   },
   {
     id: "exp-03",
@@ -32,5 +34,6 @@ export const exhibitions: Exhibition[] = [
       en: "A conversation about memory, color, and pictorial process.",
     },
     link: "https://example.com/entrevista-lienzo",
+    artistId: "segundo-planes",
   },
 ];

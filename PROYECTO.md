@@ -169,7 +169,21 @@ Todo lo relacionado con este proyecto vive aquí:
   limpio, `/obra/obra-07/simulador` responde 200, "500 × 150 cm"
   aparece tanto en la ficha técnica como en la etiqueta del simulador.
 
+- **2026-08-17**: `/exposiciones` deja de ser stub y pasa a página real, con
+  el listado agrupado por artista (brainstorming previo: alcance acotado a
+  esta página — el resto del sitio, `data/artist.ts`/Hero/Sobre mí, sigue
+  asumiendo un solo artista; ver "Próximos pasos"). Nuevo tipo
+  `GalleryArtist` (`{ id, name }`) en `data/types.ts`, deliberadamente
+  separado del `Artist` singular ya existente. Nuevo `data/galleryArtists.ts`
+  con la lista (hoy solo Segundo Planes); `Exhibition` gana `artistId`
+  requerido. La página filtra por artista con un tab-bar, pero el tab-bar
+  solo se renderiza si `galleryArtists.length > 1` — con un solo artista
+  cargado hoy no se muestra ningún control, para no exponer un filtro
+  inútil. Verificado: `npx tsc --noEmit` limpio, `/exposiciones` responde
+  200 y muestra las 3 exposiciones existentes, filtro confirmado oculto.
+
 ## Próximos pasos
+- Cuando se sume un segundo artista real a la galería: agregar su entrada en `data/galleryArtists.ts`, tagear sus exposiciones con su `artistId` en `data/exhibitions.ts`, y el filtro por artista en `/exposiciones` aparece solo (sin tocar componentes). Si en algún momento también se necesita que `/obra` y `/sobre-mi` sean multi-artista (hoy siguen asumiendo a Segundo Planes como único artista del sitio), eso es un cambio de modelo de datos más grande — brainstorming aparte cuando se necesite de verdad.
 - Confirmar con el artista: títulos definitivos, año y dimensiones exactas del resto de la serie Aviario (`obra-08`..`obra-12`, `obra-07` ya confirmada); citas reales de críticos (hoy son placeholder); reemplazar o retirar los placeholders restantes de Interiores/Derivas. **Esto también activa "Ver en tu pared"** por obra — en cuanto tenga `realDimensionsCm` cargado, el botón aparece solo.
 - **RA en vivo** (cámara en tiempo real, la obra "flota" en el espacio del cliente): fase aparte de "Vista en tu pared" v1 (ya construida) — necesita `model-viewer`/WebXR y modelos 3D por obra, con su propio spec cuando se retome.
 - Más adelante: construir el resto de subpáginas (Sobre mí, Contacto con formulario real) con contenido real; decidir si se integra un CMS headless.

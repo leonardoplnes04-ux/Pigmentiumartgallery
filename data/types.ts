@@ -48,6 +48,18 @@ export interface Exhibition {
   date: string;
   description: LocalizedText;
   link?: string;
+  // Which gallery artist this exhibition belongs to — see data/galleryArtists.ts.
+  artistId: string;
+}
+
+// A minimal entity for grouping exhibitions by artist on /exposiciones.
+// Intentionally NOT the same as `Artist` below (the single-artist profile
+// used by Hero/Sobre mí/etc.) — this is scoped to the exhibitions page only,
+// so the gallery can list more artists there without restructuring the rest
+// of the site. See docs/specs decision in PROYECTO.md bitácora, 2026-08-17.
+export interface GalleryArtist {
+  id: string;
+  name: string;
 }
 
 export interface Artist {
