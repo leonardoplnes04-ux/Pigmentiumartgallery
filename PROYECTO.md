@@ -5,9 +5,9 @@
 **Vista en tu pared:** simulador de escala v1 en `/obra/[id]/simulador`
 — el cliente sube una foto de su espacio y ubica la obra a ojo (sin
 calibración). Solo aparece para obras con `realDimensionsCm` cargado en
-`data/artworks.ts`; **hoy ninguna lo tiene**, así que el botón "Ver en
-tu pared" está invisible en todo el sitio hasta que se confirmen
-medidas reales. Detalle en "Bitácora" y en
+`data/artworks.ts`; **hoy solo `obra-07` (Guardián del jardín, 500 ×
+150 cm) lo tiene** — el resto de Aviario sigue con el botón invisible
+hasta confirmar sus medidas. Detalle en "Bitácora" y en
 `docs/specs/2026-08-17-wall-simulator-design.md`.
 
 **Idioma:** el sitio tiene selector ES/EN (botón en el Header), estado
@@ -160,7 +160,16 @@ Todo lo relacionado con este proyecto vive aquí:
   200, obras sin medida siguen en 404; servidor reiniciado limpio para
   descartar ruido de hot-reload.
 
+- **2026-08-17**: Confirmadas las medidas reales de `obra-07` (Guardián
+  del jardín): 500 × 150 cm — dato pasado por el usuario en metros
+  (5.00 × 1.50 m, ancho × alto), convertido a cm. Se cargó tanto el
+  texto mostrado (`dimensions`) como `realDimensionsCm`, activando el
+  botón "Ver en tu pared" en esa obra (es la primera obra real con el
+  simulador visible en el sitio). Verificado: `npx tsc --noEmit`
+  limpio, `/obra/obra-07/simulador` responde 200, "500 × 150 cm"
+  aparece tanto en la ficha técnica como en la etiqueta del simulador.
+
 ## Próximos pasos
-- Confirmar con el artista: títulos definitivos, año y dimensiones exactas de las obras de la serie Aviario; citas reales de críticos (hoy son placeholder); reemplazar o retirar los placeholders restantes de Interiores/Derivas. **Esto también activa "Ver en tu pared"** — en cuanto una obra tenga `realDimensionsCm` cargado, el botón aparece solo.
+- Confirmar con el artista: títulos definitivos, año y dimensiones exactas del resto de la serie Aviario (`obra-08`..`obra-12`, `obra-07` ya confirmada); citas reales de críticos (hoy son placeholder); reemplazar o retirar los placeholders restantes de Interiores/Derivas. **Esto también activa "Ver en tu pared"** por obra — en cuanto tenga `realDimensionsCm` cargado, el botón aparece solo.
 - **RA en vivo** (cámara en tiempo real, la obra "flota" en el espacio del cliente): fase aparte de "Vista en tu pared" v1 (ya construida) — necesita `model-viewer`/WebXR y modelos 3D por obra, con su propio spec cuando se retome.
 - Más adelante: construir el resto de subpáginas (Sobre mí, Contacto con formulario real) con contenido real; decidir si se integra un CMS headless.
