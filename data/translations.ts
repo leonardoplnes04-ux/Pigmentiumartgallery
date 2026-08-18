@@ -80,6 +80,17 @@ export interface UiStrings {
     nextAria: string;
     goToAriaPrefix: string; // "<goToAriaPrefix> <title>"
   };
+  simulator: {
+    cta: string; // button on the artwork detail page
+    pageTitle: string;
+    uploadPrompt: string;
+    uploadCta: string;
+    changePhotoCta: string;
+    dragHint: string;
+    resizeHandleAria: string;
+    downloadCta: string;
+    back: string;
+  };
 }
 
 export const translations: Record<Language, UiStrings> = {
@@ -163,6 +174,17 @@ export const translations: Record<Language, UiStrings> = {
       nextAria: "Obra siguiente",
       goToAriaPrefix: "Ir a",
     },
+    simulator: {
+      cta: "Ver en tu pared",
+      pageTitle: "Vista en tu pared",
+      uploadPrompt: "Subí o tomá una foto de tu espacio para ver cómo se vería la obra ahí.",
+      uploadCta: "Subir foto",
+      changePhotoCta: "Cambiar foto",
+      dragHint: "Arrastrá la obra para ubicarla, y usá la esquina para agrandarla o achicarla.",
+      resizeHandleAria: "Agrandar o achicar la obra",
+      downloadCta: "Descargar",
+      back: "← Volver a la obra",
+    },
   },
   en: {
     nav: {
@@ -243,6 +265,17 @@ export const translations: Record<Language, UiStrings> = {
       prevAria: "Previous artwork",
       nextAria: "Next artwork",
       goToAriaPrefix: "Go to",
+    },
+    simulator: {
+      cta: "View on your wall",
+      pageTitle: "View on your wall",
+      uploadPrompt: "Upload or take a photo of your space to see how the piece would look there.",
+      uploadCta: "Upload photo",
+      changePhotoCta: "Change photo",
+      dragHint: "Drag the artwork to place it, and use the corner to resize it.",
+      resizeHandleAria: "Resize the artwork",
+      downloadCta: "Download",
+      back: "← Back to artwork",
     },
   },
 };

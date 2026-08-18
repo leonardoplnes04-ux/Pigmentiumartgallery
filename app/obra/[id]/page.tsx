@@ -3,19 +3,11 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ArtworkDetail from "@/components/ArtworkDetail";
-import { artworks } from "@/data/artworks";
+import { realArtworks, findRealArtwork } from "@/lib/artworks";
 import { artist } from "@/data/artist";
-
-// Catalog only ever shows real (non-placeholder) artwork — same filter
-// used by the homepage carousel and the /obra catalog grid.
-const realArtworks = artworks.filter((a) => !a.image.includes("placeholder"));
 
 export function generateStaticParams() {
   return realArtworks.map((artwork) => ({ id: artwork.id }));
-}
-
-function findArtwork(id: string) {
-  return realArtworks.find((artwork) => artwork.id === id);
 }
 
 export async function generateMetadata({
@@ -24,7 +16,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const artwork = findArtwork(id);
+  const artwork = findRealArtwork(id);
   if (!artwork) return {};
   // Server-rendered metadata can't know the client's localStorage
   // language choice, so it's fixed to Spanish — see "Límite aceptado"
@@ -41,7 +33,7 @@ export default async function ArtworkPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const artwork = findArtwork(id);
+  const artwork = findRealArtwork(id);
   if (!artwork) notFound();
 
   return (

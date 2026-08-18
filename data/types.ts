@@ -22,6 +22,11 @@ export interface Artwork {
   year: number;
   medium: LocalizedText;
   dimensions: LocalizedText;
+  // Structured, machine-usable measurements — presence gates the wall
+  // simulator (see docs/specs/2026-08-17-wall-simulator-design.md). Kept
+  // separate from `dimensions` (free display text, handles "por
+  // confirmar" placeholders) since it must always be real numbers.
+  realDimensionsCm?: { width: number; height: number };
   image: string;
   additionalImages?: string[];
   seriesId: string;

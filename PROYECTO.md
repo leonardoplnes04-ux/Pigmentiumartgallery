@@ -2,6 +2,14 @@
 
 ## Resumen para retomar (actualizado 2026-08-17)
 
+**Vista en tu pared:** simulador de escala v1 en `/obra/[id]/simulador`
+— el cliente sube una foto de su espacio y ubica la obra a ojo (sin
+calibración). Solo aparece para obras con `realDimensionsCm` cargado en
+`data/artworks.ts`; **hoy ninguna lo tiene**, así que el botón "Ver en
+tu pared" está invisible en todo el sitio hasta que se confirmen
+medidas reales. Detalle en "Bitácora" y en
+`docs/specs/2026-08-17-wall-simulator-design.md`.
+
 **Idioma:** el sitio tiene selector ES/EN (botón en el Header), estado
 "es" por defecto, se guarda en `localStorage`. Contenido editorial
 (`data/*.ts`) y textos de interfaz (`data/translations.ts`) están
@@ -129,7 +137,30 @@ Todo lo relacionado con este proyecto vive aquí:
   (`/`, `/obra`, `/obra/obra-07`, `/obra/obra-12`, `/sobre-mi`,
   `/exposiciones`, `/contacto`) responden 200.
 
+- **2026-08-17**: Vista en tu pared v1 (brainstorming previo, spec en
+  `docs/specs/2026-08-17-wall-simulator-design.md`). El pedido original
+  mezclaba dos features distintas — vista con foto propia vs. RA en vivo
+  con cámara — se acotó a la primera; RA en vivo queda para una fase
+  aparte. Se evaluó agregar un paso de calibración de escala (línea de
+  referencia + cm reales) pero se descartó a pedido del usuario: el
+  cliente solo sube la foto, la obra aparece a un tamaño inicial
+  razonable con su medida real como etiqueta, y la ubica/agranda a ojo
+  (sin garantía matemática de escala exacta — trade-off aceptado).
+  Nuevo campo opcional `Artwork.realDimensionsCm` (`{ width, height }`
+  en cm, separado del texto `dimensions` ya existente) actúa como gate:
+  sin él, ni el botón "Ver en tu pared" en `/obra/[id]` ni la ruta
+  `/obra/[id]/simulador` existen (404). Hoy ninguna de las 6 obras
+  reales lo tiene. Implementación sin librerías nuevas: arrastre/resize
+  con Pointer Events sobre `<img>` posicionadas con CSS durante la
+  edición, composición final en un `<canvas>` oculto solo al descargar;
+  nada se sube a ningún servidor. De paso, se extrajo a
+  `lib/artworks.ts` la lógica de "obras reales" que estaba duplicada en
+  `/obra` y `/obra/[id]`. Verificado con una medida de prueba temporal
+  en `obra-07` (revertida antes de commitear): botón visible, ruta
+  200, obras sin medida siguen en 404; servidor reiniciado limpio para
+  descartar ruido de hot-reload.
+
 ## Próximos pasos
-- Confirmar con el artista: títulos definitivos, año y dimensiones exactas de las obras de la serie Aviario; citas reales de críticos (hoy son placeholder); reemplazar o retirar los placeholders restantes de Interiores/Derivas.
-- **Simulador de pared** (subir foto, indicar alto/ancho, generar render de la obra en el espacio del cliente): decidido con el usuario que va **después** de la ficha de obra, con su propio diseño/spec aparte — enfoque acordado: composición en el navegador vía Canvas (usuario marca las 4 esquinas de la pared + dimensiones reales, sin servicios externos ni backend de almacenamiento; el render se ve/descarga en el momento, no se guarda).
+- Confirmar con el artista: títulos definitivos, año y dimensiones exactas de las obras de la serie Aviario; citas reales de críticos (hoy son placeholder); reemplazar o retirar los placeholders restantes de Interiores/Derivas. **Esto también activa "Ver en tu pared"** — en cuanto una obra tenga `realDimensionsCm` cargado, el botón aparece solo.
+- **RA en vivo** (cámara en tiempo real, la obra "flota" en el espacio del cliente): fase aparte de "Vista en tu pared" v1 (ya construida) — necesita `model-viewer`/WebXR y modelos 3D por obra, con su propio spec cuando se retome.
 - Más adelante: construir el resto de subpáginas (Sobre mí, Contacto con formulario real) con contenido real; decidir si se integra un CMS headless.

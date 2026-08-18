@@ -60,14 +60,24 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
             </div>
           </dl>
 
-          <a
-            href={`mailto:${artist.email}?subject=${encodeURIComponent(
-              `${t.detail.inquireSubjectPrefix} "${title}"`
-            )}`}
-            className="mt-8 inline-block border border-ink px-6 py-3 text-xs uppercase tracking-widest hover:bg-ink hover:text-background"
-          >
-            {t.detail.inquireCta}
-          </a>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a
+              href={`mailto:${artist.email}?subject=${encodeURIComponent(
+                `${t.detail.inquireSubjectPrefix} "${title}"`
+              )}`}
+              className="inline-block border border-ink px-6 py-3 text-xs uppercase tracking-widest hover:bg-ink hover:text-background"
+            >
+              {t.detail.inquireCta}
+            </a>
+            {artwork.realDimensionsCm && (
+              <Link
+                href={`/obra/${artwork.id}/simulador`}
+                className="inline-block border border-line px-6 py-3 text-xs uppercase tracking-widest hover:border-ink"
+              >
+                {t.simulator.cta}
+              </Link>
+            )}
+          </div>
 
           {/* Comentarios de críticos */}
           {artwork.criticReviews && artwork.criticReviews.length > 0 && (

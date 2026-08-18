@@ -4,13 +4,8 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ArtworkCard from "@/components/ArtworkCard";
-import { artworks } from "@/data/artworks";
+import { realArtworks } from "@/lib/artworks";
 import { useLanguage } from "@/hooks/useLanguage";
-
-// Same filter used by the homepage carousel: only real artwork photography
-// is public-facing. Placeholder pieces (Interiores/Derivas) stay out until
-// there's real content to replace them.
-const realArtworks = artworks.filter((a) => !a.image.includes("placeholder"));
 
 export default function ObraPage() {
   const { t } = useLanguage();
