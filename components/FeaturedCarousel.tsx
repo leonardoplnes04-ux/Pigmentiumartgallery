@@ -4,12 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion, useAnimationControls, useMotionValue } from "framer-motion";
 import type { Artwork } from "@/data/types";
-
-const statusLabels: Record<Artwork["status"], string> = {
-  available: "Disponible",
-  sold: "Vendida",
-  inquire: "Consultar",
-};
+import { useLanguage } from "@/hooks/useLanguage";
 
 const AUTOPLAY_DELAY_MS = 4200;
 
@@ -28,6 +23,8 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
 
   const x = useMotionValue(0);
   const controls = useAnimationControls();
+  const { t, pick } = useLanguage();
+  const statusLabels: Record<Artwork["status"], string> = t.status;
 
   const [index, setIndex] = useState(0);
   const [maxDrag, setMaxDrag] = useState(0);
@@ -172,7 +169,7 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={artwork.image}
-                    alt={artwork.title}
+                    alt={pick(artwork.title)}
                     draggable={false}
                     onLoad={measure}
                     className="h-full w-auto max-w-[80vw] transition-transform duration-700 ease-out group-hover:scale-105"
@@ -184,10 +181,10 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
                     <div className="flex items-baseline justify-between gap-3">
                       <div className="min-w-0">
                         <h3 className="truncate font-serif text-lg text-white">
-                          {artwork.title}
+                          {pick(artwork.title)}
                         </h3>
                         <p className="truncate text-xs text-white/80">
-                          {artwork.medium}, {artwork.year}
+                          {pick(artwork.medium)}, {artwork.year}
                         </p>
                       </div>
                       <span className="shrink-0 rounded-full border border-white/30 bg-white/10 px-2.5 py-1 text-[10px] uppercase tracking-widest text-white">
@@ -205,7 +202,7 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
       {/* prev/next glass controls */}
       <button
         type="button"
-        aria-label="Obra anterior"
+        aria-label={t.carousel.prevAria}
         onClick={() => goTo(index - 1)}
         className="absolute left-2 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-white/20 text-lg text-ink shadow-md backdrop-blur-md transition hover:bg-white/50"
       >
@@ -213,7 +210,7 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
       </button>
       <button
         type="button"
-        aria-label="Obra siguiente"
+        aria-label={t.carousel.nextAria}
         onClick={() => goTo(index + 1)}
         className="absolute right-2 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-white/20 text-lg text-ink shadow-md backdrop-blur-md transition hover:bg-white/50"
       >
@@ -226,7 +223,7 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
           <button
             key={artwork.id}
             type="button"
-            aria-label={`Ir a ${artwork.title}`}
+            aria-label={`${t.carousel.goToAriaPrefix} ${pick(artwork.title)}`}
             onClick={() => goTo(i)}
             className={`h-1.5 rounded-full transition-all duration-300 ${
               i === index ? "w-6 bg-ink" : "w-1.5 bg-line hover:bg-muted"

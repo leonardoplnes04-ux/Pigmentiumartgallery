@@ -1,31 +1,30 @@
-import type { Artwork } from "@/data/types";
+"use client";
 
-const statusLabels: Record<Artwork["status"], string> = {
-  available: "Disponible",
-  sold: "Vendida",
-  inquire: "Consultar",
-};
+import type { Artwork } from "@/data/types";
+import { useLanguage } from "@/hooks/useLanguage";
 
 export default function ArtworkCard({ artwork }: { artwork: Artwork }) {
+  const { t, pick } = useLanguage();
+
   return (
     <article className="group">
       <div className="relative aspect-[4/5] overflow-hidden bg-line">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={artwork.image}
-          alt={artwork.title}
+          alt={pick(artwork.title)}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
       </div>
       <div className="mt-3 flex items-baseline justify-between">
         <div>
-          <h3 className="font-serif text-lg">{artwork.title}</h3>
+          <h3 className="font-serif text-lg">{pick(artwork.title)}</h3>
           <p className="text-sm text-muted">
-            {artwork.medium}, {artwork.year}
+            {pick(artwork.medium)}, {artwork.year}
           </p>
         </div>
         <span className="text-xs uppercase tracking-widest text-muted">
-          {statusLabels[artwork.status]}
+          {t.status[artwork.status]}
         </span>
       </div>
     </article>

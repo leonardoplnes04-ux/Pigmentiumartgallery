@@ -4,23 +4,29 @@ import type { Series } from "./types";
 export const seriesList: Series[] = [
   {
     id: "serie-interiores",
-    name: "Interiores",
-    description:
-      "Una investigación pictórica sobre los espacios domésticos y su carga emocional.",
+    name: { es: "Interiores", en: "Interiors" },
+    description: {
+      es: "Una investigación pictórica sobre los espacios domésticos y su carga emocional.",
+      en: "A pictorial investigation into domestic spaces and their emotional weight.",
+    },
     coverImage: "/images/placeholder-artwork-01.svg",
   },
   {
     id: "serie-paisajes",
-    name: "Derivas",
-    description:
-      "Paisajes fragmentados que registran el movimiento y la memoria del territorio.",
+    name: { es: "Derivas", en: "Drifts" },
+    description: {
+      es: "Paisajes fragmentados que registran el movimiento y la memoria del territorio.",
+      en: "Fragmented landscapes that record the movement and memory of the land.",
+    },
     coverImage: "/images/placeholder-artwork-04.svg",
   },
   {
     id: "serie-aviario",
-    name: "Aviario",
-    description:
-      "Un bestiario pictórico donde aves, flora y figuras infantiles conviven en composiciones densas y multicapa.",
+    name: { es: "Aviario", en: "Aviary" },
+    description: {
+      es: "Un bestiario pictórico donde aves, flora y figuras infantiles conviven en composiciones densas y multicapa.",
+      en: "A pictorial bestiary where birds, flora, and child figures coexist in dense, multilayered compositions.",
+    },
     coverImage: "/images/obra-guardian-del-jardin.jpg",
   },
 ];

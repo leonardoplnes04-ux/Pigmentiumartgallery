@@ -2,6 +2,12 @@
 
 ## Resumen para retomar (actualizado 2026-08-17)
 
+**Idioma:** el sitio tiene selector ES/EN (botón en el Header), estado
+"es" por defecto, se guarda en `localStorage`. Contenido editorial
+(`data/*.ts`) y textos de interfaz (`data/translations.ts`) están
+duplicados en ambos idiomas — ver detalle en "Bitácora" y en
+`docs/specs/2026-08-17-language-toggle-design.md`.
+
 **Qué es:** galería digital para el artista plástico contemporáneo Segundo
 Planes, marca del sitio "PIGMENTIUM ART GALLERY". Home construida y
 funcional; subpáginas (`/obra`, `/sobre-mi`, `/exposiciones`, `/contacto`)
@@ -101,6 +107,27 @@ Todo lo relacionado con este proyecto vive aquí:
 - **2026-08-17**: Pasada de responsividad mobile en toda la home. El sitio se construyó con espaciado/tipografía pensados para desktop (`py-24` fijo, `text-3xl`/`text-lg` sin variante mobile) y se veía desproporcionado en pantallas chicas. Cambios: (1) Header — nombre de marca más chico en mobile (`text-sm` → `sm:text-lg`) para que no se apriete contra el botón de menú; (2) Hero — se agrega `min-h-[380px]` para que el título/tagline/botón no queden apretados en la caja corta que resulta del aspect-ratio 7:4 en mobile, tipografía y padding escalados (`text-3xl` → `sm:text-5xl` → `md:text-7xl`); (3) todas las secciones (Obra destacada, Sobre mí, Series, Exposiciones, Contacto, Footer) bajan su padding vertical de `py-24` fijo a `py-16 sm:py-20 md:py-24`, con títulos `text-2xl sm:text-3xl` en vez de `text-3xl` fijo.
 
 - **2026-08-17**: Se construye la ficha de obra (ver spec `docs/specs/2026-08-17-artwork-detail-design.md`, brainstorming previo con el usuario). Alcance: (1) `/obra/[id]` — página de detalle con imagen(es) sin recortar, ficha técnica y comentarios de críticos; (2) `/obra` — catálogo real que reemplaza el stub "Próximamente", muestra las 6 obras reales enlazadas a su detalle; (3) las tarjetas del carrusel "Obra destacada" del home ahora son clickeables y llevan al detalle. Modelo de datos: `Artwork` gana `additionalImages?` y `criticReviews?` (opcionales, no rompen nada existente); las 6 obras reales llevan 1 cita de crítico cada una — **placeholder**, atribuida a un rol genérico ("crítica de arte independiente", etc.), nunca a un nombre o publicación real, pendiente de reemplazar. Verificado: `/obra`, `/obra/obra-07` y un id inexistente (404 correcto) contra el servidor de desarrollo.
+
+- **2026-08-17**: Selector de idioma ES/EN (brainstorming previo, spec en
+  `docs/specs/2026-08-17-language-toggle-design.md`). Toggle simple en el
+  Header, sin cambiar la URL, guardado en `localStorage`
+  (`dartgallery-lang`), default `"es"`. Nuevo tipo `LocalizedText =
+  { es, en }` en `data/types.ts` aplicado a todo campo editorial
+  (títulos/medios/dimensiones de obra, citas de críticos, nombres y
+  descripciones de series, títulos/descripciones de exposiciones, bio y
+  tagline del artista); campos no lingüísticos (ids, año, imágenes,
+  venue, nombres propios) quedan como antes. Traducido al inglés todo el
+  contenido actual, incluido el placeholder. Textos fijos de interfaz
+  (nav, botones, estados, footer) en nuevo `data/translations.ts`. La
+  mayoría de los componentes de contenido pasan a Client Components
+  (`useLanguage()` + helper `pick()`); las páginas de `app/*` siguen
+  siendo Server Components salvo `/obra` (necesitaba textos traducidos).
+  **Límite aceptado:** el `<title>`/meta description (SEO, generados en
+  el servidor) quedan fijos en español — el servidor no puede leer el
+  `localStorage` del navegador sin pasar a rutas `/en` (fuera de
+  alcance). Verificado: `npx tsc --noEmit` limpio, las 7 rutas
+  (`/`, `/obra`, `/obra/obra-07`, `/obra/obra-12`, `/sobre-mi`,
+  `/exposiciones`, `/contacto`) responden 200.
 
 ## Próximos pasos
 - Confirmar con el artista: títulos definitivos, año y dimensiones exactas de las obras de la serie Aviario; citas reales de críticos (hoy son placeholder); reemplazar o retirar los placeholders restantes de Interiores/Derivas.

@@ -4,25 +4,33 @@ import type { Exhibition } from "./types";
 export const exhibitions: Exhibition[] = [
   {
     id: "exp-01",
-    title: "Umbral — Muestra individual",
+    title: { es: "Umbral — Muestra individual", en: "Threshold — Solo Show" },
     venue: "Galería Sur, Ciudad de México",
     date: "2026-03",
-    description: "Primera exhibición individual de la serie Interiores.",
+    description: {
+      es: "Primera exhibición individual de la serie Interiores.",
+      en: "First solo exhibition of the Interiors series.",
+    },
   },
   {
     id: "exp-02",
-    title: "Derivas — Muestra colectiva",
+    title: { es: "Derivas — Muestra colectiva", en: "Drifts — Group Show" },
     venue: "Espacio Traspatio",
     date: "2025-09",
-    description:
-      "Selección de obras de la serie Derivas en una muestra colectiva de paisaje contemporáneo.",
+    description: {
+      es: "Selección de obras de la serie Derivas en una muestra colectiva de paisaje contemporáneo.",
+      en: "A selection of works from the Drifts series in a group exhibition of contemporary landscape.",
+    },
   },
   {
     id: "exp-03",
-    title: "Entrevista en Revista Lienzo",
+    title: { es: "Entrevista en Revista Lienzo", en: "Interview in Revista Lienzo" },
     venue: "Revista Lienzo",
     date: "2025-06",
-    description: "Conversación sobre memoria, color y proceso pictórico.",
+    description: {
+      es: "Conversación sobre memoria, color y proceso pictórico.",
+      en: "A conversation about memory, color, and pictorial process.",
+    },
     link: "https://example.com/entrevista-lienzo",
   },
 ];

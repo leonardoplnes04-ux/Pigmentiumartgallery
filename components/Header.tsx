@@ -3,15 +3,17 @@
 import { useState } from "react";
 import Link from "next/link";
 import { site } from "@/data/site";
-
-const navLinks = [
-  { href: "/obra", label: "Obra" },
-  { href: "/sobre-mi", label: "Sobre mí" },
-  { href: "/exposiciones", label: "Exposiciones" },
-];
+import { useLanguage } from "@/hooks/useLanguage";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { language, toggleLanguage, t } = useLanguage();
+
+  const navLinks = [
+    { href: "/obra", label: t.nav.obra },
+    { href: "/sobre-mi", label: t.nav.sobreMi },
+    { href: "/exposiciones", label: t.nav.exposiciones },
+  ];
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-background">
@@ -35,24 +37,28 @@ export default function Header() {
           ))}
         </nav>
 
-        <div className="hidden md:block">
+        <div className="hidden items-center gap-6 md:flex">
+          <LanguageToggle language={language} onToggle={toggleLanguage} />
           <Link
             href="/contacto"
             className="border border-ink px-5 py-2 text-xs uppercase tracking-widest hover:bg-ink hover:text-background"
           >
-            Contacto
+            {t.nav.contacto}
           </Link>
         </div>
 
-        <button
-          type="button"
-          aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen((open) => !open)}
-          className="shrink-0 text-xs uppercase tracking-widest md:hidden"
-        >
-          {menuOpen ? "Cerrar" : "Menú"}
-        </button>
+        <div className="flex items-center gap-4 md:hidden">
+          <LanguageToggle language={language} onToggle={toggleLanguage} />
+          <button
+            type="button"
+            aria-label={menuOpen ? t.menu.closeAria : t.menu.openAria}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((open) => !open)}
+            className="shrink-0 text-xs uppercase tracking-widest"
+          >
+            {menuOpen ? t.menu.close : t.menu.open}
+          </button>
+        </div>
       </div>
 
       {menuOpen && (
@@ -63,10 +69,35 @@ export default function Header() {
             </Link>
           ))}
           <Link href="/contacto" className="text-xs uppercase tracking-widest">
-            Contacto
+            {t.nav.contacto}
           </Link>
         </nav>
       )}
     </header>
+  );
+}
+
+function LanguageToggle({
+  language,
+  onToggle,
+}: {
+  language: "es" | "en";
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      aria-label={language === "es" ? "Switch to English" : "Cambiar a español"}
+      className="flex items-center gap-1 text-xs uppercase tracking-widest text-ink"
+    >
+      <span className={language === "es" ? "font-semibold underline underline-offset-4" : "text-muted"}>
+        ES
+      </span>
+      <span className="text-muted">|</span>
+      <span className={language === "en" ? "font-semibold underline underline-offset-4" : "text-muted"}>
+        EN
+      </span>
+    </button>
   );
 }

@@ -1,17 +1,27 @@
 export type ArtworkStatus = "available" | "sold" | "inquire";
 
+export type Language = "es" | "en";
+
+// Editorial text that exists in both languages. Non-linguistic fields
+// (ids, numbers, image paths, proper names) stay plain strings — see
+// docs/specs/2026-08-17-language-toggle-design.md for the full split.
+export interface LocalizedText {
+  es: string;
+  en: string;
+}
+
 export interface CriticReview {
-  critic: string;
-  role: string;
-  quote: string;
+  critic: LocalizedText;
+  role: LocalizedText;
+  quote: LocalizedText;
 }
 
 export interface Artwork {
   id: string;
-  title: string;
+  title: LocalizedText;
   year: number;
-  medium: string;
-  dimensions: string;
+  medium: LocalizedText;
+  dimensions: LocalizedText;
   image: string;
   additionalImages?: string[];
   seriesId: string;
@@ -21,25 +31,25 @@ export interface Artwork {
 
 export interface Series {
   id: string;
-  name: string;
-  description: string;
+  name: LocalizedText;
+  description: LocalizedText;
   coverImage: string;
 }
 
 export interface Exhibition {
   id: string;
-  title: string;
+  title: LocalizedText;
   venue: string;
   date: string;
-  description: string;
+  description: LocalizedText;
   link?: string;
 }
 
 export interface Artist {
   name: string;
-  tagline: string;
-  shortBio: string;
-  longBio: string;
+  tagline: LocalizedText;
+  shortBio: LocalizedText;
+  longBio: LocalizedText;
   portraitImage: string;
   heroImage: string;
   heroVideo: string;

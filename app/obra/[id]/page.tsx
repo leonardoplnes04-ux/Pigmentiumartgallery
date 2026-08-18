@@ -26,9 +26,12 @@ export async function generateMetadata({
   const { id } = await params;
   const artwork = findArtwork(id);
   if (!artwork) return {};
+  // Server-rendered metadata can't know the client's localStorage
+  // language choice, so it's fixed to Spanish — see "Límite aceptado"
+  // in docs/specs/2026-08-17-language-toggle-design.md.
   return {
-    title: `${artwork.title} — ${artist.name}`,
-    description: `${artwork.medium}, ${artwork.year}.`,
+    title: `${artwork.title.es} — ${artist.name}`,
+    description: `${artwork.medium.es}, ${artwork.year}.`,
   };
 }
 

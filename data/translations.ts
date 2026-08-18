@@ -1,0 +1,248 @@
+import type { Language } from "./types";
+
+export interface UiStrings {
+  nav: {
+    obra: string;
+    sobreMi: string;
+    exposiciones: string;
+    contacto: string;
+  };
+  menu: {
+    open: string;
+    close: string;
+    openAria: string;
+    closeAria: string;
+  };
+  hero: {
+    cta: string;
+    altPrefix: string; // "<altPrefix> <artist name>"
+  };
+  featured: {
+    eyebrow: string;
+    title: string;
+  };
+  statement: {
+    eyebrow: string;
+    readMore: string;
+    portraitAltPrefix: string; // "<portraitAltPrefix> <artist name>"
+  };
+  series: {
+    eyebrow: string;
+    title: string;
+  };
+  exhibitions: {
+    eyebrow: string;
+    title: string;
+  };
+  contact: {
+    eyebrow: string;
+    title: string;
+    body: string;
+    cta: string;
+  };
+  status: {
+    available: string;
+    sold: string;
+    inquire: string;
+  };
+  catalog: {
+    eyebrow: string;
+    title: string;
+  };
+  detail: {
+    back: string;
+    year: string;
+    technique: string;
+    dimensions: string;
+    status: string;
+    statusEyebrow: {
+      available: string;
+      sold: string;
+      inquire: string;
+    };
+    inquireCta: string;
+    inquireSubjectPrefix: string; // `<inquireSubjectPrefix> "<title>"`
+    criticEyebrow: string;
+    detailAltSuffix: string; // "<title> — <detailAltSuffix> N"
+  };
+  footer: {
+    newsletterLabel: string;
+    emailPlaceholder: string;
+    submit: string;
+    thanks: string;
+    rights: string;
+  };
+  comingSoon: {
+    title: string;
+  };
+  carousel: {
+    prevAria: string;
+    nextAria: string;
+    goToAriaPrefix: string; // "<goToAriaPrefix> <title>"
+  };
+}
+
+export const translations: Record<Language, UiStrings> = {
+  es: {
+    nav: {
+      obra: "Obra",
+      sobreMi: "Sobre mí",
+      exposiciones: "Exposiciones",
+      contacto: "Contacto",
+    },
+    menu: {
+      open: "Menú",
+      close: "Cerrar",
+      openAria: "Abrir menú",
+      closeAria: "Cerrar menú",
+    },
+    hero: {
+      cta: "Ver obra",
+      altPrefix: "Obra destacada de",
+    },
+    featured: {
+      eyebrow: "Obra",
+      title: "Obra destacada",
+    },
+    statement: {
+      eyebrow: "Sobre mí",
+      readMore: "Leer más",
+      portraitAltPrefix: "Retrato de",
+    },
+    series: {
+      eyebrow: "Series",
+      title: "Cuerpos de obra",
+    },
+    exhibitions: {
+      eyebrow: "Exposiciones y prensa",
+      title: "Trayectoria",
+    },
+    contact: {
+      eyebrow: "Contacto",
+      title: "¿Te interesa una pieza?",
+      body: "Escríbeme para consultar disponibilidad, precio o encargos a medida.",
+      cta: "Escribir",
+    },
+    status: {
+      available: "Disponible",
+      sold: "Vendida",
+      inquire: "Consultar",
+    },
+    catalog: {
+      eyebrow: "Obra",
+      title: "Catálogo",
+    },
+    detail: {
+      back: "← Volver a obra",
+      year: "Año",
+      technique: "Técnica",
+      dimensions: "Dimensiones",
+      status: "Estado",
+      statusEyebrow: {
+        available: "Disponible",
+        sold: "Vendida",
+        inquire: "Consultar disponibilidad",
+      },
+      inquireCta: "Consultar disponibilidad",
+      inquireSubjectPrefix: "Consulta sobre",
+      criticEyebrow: "Crítica",
+      detailAltSuffix: "detalle",
+    },
+    footer: {
+      newsletterLabel: "Newsletter",
+      emailPlaceholder: "Tu correo",
+      submit: "Enviar",
+      thanks: "Gracias por suscribirte.",
+      rights: "Todos los derechos reservados.",
+    },
+    comingSoon: {
+      title: "Próximamente",
+    },
+    carousel: {
+      prevAria: "Obra anterior",
+      nextAria: "Obra siguiente",
+      goToAriaPrefix: "Ir a",
+    },
+  },
+  en: {
+    nav: {
+      obra: "Work",
+      sobreMi: "About",
+      exposiciones: "Exhibitions",
+      contacto: "Contact",
+    },
+    menu: {
+      open: "Menu",
+      close: "Close",
+      openAria: "Open menu",
+      closeAria: "Close menu",
+    },
+    hero: {
+      cta: "View work",
+      altPrefix: "Featured artwork by",
+    },
+    featured: {
+      eyebrow: "Work",
+      title: "Featured work",
+    },
+    statement: {
+      eyebrow: "About me",
+      readMore: "Read more",
+      portraitAltPrefix: "Portrait of",
+    },
+    series: {
+      eyebrow: "Series",
+      title: "Bodies of work",
+    },
+    exhibitions: {
+      eyebrow: "Exhibitions & press",
+      title: "Trajectory",
+    },
+    contact: {
+      eyebrow: "Contact",
+      title: "Interested in a piece?",
+      body: "Write to me to ask about availability, price, or custom commissions.",
+      cta: "Write",
+    },
+    status: {
+      available: "Available",
+      sold: "Sold",
+      inquire: "Inquire",
+    },
+    catalog: {
+      eyebrow: "Work",
+      title: "Catalog",
+    },
+    detail: {
+      back: "← Back to work",
+      year: "Year",
+      technique: "Technique",
+      dimensions: "Dimensions",
+      status: "Status",
+      statusEyebrow: {
+        available: "Available",
+        sold: "Sold",
+        inquire: "Inquire about availability",
+      },
+      inquireCta: "Inquire about availability",
+      inquireSubjectPrefix: "Inquiry about",
+      criticEyebrow: "Critical reception",
+      detailAltSuffix: "detail",
+    },
+    footer: {
+      newsletterLabel: "Newsletter",
+      emailPlaceholder: "Your email",
+      submit: "Submit",
+      thanks: "Thanks for subscribing.",
+      rights: "All rights reserved.",
+    },
+    comingSoon: {
+      title: "Coming soon",
+    },
+    carousel: {
+      prevAria: "Previous artwork",
+      nextAria: "Next artwork",
+      goToAriaPrefix: "Go to",
+    },
+  },
+};

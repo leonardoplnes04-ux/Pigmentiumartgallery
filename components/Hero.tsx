@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { artist } from "@/data/artist";
+import { useLanguage } from "@/hooks/useLanguage";
 
 // How long the still image holds before the "painting comes to life"
 // crossfade into the video begins.
@@ -12,6 +13,7 @@ const CROSSFADE_MS = 1500;
 export default function Hero() {
   const [showVideo, setShowVideo] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const { t, pick } = useLanguage();
 
   useEffect(() => {
     const timer = setTimeout(() => setShowVideo(true), VIDEO_DELAY_MS);
@@ -44,7 +46,7 @@ export default function Hero() {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={artist.heroImage}
-        alt={`Obra destacada de ${artist.name}`}
+        alt={`${t.hero.altPrefix} ${artist.name}`}
         className={`absolute inset-0 h-full w-full object-contain transition-opacity ease-in-out ${
           showVideo ? "opacity-0" : "opacity-100"
         }`}
@@ -67,7 +69,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent" />
 
       <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-8 text-background sm:px-6 sm:pb-12 md:pb-16">
-        <p className="text-[10px] uppercase tracking-widest sm:text-xs">{artist.tagline}</p>
+        <p className="text-[10px] uppercase tracking-widest sm:text-xs">{pick(artist.tagline)}</p>
         <h1 className="mt-2 font-serif text-3xl leading-tight sm:text-5xl md:text-7xl">
           {artist.name}
         </h1>
@@ -75,7 +77,7 @@ export default function Hero() {
           href="/obra"
           className="mt-5 inline-block border border-background px-5 py-2.5 text-xs uppercase tracking-widest hover:bg-background hover:text-ink sm:mt-8 sm:px-6 sm:py-3"
         >
-          Ver obra
+          {t.hero.cta}
         </Link>
       </div>
     </section>
