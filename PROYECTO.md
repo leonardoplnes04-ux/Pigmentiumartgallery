@@ -182,8 +182,92 @@ Todo lo relacionado con este proyecto vive aquí:
   inútil. Verificado: `npx tsc --noEmit` limpio, `/exposiciones` responde
   200 y muestra las 3 exposiciones existentes, filtro confirmado oculto.
 
+- **2026-08-20**: Hero rehecho con foto real del artista (reemplaza la
+  imagen de estudio anterior); se desactiva el crossfade a video porque
+  el video viejo mostraba una pintura distinta y ya no correspondía con
+  la foto nueva — queda pendiente grabar un video nuevo si se quiere
+  recuperar el efecto "la obra cobra vida". Se agrega un segundo botón
+  "Exposiciones" al lado de "Ver obra" en el Hero, con su propia key de
+  traducción (`hero.ctaSecondary`).
+
+- **2026-08-20**: Primera exposición real cargada en `data/exhibitions.ts`
+  (`exp-04`, "Ecua-error catatónica" — Centro Cultural Plaza Fátima,
+  Monterrey, México, 2015). Nuevo campo opcional `Exhibition.image`
+  (foto identificatoria a la derecha de la fila, tanto en el home como en
+  `/exposiciones`). Se construye además la página de detalle
+  `/exposiciones/[id]` (gated por `data/exhibitionGalleries.ts`, mismo
+  patrón que gatea el simulador de pared por `realDimensionsCm`): al
+  hacer clic en una exposición que tiene galería cargada, abre su ficha
+  con todas las fotos en una sola columna, sin recortar. Las 43 imágenes
+  de la carpeta `E:\Expos-2015-...\1-EXPO.ECUA-ERROR CATATONICA` se
+  copiaron a `public/images/exposiciones/ecua-error-catatonica/` y se
+  renombraron `01.jpg`..`43.jpg` en el orden numérico que el propio
+  artista les dio en el nombre de archivo original (no alfabético — "02"
+  antes que "010"). Dos archivos no encajaban en esa numeración: un
+  "19.jpg" suelto (duplicado de "019", se colocó justo después) y un
+  "IMG_0183.JPG" genérico de cámara sin numerar (se colocó al final).
+  Las obras sin texto descriptivo en el nombre de archivo (la mayoría a
+  partir de la #25) quedan como "Sin título"/"Untitled" — es literalmente
+  todo el dato que traía el archivo original, no un placeholder a
+  reemplazar. Verificado: `tsc --noEmit` limpio, `/exposiciones/exp-04`
+  responde 200, `/exposiciones/exp-01` (placeholder sin galería) sigue
+  dando 404 correctamente.
+
+- **2026-08-20**: Segunda exposición real, "Lemas e himnos mutilados" —
+  GE Galería, Monterrey, México, 2012 (`exp-05`). Mismo patrón que
+  `exp-04`: imagen identificatoria en la fila de `/exposiciones` y el
+  home, ficha de detalle en `/exposiciones/exp-05` con las 34 fotos de
+  `E:\Expos-2015-...\2-EXPO.LEMAS E HIMNOS MUTILADOS...\` en orden
+  numérico. A diferencia de la primera exposición, esta carpeta numeraba
+  cada archivo del 1 al 34 sin huecos ni duplicados, así que el orden
+  salió sin ambigüedades (no hubo casos como el "19.jpg" suelto o el
+  "IMG_0183.JPG" de exp-04). Un puñado de piezas sí traían título en el
+  nombre de archivo ("Entre el día y la noche", "Constelaciones" ×4,
+  "Perla bomba"); el resto queda "Sin título"/"Untitled" por la misma
+  razón que en exp-04. Verificado: `tsc --noEmit` limpio,
+  `/exposiciones/exp-05` responde 200, imágenes sirven bien.
+
+- **2026-08-20**: Nueva foto del artista en el Hero del home (reemplaza
+  la anterior, mismo archivo `hero-segundo-planes.jpg` así que no hizo
+  falta tocar código).
+
+- **2026-08-20**: Tercera exposición real, "Sueño tallado en espuma" — GE
+  Galería, Monterrey, México, 2011 (`exp-06`). A diferencia de exp-04/05,
+  la carpeta origen (`3-Nueva carpeta`) **no** era una carpeta limpia de
+  una sola muestra: mezclaba los archivos #837-877 de esta exposición
+  (confirmado por el nombre de archivo #866, que dice literalmente "GE
+  GALERIA.MONTERREY") con material de otros años (obras fechadas
+  2008-2010 archivadas justo después de la #877) y, más adelante en la
+  numeración, **una exposición completamente distinta** — "Memorias del
+  circo", Instituto de América, Granada, España (#952-954) — además de
+  un lote sin identificar (#955-1001) y un .doc suelto. Se cargaron
+  únicamente los 41 archivos #837-877 (4 PNG + 37 JPG, extensión
+  original preservada) para no atribuirle a esta muestra fotos de otra
+  exposición o de años sin confirmar; el resto de la carpeta quedó
+  afuera. Títulos de las piezas (los poéticos/frase larga, ej. "Legendario
+  colmillo de tiempo, en mi sueño tu venir") se dejan sin traducir al
+  inglés, igual que el título de la muestra; solo las leyendas genéricas
+  (vista de la expo / sin título / en mi estudio) están traducidas.
+  Verificado: `tsc --noEmit` limpio, `/exposiciones/exp-06` responde 200,
+  imágenes (PNG y JPG) sirven bien.
+
+- **2026-08-20**: Cuarta exposición real, "Insomnio" — Centro de las
+  Artes Fundidora, Monterrey, México, 2006 (`exp-07`). Carpeta origen
+  limpia otra vez (como exp-05): 24 archivos `#928`-`#951`, todos
+  fechados 2006, sin mezcla con otro material. Ninguna pieza traía
+  título individual en el nombre de archivo — solo "EXPO INSOMNIO"
+  (vistas de instalación, con varias variantes/erratas de esa
+  leyenda en el nombre original) o dimensiones sueltas — así que la
+  galería queda como vistas de la exposición + "Sin título"/"Untitled".
+  Título de la muestra sí se tradujo ("Insomnio" → "Insomnia"), a
+  diferencia de exp-04/05/06, por ser una palabra común y no un
+  título poético/inventado. Verificado: `tsc --noEmit` limpio,
+  `/exposiciones/exp-07` responde 200, imágenes sirven bien.
+
 ## Próximos pasos
 - Cuando se sume un segundo artista real a la galería: agregar su entrada en `data/galleryArtists.ts`, tagear sus exposiciones con su `artistId` en `data/exhibitions.ts`, y el filtro por artista en `/exposiciones` aparece solo (sin tocar componentes). Si en algún momento también se necesita que `/obra` y `/sobre-mi` sean multi-artista (hoy siguen asumiendo a Segundo Planes como único artista del sitio), eso es un cambio de modelo de datos más grande — brainstorming aparte cuando se necesite de verdad.
 - Confirmar con el artista: títulos definitivos, año y dimensiones exactas del resto de la serie Aviario (`obra-08`..`obra-12`, `obra-07` ya confirmada); citas reales de críticos (hoy son placeholder); reemplazar o retirar los placeholders restantes de Interiores/Derivas. **Esto también activa "Ver en tu pared"** por obra — en cuanto tenga `realDimensionsCm` cargado, el botón aparece solo.
 - **RA en vivo** (cámara en tiempo real, la obra "flota" en el espacio del cliente): fase aparte de "Vista en tu pared" v1 (ya construida) — necesita `model-viewer`/WebXR y modelos 3D por obra, con su propio spec cuando se retome.
 - Más adelante: construir el resto de subpáginas (Sobre mí, Contacto con formulario real) con contenido real; decidir si se integra un CMS headless.
+- Confirmar con el artista los títulos de las ~19 obras "Sin título"/"Untitled" en la galería de "Ecua-error catatónica" (`data/exhibitionGalleries.ts`, exp-04) y aclarar si "19.jpg" e "IMG_0183.JPG" son variantes reales o descartables.
+- La carpeta `E:\Expos-2015-...\3-Nueva carpeta` tiene material sin cargar que podría ser una o más exposiciones nuevas: obras 2008-2010 (archivos #878-927, varias marcadas "INSTALACION") y "Memorias del circo" (Instituto de América, Granada, España, #952-954) — confirmar con el artista si son muestras propias a agregar y con qué datos (título/año exactos), antes de cargarlas.

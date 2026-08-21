@@ -8,7 +8,7 @@ const STORAGE_KEY = "dartgallery-lang";
 
 interface LanguageContextValue {
   language: Language;
-  toggleLanguage: () => void;
+  setLanguage: (next: Language) => void;
   t: (typeof translations)[Language];
   pick: (text: LocalizedText) => string;
 }
@@ -16,27 +16,24 @@ interface LanguageContextValue {
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>("es");
+  const [language, setLanguageState] = useState<Language>("es");
 
   // Read the saved preference after mount only — the server always
   // renders "es", so this can only run client-side without causing a
   // hydration mismatch. See "Límite aceptado" in the design doc.
   useEffect(() => {
     const saved = window.localStorage.getItem(STORAGE_KEY);
-    if (saved === "es" || saved === "en") setLanguage(saved);
+    if (saved === "es" || saved === "en") setLanguageState(saved);
   }, []);
 
-  function toggleLanguage() {
-    setLanguage((current) => {
-      const next = current === "es" ? "en" : "es";
-      window.localStorage.setItem(STORAGE_KEY, next);
-      return next;
-    });
+  function setLanguage(next: Language) {
+    window.localStorage.setItem(STORAGE_KEY, next);
+    setLanguageState(next);
   }
 
   const value: LanguageContextValue = {
     language,
-    toggleLanguage,
+    setLanguage,
     t: translations[language],
     pick: (text) => text[language],
   };

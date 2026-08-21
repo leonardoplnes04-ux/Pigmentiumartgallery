@@ -15,6 +15,7 @@ export interface UiStrings {
   };
   hero: {
     cta: string;
+    ctaSecondary: string;
     altPrefix: string; // "<altPrefix> <artist name>"
   };
   featured: {
@@ -34,6 +35,9 @@ export interface UiStrings {
     eyebrow: string;
     title: string;
     filterAll: string; // "All artists" tab, only shown when the gallery has more than one
+  };
+  exhibitionDetail: {
+    back: string;
   };
   contact: {
     eyebrow: string;
@@ -98,7 +102,7 @@ export const translations: Record<Language, UiStrings> = {
   es: {
     nav: {
       obra: "Obra",
-      sobreMi: "Sobre mí",
+      sobreMi: "Biografía",
       exposiciones: "Exposiciones",
       contacto: "Contacto",
     },
@@ -110,6 +114,7 @@ export const translations: Record<Language, UiStrings> = {
     },
     hero: {
       cta: "Ver obra",
+      ctaSecondary: "Exposiciones",
       altPrefix: "Obra destacada de",
     },
     featured: {
@@ -117,7 +122,7 @@ export const translations: Record<Language, UiStrings> = {
       title: "Obra destacada",
     },
     statement: {
-      eyebrow: "Sobre mí",
+      eyebrow: "Biografía",
       readMore: "Leer más",
       portraitAltPrefix: "Retrato de",
     },
@@ -129,6 +134,9 @@ export const translations: Record<Language, UiStrings> = {
       eyebrow: "Exposiciones y prensa",
       title: "Trayectoria",
       filterAll: "Todos",
+    },
+    exhibitionDetail: {
+      back: "← Volver a exposiciones",
     },
     contact: {
       eyebrow: "Contacto",
@@ -191,7 +199,7 @@ export const translations: Record<Language, UiStrings> = {
   en: {
     nav: {
       obra: "Work",
-      sobreMi: "About",
+      sobreMi: "Biography",
       exposiciones: "Exhibitions",
       contacto: "Contact",
     },
@@ -203,6 +211,7 @@ export const translations: Record<Language, UiStrings> = {
     },
     hero: {
       cta: "View work",
+      ctaSecondary: "Exhibitions",
       altPrefix: "Featured artwork by",
     },
     featured: {
@@ -210,7 +219,7 @@ export const translations: Record<Language, UiStrings> = {
       title: "Featured work",
     },
     statement: {
-      eyebrow: "About me",
+      eyebrow: "Biography",
       readMore: "Read more",
       portraitAltPrefix: "Portrait of",
     },
@@ -222,6 +231,9 @@ export const translations: Record<Language, UiStrings> = {
       eyebrow: "Exhibitions & press",
       title: "Trajectory",
       filterAll: "All",
+    },
+    exhibitionDetail: {
+      back: "← Back to exhibitions",
     },
     contact: {
       eyebrow: "Contact",

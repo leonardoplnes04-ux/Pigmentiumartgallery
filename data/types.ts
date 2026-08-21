@@ -16,6 +16,14 @@ export interface CriticReview {
   quote: LocalizedText;
 }
 
+// One photo in an exhibition's full gallery (see data/exhibitionGalleries.ts).
+// `alt` doubles as a caption where the source filename carried a piece
+// title; "Sin título"/"Untitled" where it didn't.
+export interface ExhibitionGalleryImage {
+  src: string;
+  alt: LocalizedText;
+}
+
 export interface Artwork {
   id: string;
   title: LocalizedText;
@@ -48,6 +56,9 @@ export interface Exhibition {
   date: string;
   description: LocalizedText;
   link?: string;
+  // Optional identifying photo (install shot, poster, etc.), shown to the
+  // right of the entry when present.
+  image?: string;
   // Which gallery artist this exhibition belongs to — see data/galleryArtists.ts.
   artistId: string;
 }

@@ -7,7 +7,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { language, toggleLanguage, t } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
 
   const navLinks = [
     { href: "/obra", label: t.nav.obra },
@@ -38,7 +38,7 @@ export default function Header() {
         </nav>
 
         <div className="hidden items-center gap-6 md:flex">
-          <LanguageToggle language={language} onToggle={toggleLanguage} />
+          <LanguageToggle language={language} onChange={setLanguage} />
           <Link
             href="/contacto"
             className="border border-ink px-5 py-2 text-xs uppercase tracking-widest hover:bg-ink hover:text-background"
@@ -48,7 +48,7 @@ export default function Header() {
         </div>
 
         <div className="flex items-center gap-4 md:hidden">
-          <LanguageToggle language={language} onToggle={toggleLanguage} />
+          <LanguageToggle language={language} onChange={setLanguage} />
           <button
             type="button"
             aria-label={menuOpen ? t.menu.closeAria : t.menu.openAria}
@@ -79,25 +79,34 @@ export default function Header() {
 
 function LanguageToggle({
   language,
-  onToggle,
+  onChange,
 }: {
   language: "es" | "en";
-  onToggle: () => void;
+  onChange: (next: "es" | "en") => void;
 }) {
   return (
-    <button
-      type="button"
-      onClick={onToggle}
-      aria-label={language === "es" ? "Switch to English" : "Cambiar a español"}
-      className="flex items-center gap-1 text-xs uppercase tracking-widest text-ink"
-    >
-      <span className={language === "es" ? "font-semibold underline underline-offset-4" : "text-muted"}>
-        ES
-      </span>
+    <div className="flex items-center gap-1.5 text-xs uppercase tracking-widest">
+      <button
+        type="button"
+        onClick={() => onChange("es")}
+        aria-current={language === "es"}
+        className={
+          language === "es" ? "font-semibold text-ink underline underline-offset-4" : "text-muted hover:text-ink"
+        }
+      >
+        Español
+      </button>
       <span className="text-muted">|</span>
-      <span className={language === "en" ? "font-semibold underline underline-offset-4" : "text-muted"}>
-        EN
-      </span>
-    </button>
+      <button
+        type="button"
+        onClick={() => onChange("en")}
+        aria-current={language === "en"}
+        className={
+          language === "en" ? "font-semibold text-ink underline underline-offset-4" : "text-muted hover:text-ink"
+        }
+      >
+        Inglés
+      </button>
+    </div>
   );
 }

@@ -1,9 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { exhibitions } from "@/data/exhibitions";
+import { exhibitionGalleries } from "@/data/exhibitionGalleries";
 import { galleryArtists } from "@/data/galleryArtists";
 import { useLanguage } from "@/hooks/useLanguage";
 
@@ -59,22 +61,60 @@ export default function ExposicionesPage() {
         )}
 
         <ul className="mt-8 divide-y divide-line sm:mt-12">
-          {filtered.map((item) => (
-            <li key={item.id} className="grid grid-cols-1 gap-2 py-5 sm:py-6 md:grid-cols-[120px_1fr]">
-              <p className="text-xs uppercase tracking-widest text-muted">{item.date}</p>
-              <div>
-                {item.link ? (
-                  <a href={item.link} className="font-serif text-lg underline underline-offset-4">
-                    {pick(item.title)}
-                  </a>
-                ) : (
-                  <p className="font-serif text-lg">{pick(item.title)}</p>
-                )}
-                <p className="text-sm text-muted">{item.venue}</p>
-                <p className="mt-1 text-sm">{pick(item.description)}</p>
-              </div>
-            </li>
-          ))}
+          {filtered.map((item) => {
+            const hasGallery = Boolean(exhibitionGalleries[item.id]);
+            return (
+              <li
+                key={item.id}
+                className={`grid grid-cols-1 gap-4 py-5 sm:py-6 ${
+                  item.image ? "md:grid-cols-[120px_1fr_180px]" : "md:grid-cols-[120px_1fr]"
+                }`}
+              >
+                <p className="text-xs uppercase tracking-widest text-muted">{item.date}</p>
+                <div>
+                  {hasGallery ? (
+                    <Link
+                      href={`/exposiciones/${item.id}`}
+                      className="font-serif text-lg underline underline-offset-4"
+                    >
+                      {pick(item.title)}
+                    </Link>
+                  ) : item.link ? (
+                    <a href={item.link} className="font-serif text-lg underline underline-offset-4">
+                      {pick(item.title)}
+                    </a>
+                  ) : (
+                    <p className="font-serif text-lg">{pick(item.title)}</p>
+                  )}
+                  <p className="text-sm text-muted">{item.venue}</p>
+                  <p className="mt-1 text-sm">{pick(item.description)}</p>
+                </div>
+                {item.image &&
+                  (hasGallery ? (
+                    <Link
+                      href={`/exposiciones/${item.id}`}
+                      className="block h-32 w-full overflow-hidden bg-line sm:h-40 md:h-full"
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={item.image}
+                        alt={pick(item.title)}
+                        className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                      />
+                    </Link>
+                  ) : (
+                    <div className="h-32 w-full overflow-hidden bg-line sm:h-40 md:h-full">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={item.image}
+                        alt={pick(item.title)}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                  ))}
+              </li>
+            );
+          })}
         </ul>
       </main>
       <Footer />
