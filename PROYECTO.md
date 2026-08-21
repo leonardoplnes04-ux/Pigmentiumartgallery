@@ -35,9 +35,17 @@ solo donde hay estado/interactividad (`Header`, `Footer`, `Hero`,
 `FeaturedCarousel`).
 
 **Repo remoto:** https://github.com/leonardoplnes04-ux/Pigmentiumartgallery
-(rama `main`). Pusheado y al día — listo para importar en Vercel
-(vercel.com/new), Next.js se detecta automático, sin config extra.
-**Todavía no se hizo el deploy a Vercel.**
+(rama `main`). Pusheado y al día.
+
+**Sitio en vivo:** https://pigmentiumartgallery.vercel.app — deployado a
+producción el 2026-08-20. El repo de GitHub ya tiene la integración de
+Vercel instalada, así que cada `git push` a `main` dispara un redeploy
+automático — no hace falta correr `vercel --prod` a mano de nuevo.
+(Nota: el primer deploy generó por accidente un segundo proyecto
+duplicado, `pigmentium-art-gallery` con guiones, vía `vercel --prod`
+desde un link local viejo. Se eliminó y el directorio local se
+relinkeó al proyecto correcto con `vercel link --project
+pigmentiumartgallery` — solo queda uno.)
 
 **Estructura de datos (`data/*.ts`)** — todo el contenido vive separado de
 los componentes para poder reemplazarlo sin tocar código:
