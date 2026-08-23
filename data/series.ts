@@ -29,4 +29,17 @@ export const seriesList: Series[] = [
     },
     coverImage: "/images/obra-guardian-del-jardin.jpg",
   },
+  // Catch-all bucket for the 2026-08-23 bulk import from
+  // E:\Expos-2015-2012-2011-2008-\OBRAS (134 works, 2008-2015) — the
+  // source folder has no thematic grouping of its own (unlike Aviario),
+  // so these aren't sorted into a named series yet. See PROYECTO.md.
+  {
+    id: "serie-obras-2008-2015",
+    name: { es: "Obras 2008–2015", en: "Works 2008–2015" },
+    description: {
+      es: "Piezas del artista de este periodo, pendientes de agrupar en series temáticas definitivas.",
+      en: "Pieces by the artist from this period, pending grouping into definitive thematic series.",
+    },
+    coverImage: "/images/obras/001.jpg",
+  },
 ];

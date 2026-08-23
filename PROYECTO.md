@@ -7,7 +7,11 @@ exhibición** (`/exposiciones`) — cargando exposiciones reales del
 artista una por una (título, venue, año, galería de fotos) siguiendo el
 patrón ya establecido en exp-04..exp-11 (ver "Bitácora" abajo para el
 criterio de cada una: traducción de títulos, orden de fotos, casos
-"Sin título", etc.). Van 8 exposiciones reales cargadas. Antes de
+"Sin título", etc.). Van 8 exposiciones reales cargadas. También se
+importaron 119 obras nuevas a `/obra` (obra-13..obra-131, serie
+`serie-obras-2008-2015`) — todas "Sin título"/"por confirmar",
+pendientes de que el artista dé título/técnica/dimensiones reales.
+Antes de
 retomar esta sección, leer las entradas de Bitácora del 2026-08-20 en
 adelante y la lista de pendientes específicos al final de "Próximos
 pasos" (fechas por confirmar dentro de la carpeta de exp-09, títulos de
@@ -453,6 +457,36 @@ Todo lo relacionado con este proyecto vive aquí:
   --noEmit` limpio, 26 imágenes en `data/exhibitionGalleries.ts["exp-11"]`
   cuadran con los 26 archivos en
   `public/images/exposiciones/algoritmo-arquetipos-frustrados/`.
+
+- **2026-08-23**: Import masivo a la sección **"Obras"** desde
+  `E:\Expos-2015-2012-2011-2008-\OBRAS` (134 fotos, orden numérico
+  estricto del nombre de archivo, a pedido explícito del usuario). Antes
+  de importar se le preguntó al usuario si quería revisión visual
+  completa (título/técnica por foto) o import rápido con placeholders —
+  eligió **import rápido**, dado el precedente de exp-10 (79 imágenes)
+  donde la revisión exhaustiva ya había generado una queja explícita por
+  gasto de tokens. Resultado: **obra-13..obra-131 (119 obras nuevas)**,
+  cada una con `title: "Sin título"`, `medium`/`dimensions: "por
+  confirmar"` — mismo patrón ya usado en obra-08..12 — y `status:
+  "inquire"`. Se excluyeron 15 de los 134 archivos originales
+  (1.119–1.133): son duplicados **byte-idénticos** de fotos ya usadas en
+  la galería de "Algoritmo, arquetipos frustrados" (exp-11) — varias son
+  tomas de sala/instalación, no fotos de una sola pieza, así que no
+  encajan como "obra" individual. `year` se tomó de la fecha de
+  modificación del archivo fuente (no es una obra fake: la carpeta
+  cubre exactamente los años de las exposiciones 2008/2009/2011/2012/
+  2015 y cada grupo de mtimes corresponde a uno de esos años). Un
+  archivo suelto, `1.0115.JPG` (probablemente un rescaneo duplicado del
+  #115), se insertó justo antes del 115 según su posición de orden.
+  Todas las 119 quedaron en una serie nueva **`serie-obras-2008-2015`**
+  (catch-all, `data/series.ts`) — pendiente reclasificar en series
+  temáticas reales. Verificado: `tsc --noEmit` limpio, 119 imágenes en
+  `public/images/obras/` cuadran con las 119 referencias en
+  `data/artworks.ts`, 131 ids únicos sin colisión (obra-01..obra-131).
+  **Pendiente:** el artista debe confirmar título, técnica y dimensiones
+  reales de las 119 piezas — hoy todas dicen "Sin título"/"por
+  confirmar", lo cual es intencional y no un placeholder inventado como
+  obra-01..06.
 
 ## Próximos pasos
 - Cuando se sume un segundo artista real a la galería: agregar su entrada en `data/galleryArtists.ts`, tagear sus exposiciones con su `artistId` en `data/exhibitions.ts`, y el filtro por artista en `/exposiciones` aparece solo (sin tocar componentes). Si en algún momento también se necesita que `/obra` y `/sobre-mi` sean multi-artista (hoy siguen asumiendo a Segundo Planes como único artista del sitio), eso es un cambio de modelo de datos más grande — brainstorming aparte cuando se necesite de verdad.
