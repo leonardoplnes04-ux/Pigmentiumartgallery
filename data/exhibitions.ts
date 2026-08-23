@@ -97,4 +97,18 @@ export const exhibitions: Exhibition[] = [
     image: "/images/expo-memorias-del-circo.jpg",
     artistId: "segundo-planes",
   },
+  {
+    id: "exp-10",
+    // Plain statement, not wordplay — translated, same reasoning as
+    // exp-07/exp-08.
+    title: { es: "Soy un estúpido", en: "I Am a Fool" },
+    venue: "Castillo de la Fuerza, La Habana, Cuba",
+    date: "1989",
+    description: {
+      es: "Exposición de Segundo Planes en el Castillo de la Fuerza.",
+      en: "Exhibition by Segundo Planes at Castillo de la Fuerza.",
+    },
+    image: "/images/expo-soy-un-estupido.jpg",
+    artistId: "segundo-planes",
+  },
 ];

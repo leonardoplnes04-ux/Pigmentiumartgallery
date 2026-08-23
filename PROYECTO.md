@@ -5,9 +5,9 @@
 **Foco actual (en curso):** seguimos ampliando la **sección de
 exhibición** (`/exposiciones`) — cargando exposiciones reales del
 artista una por una (título, venue, año, galería de fotos) siguiendo el
-patrón ya establecido en exp-04..exp-09 (ver "Bitácora" abajo para el
+patrón ya establecido en exp-04..exp-10 (ver "Bitácora" abajo para el
 criterio de cada una: traducción de títulos, orden de fotos, casos
-"Sin título", etc.). Van 6 exposiciones reales cargadas. Antes de
+"Sin título", etc.). Van 7 exposiciones reales cargadas. Antes de
 retomar esta sección, leer las entradas de Bitácora del 2026-08-20 en
 adelante y la lista de pendientes específicos al final de "Próximos
 pasos" (fechas por confirmar dentro de la carpeta de exp-09, títulos de
@@ -413,6 +413,28 @@ Todo lo relacionado con este proyecto vive aquí:
   `/`, `/exposiciones` y `/obra` responden 200 tras el reinicio; el
   cambio de `object-cover` del Hero seguía aplicado (no se perdió nada
   de código, solo la caché de build).
+
+- **2026-08-23**: Agregada séptima exposición real: **"Soy un estúpido"**
+  (Castillo de la Fuerza, La Habana, Cuba, 1989) como `exp-10` — la más
+  antigua, va al final del array. A diferencia de exposiciones previas,
+  la carpeta fuente no traía metadatos de título/dimensiones en los
+  nombres de archivo: es una muestra conceptual/de instalación de 1989
+  donde los títulos están pintados o escritos a mano directamente sobre
+  las piezas o en etiquetas de papel adheridas (varias con la fórmula
+  explícita "Título:/autor:/año:"). Se revisaron visualmente las 79 fotos
+  para extraer esos títulos; el resto quedó "Sin título"/"Untitled"
+  cuando no había texto legible. Fotos 09-10 muestran versiones tipo
+  catálogo de tres pinturas que reaparecen (mismas obras, mismo montaje)
+  en la foto 11 sobre los muros de piedra del Castillo — y esas mismas
+  piezas fueron re-expuestas después en "Ecua-error catatónica" (exp-04,
+  2015): no es un error de datos, son las mismas obras físicas
+  documentadas en dos momentos distintos. Imagen elegida por el usuario
+  para la miniatura de la lista: `08.jpg` (el artista junto a tres de
+  sus pinturas). Traducción: "Soy un estúpido" → "I Am a Fool" (frase
+  llana, no juego de palabras, mismo criterio que "Insomnio"→"Insomnia").
+  Verificado: `tsc --noEmit` limpio, conteo de 79 imágenes en
+  `data/exhibitionGalleries.ts["exp-10"]` cuadra con los 79 archivos en
+  `public/images/exposiciones/soy-un-estupido/`.
 
 ## Próximos pasos
 - Cuando se sume un segundo artista real a la galería: agregar su entrada en `data/galleryArtists.ts`, tagear sus exposiciones con su `artistId` en `data/exhibitions.ts`, y el filtro por artista en `/exposiciones` aparece solo (sin tocar componentes). Si en algún momento también se necesita que `/obra` y `/sobre-mi` sean multi-artista (hoy siguen asumiendo a Segundo Planes como único artista del sitio), eso es un cambio de modelo de datos más grande — brainstorming aparte cuando se necesite de verdad.
