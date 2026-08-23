@@ -27,12 +27,24 @@ function ObraGrid() {
         {onlyAvailable ? t.hero.ctaTertiary : t.catalog.title}
       </h1>
 
-      {/* items-start: cards keep their own height (each artwork's own
-          aspect ratio, see components/ArtworkCard.tsx) instead of being
-          stretched to match the tallest card in their row. */}
-      <div className="mt-8 grid grid-cols-1 items-start gap-x-8 gap-y-12 sm:mt-12 sm:grid-cols-2 lg:grid-cols-3">
+      {/* CSS-columns masonry instead of a grid: each artwork keeps its own
+          aspect ratio (components/ArtworkCard.tsx) and the column layout
+          packs the next card right under the shortest column instead of
+          leaving a row-height gap under it, like a grid would with mixed
+          card heights. break-inside-avoid keeps a card from splitting
+          across two columns. This only changes how the *same* array is
+          laid out visually — `artworks` itself is never re-sorted, so the
+          chosen order (see data/artworks.ts) is preserved: CSS columns
+          fill top-to-bottom within each column, left column first, which
+          keeps consecutive array items visually close together without
+          reordering the underlying data. */}
+      <div className="mt-8 columns-1 gap-8 sm:mt-12 sm:columns-2 lg:columns-3 xl:columns-4">
         {artworks.map((artwork) => (
-          <Link key={artwork.id} href={`/obra/${artwork.id}`}>
+          <Link
+            key={artwork.id}
+            href={`/obra/${artwork.id}`}
+            className="mb-8 block break-inside-avoid"
+          >
             <ArtworkCard artwork={artwork} />
           </Link>
         ))}

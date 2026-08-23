@@ -488,6 +488,17 @@ Todo lo relacionado con este proyecto vive aquí:
   confirmar", lo cual es intencional y no un placeholder inventado como
   obra-01..06.
 
+- **2026-08-23**: `/obra` pasó de CSS grid a **masonry con CSS columns**
+  (`components/ArtworkCard.tsx` + `app/obra/page.tsx`) — pedido
+  explícito del usuario para eliminar los huecos en blanco que dejaba el
+  grid con alturas mixtas (cada card respeta su propio aspect ratio
+  desde el cambio anterior). `columns-1 sm:columns-2 lg:columns-3
+  xl:columns-4` + `break-inside-avoid` por card, sin tocar el orden del
+  array `artworks` — el usuario fue explícito en que el orden ya
+  elegido no se debe alterar; CSS columns solo cambia cómo se acomodan
+  visualmente los mismos elementos (columna por columna, de arriba hacia
+  abajo), nunca reordena el DOM. Verificado: `tsc --noEmit` limpio.
+
 ## Próximos pasos
 - Cuando se sume un segundo artista real a la galería: agregar su entrada en `data/galleryArtists.ts`, tagear sus exposiciones con su `artistId` en `data/exhibitions.ts`, y el filtro por artista en `/exposiciones` aparece solo (sin tocar componentes). Si en algún momento también se necesita que `/obra` y `/sobre-mi` sean multi-artista (hoy siguen asumiendo a Segundo Planes como único artista del sitio), eso es un cambio de modelo de datos más grande — brainstorming aparte cuando se necesite de verdad.
 - Confirmar con el artista: títulos definitivos, año y dimensiones exactas del resto de la serie Aviario (`obra-08`..`obra-12`, `obra-07` ya confirmada); citas reales de críticos (hoy son placeholder); reemplazar o retirar los placeholders restantes de Interiores/Derivas. **Esto también activa "Ver en tu pared"** por obra — en cuanto tenga `realDimensionsCm` cargado, el botón aparece solo.
