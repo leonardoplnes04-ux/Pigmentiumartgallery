@@ -2,6 +2,7 @@
 
 import type { Artwork } from "@/data/types";
 import { useLanguage } from "@/hooks/useLanguage";
+import Watermark from "@/components/Watermark";
 
 export default function ArtworkCard({ artwork }: { artwork: Artwork }) {
   const { t, pick } = useLanguage();
@@ -13,8 +14,10 @@ export default function ArtworkCard({ artwork }: { artwork: Artwork }) {
         <img
           src={artwork.image}
           alt={pick(artwork.title)}
+          draggable={false}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
+        <Watermark />
       </div>
       <div className="mt-3 flex items-baseline justify-between">
         <div>

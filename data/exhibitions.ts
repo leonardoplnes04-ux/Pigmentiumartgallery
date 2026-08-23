@@ -1,43 +1,19 @@
 import type { Exhibition } from "./types";
 
-// NOTE: exp-01..03 below are still placeholder content — replace with real
-// exhibitions/press later. exp-04 (Ecua-error catatónica) is the first real
-// exhibition entry.
+// exp-04 (Ecua-error catatónica) is the first real exhibition entry.
+// exp-01..03 (placeholders "Umbral"/"Derivas"/"Entrevista en Revista
+// Lienzo") were removed 2026-08-23 — invented examples that never
+// corresponded to the actual project, not real exhibitions to replace
+// later. If a future non-gallery entry (interview, press mention) is
+// needed again, add it as a real one instead of reviving these ids.
+//
+// Array order = display order on both `/exposiciones` and the home page's
+// exhibitions section (neither sorts at render time — see PROYECTO.md
+// bitácora, 2026-08-23). Entries are kept sorted by `date` descending
+// (most recent first); `id` reflects the order each one was *added*, not
+// its year, so a newly added exhibition won't necessarily go at the end
+// of the array — slot it into its chronological position instead.
 export const exhibitions: Exhibition[] = [
-  {
-    id: "exp-01",
-    title: { es: "Umbral — Muestra individual", en: "Threshold — Solo Show" },
-    venue: "Galería Sur, Ciudad de México",
-    date: "2026-03",
-    description: {
-      es: "Primera exhibición individual de la serie Interiores.",
-      en: "First solo exhibition of the Interiors series.",
-    },
-    artistId: "segundo-planes",
-  },
-  {
-    id: "exp-02",
-    title: { es: "Derivas — Muestra colectiva", en: "Drifts — Group Show" },
-    venue: "Espacio Traspatio",
-    date: "2025-09",
-    description: {
-      es: "Selección de obras de la serie Derivas en una muestra colectiva de paisaje contemporáneo.",
-      en: "A selection of works from the Drifts series in a group exhibition of contemporary landscape.",
-    },
-    artistId: "segundo-planes",
-  },
-  {
-    id: "exp-03",
-    title: { es: "Entrevista en Revista Lienzo", en: "Interview in Revista Lienzo" },
-    venue: "Revista Lienzo",
-    date: "2025-06",
-    description: {
-      es: "Conversación sobre memoria, color y proceso pictórico.",
-      en: "A conversation about memory, color, and pictorial process.",
-    },
-    link: "https://example.com/entrevista-lienzo",
-    artistId: "segundo-planes",
-  },
   {
     id: "exp-04",
     // Title kept untranslated: it's a wordplay/invented term ("ecuación" +
@@ -80,6 +56,21 @@ export const exhibitions: Exhibition[] = [
     artistId: "segundo-planes",
   },
   {
+    id: "exp-09",
+    // Plain descriptive metaphor, not wordplay/an invented term — same
+    // reasoning as "Memorias del circo" → "Memories of the Circus" (exp-08),
+    // so it's translated.
+    title: { es: "Pliegues de la vejez", en: "Folds of Old Age" },
+    venue: "GE Galería, Monterrey, México",
+    date: "2008",
+    description: {
+      es: "Exposición de Segundo Planes en GE Galería.",
+      en: "Exhibition by Segundo Planes at GE Galería.",
+    },
+    image: "/images/expo-pliegues-de-la-vejez.jpg",
+    artistId: "segundo-planes",
+  },
+  {
     id: "exp-07",
     title: { es: "Insomnio", en: "Insomnia" },
     venue: "Centro de las Artes Fundidora, Monterrey, México",
@@ -89,6 +80,21 @@ export const exhibitions: Exhibition[] = [
       en: "Exhibition by Segundo Planes at Centro de las Artes Fundidora.",
     },
     image: "/images/expo-insomnio.jpg",
+    artistId: "segundo-planes",
+  },
+  {
+    id: "exp-08",
+    // "Memorias del circo" is a plain descriptive phrase (not a wordplay/
+    // invented term like exp-04/05/06's titles), so it's translated —
+    // same reasoning as "Insomnio" → "Insomnia" for exp-07.
+    title: { es: "Memorias del circo", en: "Memories of the Circus" },
+    venue: "Instituto de América, Santa Fe, Granada, España",
+    date: "2003",
+    description: {
+      es: "Exposición de Segundo Planes en el Instituto de América, Colección Santa Fe.",
+      en: "Exhibition by Segundo Planes at the Instituto de América, Colección Santa Fe.",
+    },
+    image: "/images/expo-memorias-del-circo.jpg",
     artistId: "segundo-planes",
   },
 ];

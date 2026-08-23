@@ -18,8 +18,8 @@ export const artist: Artist = {
   portraitImage: "/images/placeholder-portrait.svg",
   heroImage: "/images/hero-segundo-planes.jpg",
   heroVideo: "/videos/hero-segundo-planes.mp4",
-  email: "hola@pigmentium.example",
+  email: "hola@pigmentum.example",
   socials: {
-    instagram: "https://instagram.com/pigmentium",
+    instagram: "https://instagram.com/pigmentum",
   },
 };

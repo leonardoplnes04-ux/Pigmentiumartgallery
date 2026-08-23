@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Anti-copy deterrent (see ImageGuard + Watermark components and the
+   2026-08-23 PROYECTO.md entry for what this can't do — screenshots and
+   photos of the screen are outside any web page's control). Blocks the
+   long-press "Save Image" menu on iOS/Android and text-style selection
+   dragging over photos on desktop. */
+img {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}

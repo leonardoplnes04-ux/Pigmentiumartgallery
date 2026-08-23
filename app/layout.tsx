@@ -3,6 +3,7 @@ import { Fraunces, Inter } from "next/font/google";
 import { artist } from "@/data/artist";
 import { site } from "@/data/site";
 import { LanguageProvider } from "@/hooks/useLanguage";
+import ImageGuard from "@/components/ImageGuard";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -33,6 +34,7 @@ export default function RootLayout({
   return (
     <html lang="es" className={`${fraunces.variable} ${inter.variable}`}>
       <body className="bg-background font-sans text-ink antialiased">
+        <ImageGuard />
         <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>

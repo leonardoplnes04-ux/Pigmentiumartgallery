@@ -16,6 +16,7 @@ export interface UiStrings {
   hero: {
     cta: string;
     ctaSecondary: string;
+    ctaTertiary: string;
     altPrefix: string; // "<altPrefix> <artist name>"
   };
   featured: {
@@ -115,6 +116,7 @@ export const translations: Record<Language, UiStrings> = {
     hero: {
       cta: "Ver obra",
       ctaSecondary: "Exposiciones",
+      ctaTertiary: "Obras disponibles",
       altPrefix: "Obra destacada de",
     },
     featured: {
@@ -212,6 +214,7 @@ export const translations: Record<Language, UiStrings> = {
     hero: {
       cta: "View work",
       ctaSecondary: "Exhibitions",
+      ctaTertiary: "Available works",
       altPrefix: "Featured artwork by",
     },
     featured: {

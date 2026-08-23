@@ -181,4 +181,127 @@ export const exhibitionGalleries: Record<string, ExhibitionGalleryImage[]> = {
     { src: "/images/exposiciones/insomnio/23.jpg", alt: { es: "Sin título", en: "Untitled" } },
     { src: "/images/exposiciones/insomnio/24.jpg", alt: { es: "Sin título", en: "Untitled" } },
   ],
+  // Source folder (#952-1000, 2003) came pre-organized by the artist under
+  // its own "EXPO. MEMORIAS DEL CIRCO..." folder — no mixing with other
+  // shows this time. Three files were exact duplicates of an already-
+  // numbered image ("955 - copia - copia", "963 - copia", "1000 - copia")
+  // and were dropped rather than kept as repeats. Piece titles here are
+  // long, invented/poetic phrases (same register as exp-06's "Sueño
+  // tallado en espuma"), so — same reasoning as that exhibition — they're
+  // kept untranslated rather than force an English gloss that would lose
+  // the wordplay. A handful of captions were too overlapped by the
+  // artwork itself or too faint to transcribe with confidence; those are
+  // "Sin título" rather than a guessed reading.
+  "exp-08": [
+    { src: "/images/exposiciones/memorias-del-circo/01.jpg", alt: { es: "Vista de la entrada, con el cartel de la exposición", en: "View of the entrance, with the exhibition's title signage" } },
+    { src: "/images/exposiciones/memorias-del-circo/02.jpg", alt: { es: "Vista general de la exposición", en: "General view of the exhibition" } },
+    { src: "/images/exposiciones/memorias-del-circo/03.jpg", alt: { es: "El eclipse", en: "El eclipse" } },
+    { src: "/images/exposiciones/memorias-del-circo/04.jpg", alt: { es: "El vigía, elemento filo-lógico", en: "El vigía, elemento filo-lógico" } },
+    { src: "/images/exposiciones/memorias-del-circo/05.jpg", alt: { es: "Tres colores y el registro", en: "Tres colores y el registro" } },
+    { src: "/images/exposiciones/memorias-del-circo/06.jpg", alt: { es: "Mujer rara y una rara y violeta e y griega", en: "Mujer rara y una rara y violeta e y griega" } },
+    { src: "/images/exposiciones/memorias-del-circo/07.jpg", alt: { es: "Muy alto y oscuro", en: "Muy alto y oscuro" } },
+    { src: "/images/exposiciones/memorias-del-circo/08.jpg", alt: { es: "Dios y el diablo en un cuento", en: "Dios y el diablo en un cuento" } },
+    { src: "/images/exposiciones/memorias-del-circo/09.jpg", alt: { es: "Sin permiso te semáforo", en: "Sin permiso te semáforo" } },
+    { src: "/images/exposiciones/memorias-del-circo/10.jpg", alt: { es: "Búcaros vacíos", en: "Búcaros vacíos" } },
+    { src: "/images/exposiciones/memorias-del-circo/11.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/memorias-del-circo/12.jpg", alt: { es: "La reina y el rey", en: "La reina y el rey" } },
+    { src: "/images/exposiciones/memorias-del-circo/13.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/memorias-del-circo/14.jpg", alt: { es: "La reina y el pastel", en: "La reina y el pastel" } },
+    { src: "/images/exposiciones/memorias-del-circo/15.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/memorias-del-circo/16.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/memorias-del-circo/17.jpg", alt: { es: "Mujer preñada de su deseo", en: "Mujer preñada de su deseo" } },
+    { src: "/images/exposiciones/memorias-del-circo/18.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/memorias-del-circo/19.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/memorias-del-circo/20.jpg", alt: { es: "Las tres cosas", en: "Las tres cosas" } },
+    { src: "/images/exposiciones/memorias-del-circo/21.jpg", alt: { es: "Las sombras y el hueso de agua", en: "Las sombras y el hueso de agua" } },
+    { src: "/images/exposiciones/memorias-del-circo/22.jpg", alt: { es: "Dueña del sol negro", en: "Dueña del sol negro" } },
+    { src: "/images/exposiciones/memorias-del-circo/23.jpg", alt: { es: "La ameba lupa y la sombra de la estrella", en: "La ameba lupa y la sombra de la estrella" } },
+    { src: "/images/exposiciones/memorias-del-circo/24.jpg", alt: { es: "Hombre de ojos rojo", en: "Hombre de ojos rojo" } },
+    { src: "/images/exposiciones/memorias-del-circo/25.jpg", alt: { es: "Espíritu del sol, el árbol de hielo y la tela de araña", en: "Espíritu del sol, el árbol de hielo y la tela de araña" } },
+    { src: "/images/exposiciones/memorias-del-circo/26.jpg", alt: { es: "Encanto del futuro (fuego)", en: "Encanto del futuro (fuego)" } },
+    { src: "/images/exposiciones/memorias-del-circo/27.jpg", alt: { es: "Solo hay luz en los muertos", en: "Solo hay luz en los muertos" } },
+    { src: "/images/exposiciones/memorias-del-circo/28.jpg", alt: { es: "Vista fugada a la luz y el amo del sentimiento", en: "Vista fugada a la luz y el amo del sentimiento" } },
+    { src: "/images/exposiciones/memorias-del-circo/29.jpg", alt: { es: "Cazador de mariposa", en: "Cazador de mariposa" } },
+    { src: "/images/exposiciones/memorias-del-circo/30.jpg", alt: { es: "Criador de pollo", en: "Criador de pollo" } },
+    { src: "/images/exposiciones/memorias-del-circo/31.jpg", alt: { es: "Réquiem del paramecio", en: "Réquiem del paramecio" } },
+    { src: "/images/exposiciones/memorias-del-circo/32.jpg", alt: { es: "Espíritu de invierno", en: "Espíritu de invierno" } },
+    { src: "/images/exposiciones/memorias-del-circo/33.jpg", alt: { es: "Lejos del silencio", en: "Lejos del silencio" } },
+    { src: "/images/exposiciones/memorias-del-circo/34.jpg", alt: { es: "La araña", en: "La araña" } },
+    { src: "/images/exposiciones/memorias-del-circo/35.jpg", alt: { es: "Congelados en la esperanza", en: "Congelados en la esperanza" } },
+    { src: "/images/exposiciones/memorias-del-circo/36.jpg", alt: { es: "Vigilantes transparentes del continente europeo", en: "Vigilantes transparentes del continente europeo" } },
+    { src: "/images/exposiciones/memorias-del-circo/37.jpg", alt: { es: "El eclipse", en: "El eclipse" } },
+    { src: "/images/exposiciones/memorias-del-circo/38.jpg", alt: { es: "Nacimiento de Venus", en: "Nacimiento de Venus" } },
+    { src: "/images/exposiciones/memorias-del-circo/39.jpg", alt: { es: "Según lo que consideres feo", en: "Según lo que consideres feo" } },
+    { src: "/images/exposiciones/memorias-del-circo/40.jpg", alt: { es: "No me mires", en: "No me mires" } },
+    { src: "/images/exposiciones/memorias-del-circo/41.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/memorias-del-circo/42.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/memorias-del-circo/43.jpg", alt: { es: "Tú de topo observas la contraseña", en: "Tú de topo observas la contraseña" } },
+    { src: "/images/exposiciones/memorias-del-circo/44.jpg", alt: { es: "Mujer de hielo", en: "Mujer de hielo" } },
+    { src: "/images/exposiciones/memorias-del-circo/45.jpg", alt: { es: "El cielo está de huelga", en: "El cielo está de huelga" } },
+    { src: "/images/exposiciones/memorias-del-circo/46.jpg", alt: { es: "Me retiro un instante, ya volví, ya me voy otra vez", en: "Me retiro un instante, ya volví, ya me voy otra vez" } },
+    { src: "/images/exposiciones/memorias-del-circo/47.jpg", alt: { es: "Recordando el recuerdo", en: "Recordando el recuerdo" } },
+    { src: "/images/exposiciones/memorias-del-circo/48.jpg", alt: { es: "La morsa es un balsero con frío. El avestruz no sé que sea", en: "La morsa es un balsero con frío. El avestruz no sé que sea" } },
+    { src: "/images/exposiciones/memorias-del-circo/49.jpg", alt: { es: "Sin título", en: "Untitled" } },
+  ],
+  // Source folder ("5-EXPO.PLIEGUES DE LA VEJEZ") is the user-organized
+  // version of the #878-927 batch flagged as "sin cargar" in a previous
+  // pending note — resolved now that it has its own named folder, same
+  // resolution path as "Memorias del circo" (exp-08). 36 files, #877-930,
+  // numbered with no gaps but two repeated numbers (900, 902 — each has
+  // two distinct files, kept as separate adjacent pieces rather than
+  // dropped as duplicates, since their dimensions/media differ). Almost
+  // none of the filenames carried a piece title — just dimensions and
+  // medium — so most are "Sin título"/"Untitled"; four installation shots
+  // (#878, #905, #909, #912) only said "INSTALACION" with no other data,
+  // captioned as untitled installation pieces rather than room views (the
+  // one genuine room view, #877, said "VISTA GENERAL" explicitly). Three
+  // pieces did carry a title (#920, #922, #923); two were translated
+  // ("Gota de rocío" / "Sombra proyectando su cuerpo" — plain descriptive
+  // phrasing) but #920 ("Horizonte orientalmente huérfano") was left
+  // untranslated because "orientalmente" is genuinely ambiguous (facing
+  // east vs. "in an oriental style") and guessing risks misreading the
+  // artist's intent. **Flag for the artist:** three files in this folder
+  // don't match the exhibition's 2008 date — #902 (second file) and #903
+  // say 2009, #928-930 say 2010 — kept in since the user curated this
+  // folder deliberately (same trust extended to exp-08's folder), but
+  // worth confirming whether they truly belong to this show or were
+  // archived here by mistake.
+  "exp-09": [
+    { src: "/images/exposiciones/pliegues-de-la-vejez/01.jpg", alt: { es: "Vista general de la exposición", en: "General view of the exhibition" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/02.jpg", alt: { es: "Sin título (instalación)", en: "Untitled (installation)" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/03.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/04.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/05.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/06.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/07.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/08.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/09.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/10.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/11.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/12.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/13.jpg", alt: { es: "Sin título (instalación)", en: "Untitled (installation)" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/14.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/15.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/16.jpg", alt: { es: "Sin título (instalación)", en: "Untitled (installation)" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/17.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/18.jpg", alt: { es: "Sin título (instalación)", en: "Untitled (installation)" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/19.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/20.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/21.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/22.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/23.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/24.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/25.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/26.jpg", alt: { es: "Horizonte orientalmente huérfano", en: "Horizonte orientalmente huérfano" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/27.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/28.jpg", alt: { es: "Gota de rocío", en: "Dewdrop" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/29.jpg", alt: { es: "Sombra proyectando su cuerpo", en: "Shadow Casting Its Body" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/30.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/31.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/32.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/33.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/34.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/35.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/pliegues-de-la-vejez/36.jpg", alt: { es: "Sin título", en: "Untitled" } },
+  ],
 };

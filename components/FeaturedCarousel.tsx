@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, useAnimationControls, useMotionValue } from "framer-motion";
 import type { Artwork } from "@/data/types";
 import { useLanguage } from "@/hooks/useLanguage";
+import Watermark from "@/components/Watermark";
 
 const AUTOPLAY_DELAY_MS = 4200;
 
@@ -174,6 +175,7 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
                     onLoad={measure}
                     className="h-full w-auto max-w-[80vw] transition-transform duration-700 ease-out group-hover:scale-105"
                   />
+                  <Watermark />
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/0 to-ink/0" />
 
                   {/* glassmorphism caption panel */}

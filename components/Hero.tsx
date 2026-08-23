@@ -9,18 +9,17 @@ export default function Hero() {
 
   return (
     // Container matches the artwork's own aspect ratio (7:4) instead of a
-    // fixed 90vh — that mismatch was forcing object-cover to crop hard on
-    // narrow screens. object-contain below is a second guarantee: the full
-    // photo always stays visible, never cropped, even on the rare screen
-    // where max-h clamps in. min-h keeps the title/tagline/button block
-    // from feeling cramped on phones, where the 7:4 aspect alone would
-    // make the section quite short.
+    // fixed 90vh, and min-h keeps the title/tagline/button block from
+    // feeling cramped on phones, where the 7:4 aspect alone would make the
+    // section quite short. object-cover fills the section edge-to-edge
+    // (no side letterboxing) — the photo's own ratio (~3:2) is close
+    // enough to 7:4 that the top/bottom crop this introduces is minor.
     <section className="relative flex aspect-[7/4] max-h-[85vh] min-h-[380px] w-full items-end overflow-hidden bg-background">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={artist.heroImage}
         alt={`${t.hero.altPrefix} ${artist.name}`}
-        className="absolute inset-0 h-full w-full object-contain"
+        className="absolute inset-0 h-full w-full object-cover"
       />
 
       <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent" />
@@ -42,6 +41,12 @@ export default function Hero() {
             className="inline-block border border-background/60 px-5 py-2.5 text-xs uppercase tracking-widest hover:bg-background hover:text-ink sm:px-6 sm:py-3"
           >
             {t.hero.ctaSecondary}
+          </Link>
+          <Link
+            href="/obra?disponibles=1"
+            className="inline-block border border-background/60 px-5 py-2.5 text-xs uppercase tracking-widest hover:bg-background hover:text-ink sm:px-6 sm:py-3"
+          >
+            {t.hero.ctaTertiary}
           </Link>
         </div>
       </div>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { Artwork } from "@/data/types";
 import { artist } from "@/data/artist";
 import { useLanguage } from "@/hooks/useLanguage";
+import Watermark from "@/components/Watermark";
 
 export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
   const { t, pick } = useLanguage();
@@ -23,13 +24,15 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
         {/* Imagen — proporción natural respetada, sin recorte forzado. */}
         <div className="flex flex-col gap-3">
           {gallery.map((src, i) => (
-            <div key={src} className="overflow-hidden rounded-2xl bg-line">
+            <div key={src} className="relative overflow-hidden rounded-2xl bg-line">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={src}
                 alt={i === 0 ? title : `${title} — ${t.detail.detailAltSuffix} ${i + 1}`}
+                draggable={false}
                 className="h-auto w-full"
               />
+              <Watermark />
             </div>
           ))}
         </div>
