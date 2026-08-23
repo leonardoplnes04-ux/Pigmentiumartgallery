@@ -4,7 +4,6 @@ import Link from "next/link";
 import type { Artwork } from "@/data/types";
 import { artist } from "@/data/artist";
 import { useLanguage } from "@/hooks/useLanguage";
-import Watermark from "@/components/Watermark";
 
 export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
   const { t, pick } = useLanguage();
@@ -32,7 +31,6 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
                 draggable={false}
                 className="h-auto w-full"
               />
-              <Watermark />
             </div>
           ))}
         </div>

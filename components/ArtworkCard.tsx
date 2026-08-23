@@ -2,7 +2,6 @@
 
 import type { Artwork } from "@/data/types";
 import { useLanguage } from "@/hooks/useLanguage";
-import Watermark from "@/components/Watermark";
 
 export default function ArtworkCard({ artwork }: { artwork: Artwork }) {
   const { t, pick } = useLanguage();
@@ -37,7 +36,6 @@ export default function ArtworkCard({ artwork }: { artwork: Artwork }) {
               : "h-auto w-full object-contain transition-transform duration-300 group-hover:scale-105"
           }
         />
-        <Watermark />
       </div>
       <div className="mt-3 flex items-baseline justify-between">
         <div>

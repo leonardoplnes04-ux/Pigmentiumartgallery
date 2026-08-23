@@ -2,7 +2,6 @@
 
 import { seriesList } from "@/data/series";
 import { useLanguage } from "@/hooks/useLanguage";
-import Watermark from "@/components/Watermark";
 
 export default function SeriesGrid() {
   const { t, pick } = useLanguage();
@@ -23,7 +22,6 @@ export default function SeriesGrid() {
                 draggable={false}
                 className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
-              <Watermark />
             </div>
             <h3 className="mt-4 font-serif text-xl">{pick(series.name)}</h3>
             <p className="mt-1 text-sm text-muted">{pick(series.description)}</p>

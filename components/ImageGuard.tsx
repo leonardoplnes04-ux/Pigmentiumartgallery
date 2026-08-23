@@ -3,13 +3,15 @@
 import { useEffect } from "react";
 
 // Best-effort deterrents against casual right-click-save / drag-save of
-// images, site-wide. IMPORTANT — see PROYECTO.md 2026-08-23 entry: this
+// images, site-wide. IMPORTANT — see PROYECTO.md 2026-08-23 entries: this
 // cannot block screenshots, screen recordings, or a photo of the screen
 // (those happen at the OS/hardware level, outside any web page's reach),
 // and anyone with devtools open can still grab image URLs regardless.
-// This only raises friction for the average visitor; pair it with
-// `Watermark` on artwork photos for a deterrent that survives a
-// screenshot too.
+// This only raises friction for the average visitor. (`Watermark` used
+// to pair with this on artwork photos for a deterrent that survives a
+// screenshot too — removed from all artwork views 2026-08-23 per the
+// user; the component still exists at components/Watermark.tsx if it's
+// wanted back later.)
 export default function ImageGuard() {
   useEffect(() => {
     const blockImageContextMenu = (e: MouseEvent) => {

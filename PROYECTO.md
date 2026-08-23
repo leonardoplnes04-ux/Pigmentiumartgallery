@@ -499,6 +499,17 @@ Todo lo relacionado con este proyecto vive aquí:
   visualmente los mismos elementos (columna por columna, de arriba hacia
   abajo), nunca reordena el DOM. Verificado: `tsc --noEmit` limpio.
 
+- **2026-08-23**: Quitadas las **marcas de agua** de todas las obras
+  (pedido explícito del usuario) — se removió el uso de
+  `components/Watermark.tsx` de las 4 vistas donde aparecía:
+  `ArtworkCard` (grid de `/obra`), `ArtworkDetail` (foto grande y
+  galería adicional en `/obra/[id]`), `FeaturedCarousel` (carrusel de
+  destacadas en home) y `SeriesGrid` (portadas de serie). El componente
+  en sí no se borró — sigue en `components/Watermark.tsx` por si se
+  quiere reactivar. `ImageGuard` (deterrente anti-click-derecho/drag,
+  no relacionado) sigue activo sin cambios. Verificado: `tsc --noEmit`
+  limpio, sin referencias colgantes a `Watermark` fuera de comentarios.
+
 ## Próximos pasos
 - Cuando se sume un segundo artista real a la galería: agregar su entrada en `data/galleryArtists.ts`, tagear sus exposiciones con su `artistId` en `data/exhibitions.ts`, y el filtro por artista en `/exposiciones` aparece solo (sin tocar componentes). Si en algún momento también se necesita que `/obra` y `/sobre-mi` sean multi-artista (hoy siguen asumiendo a Segundo Planes como único artista del sitio), eso es un cambio de modelo de datos más grande — brainstorming aparte cuando se necesite de verdad.
 - Confirmar con el artista: títulos definitivos, año y dimensiones exactas del resto de la serie Aviario (`obra-08`..`obra-12`, `obra-07` ya confirmada); citas reales de críticos (hoy son placeholder); reemplazar o retirar los placeholders restantes de Interiores/Derivas. **Esto también activa "Ver en tu pared"** por obra — en cuanto tenga `realDimensionsCm` cargado, el botón aparece solo.
