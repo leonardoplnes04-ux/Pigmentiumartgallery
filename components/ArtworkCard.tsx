@@ -37,14 +37,19 @@ export default function ArtworkCard({ artwork }: { artwork: Artwork }) {
           }
         />
       </div>
+      {/* Muted on purpose: the artwork photo is the focal point, this
+          caption block is reference info, not a competing headline —
+          text-ink/70 instead of the page's default full-contrast ink,
+          and the secondary lines drop further to /60 so the image stays
+          the loudest thing on the card. */}
       <div className="mt-3 flex items-baseline justify-between">
         <div>
-          <h3 className="font-serif text-lg">{pick(artwork.title)}</h3>
-          <p className="text-sm text-muted">
+          <h3 className="font-serif text-lg text-ink/70">{pick(artwork.title)}</h3>
+          <p className="text-sm text-muted/60">
             {pick(artwork.medium)}, {artwork.year}
           </p>
         </div>
-        <span className="text-xs uppercase tracking-widest text-muted">
+        <span className="text-xs uppercase tracking-widest text-muted/60">
           {t.status[artwork.status]}
         </span>
       </div>

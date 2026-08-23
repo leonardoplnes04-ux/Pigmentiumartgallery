@@ -510,6 +510,13 @@ Todo lo relacionado con este proyecto vive aquí:
   no relacionado) sigue activo sin cambios. Verificado: `tsc --noEmit`
   limpio, sin referencias colgantes a `Watermark` fuera de comentarios.
 
+- **2026-08-23**: Texto de las cards en `/obra` (`components/ArtworkCard.tsx`)
+  atenuado a pedido del usuario — la foto debe ser el foco, no el
+  texto. Título: de `text-ink` (contraste completo) a `text-ink/70`.
+  Técnica/año y el estado (disponible/vendida/consultar): de
+  `text-muted` a `text-muted/60`. Solo color/opacidad, tamaños sin
+  cambio. Verificado: `tsc --noEmit` limpio.
+
 ## Próximos pasos
 - Cuando se sume un segundo artista real a la galería: agregar su entrada en `data/galleryArtists.ts`, tagear sus exposiciones con su `artistId` en `data/exhibitions.ts`, y el filtro por artista en `/exposiciones` aparece solo (sin tocar componentes). Si en algún momento también se necesita que `/obra` y `/sobre-mi` sean multi-artista (hoy siguen asumiendo a Segundo Planes como único artista del sitio), eso es un cambio de modelo de datos más grande — brainstorming aparte cuando se necesite de verdad.
 - Confirmar con el artista: títulos definitivos, año y dimensiones exactas del resto de la serie Aviario (`obra-08`..`obra-12`, `obra-07` ya confirmada); citas reales de críticos (hoy son placeholder); reemplazar o retirar los placeholders restantes de Interiores/Derivas. **Esto también activa "Ver en tu pared"** por obra — en cuanto tenga `realDimensionsCm` cargado, el botón aparece solo.
