@@ -27,7 +27,10 @@ function ObraGrid() {
         {onlyAvailable ? t.hero.ctaTertiary : t.catalog.title}
       </h1>
 
-      <div className="mt-8 grid grid-cols-1 gap-x-8 gap-y-12 sm:mt-12 sm:grid-cols-2 lg:grid-cols-3">
+      {/* items-start: cards keep their own height (each artwork's own
+          aspect ratio, see components/ArtworkCard.tsx) instead of being
+          stretched to match the tallest card in their row. */}
+      <div className="mt-8 grid grid-cols-1 items-start gap-x-8 gap-y-12 sm:mt-12 sm:grid-cols-2 lg:grid-cols-3">
         {artworks.map((artwork) => (
           <Link key={artwork.id} href={`/obra/${artwork.id}`}>
             <ArtworkCard artwork={artwork} />

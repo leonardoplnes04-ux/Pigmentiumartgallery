@@ -1,0 +1,376 @@
+{
+  "communities": {
+    "0": [
+      "ref_dom",
+      "ref_dom_iterable",
+      "ref_esnext",
+      "ref_next_env_d_ts",
+      "ref_next_types_ts",
+      "ref_node_modules",
+      "ref_ts",
+      "ref_tsx",
+      "tsconfig",
+      "tsconfig_compileroptions",
+      "tsconfig_compileroptions_allowjs",
+      "tsconfig_compileroptions_esmoduleinterop",
+      "tsconfig_compileroptions_incremental",
+      "tsconfig_compileroptions_isolatedmodules",
+      "tsconfig_compileroptions_jsx",
+      "tsconfig_compileroptions_lib",
+      "tsconfig_compileroptions_module",
+      "tsconfig_compileroptions_moduleresolution",
+      "tsconfig_compileroptions_noemit",
+      "tsconfig_compileroptions_paths",
+      "tsconfig_compileroptions_plugins",
+      "tsconfig_compileroptions_resolvejsonmodule",
+      "tsconfig_compileroptions_skiplibcheck",
+      "tsconfig_compileroptions_strict",
+      "tsconfig_compileroptions_target",
+      "tsconfig_exclude",
+      "tsconfig_include"
+    ],
+    "1": [
+      "app_obra_id_page",
+      "app_obra_id_page_artworkpage",
+      "app_obra_id_page_generatemetadata",
+      "app_obra_id_page_generatestaticparams",
+      "app_obra_id_simulador_page",
+      "app_obra_id_simulador_page_generatestaticparams",
+      "app_obra_id_simulador_page_simuladorpage",
+      "app_obra_page",
+      "app_obra_page_obragrid",
+      "app_obra_page_obrapage",
+      "components_artworkcard",
+      "components_artworkcard_artworkcard",
+      "components_footer",
+      "components_footer_footer",
+      "components_footer_footer_handlesubmit",
+      "components_header",
+      "components_header_header",
+      "components_header_languagetoggle",
+      "data_artworks",
+      "data_artworks_artworks",
+      "data_artworks_rationale_3",
+      "data_site",
+      "data_site_site",
+      "data_types_artwork",
+      "lib_artworks",
+      "lib_artworks_findmeasuredartwork",
+      "lib_artworks_findrealartwork",
+      "lib_artworks_realartworks"
+    ],
+    "2": [
+      "app_exposiciones_id_page",
+      "app_exposiciones_id_page_exhibitionpage",
+      "app_exposiciones_id_page_generatemetadata",
+      "app_exposiciones_id_page_generatestaticparams",
+      "app_exposiciones_page",
+      "app_exposiciones_page_exposicionespage",
+      "components_exhibitiondetail",
+      "components_exhibitiondetail_exhibitiondetail",
+      "components_exhibitionspress",
+      "data_exhibitiongalleries",
+      "data_exhibitiongalleries_exhibitiongalleries",
+      "data_exhibitions",
+      "data_exhibitions_exhibitions",
+      "data_galleryartists",
+      "data_galleryartists_galleryartists",
+      "data_types",
+      "data_types_artworkstatus",
+      "data_types_criticreview",
+      "data_types_exhibition",
+      "data_types_exhibitiongalleryimage",
+      "data_types_galleryartist",
+      "lib_exhibitions",
+      "lib_exhibitions_findexhibition",
+      "lib_exhibitions_findexhibitiongallery"
+    ],
+    "3": [
+      "app_page",
+      "app_page_homepage",
+      "components_artiststatement",
+      "components_artiststatement_artiststatement",
+      "components_artworkdetail",
+      "components_artworkdetail_artworkdetail",
+      "components_contactbanner",
+      "components_contactbanner_contactbanner",
+      "components_exhibitionspress_exhibitionspress",
+      "components_featuredcarousel",
+      "components_featuredcarousel_featuredcarousel",
+      "components_featuredcarousel_itemlayout",
+      "components_featuredworks",
+      "components_featuredworks_featuredworks",
+      "components_hero",
+      "components_hero_hero",
+      "components_seriesgrid",
+      "components_seriesgrid_seriesgrid",
+      "components_watermark",
+      "components_watermark_watermark",
+      "data_artist",
+      "data_artist_artist",
+      "data_artist_rationale_3",
+      "data_series",
+      "data_series_rationale_3",
+      "data_series_serieslist",
+      "data_types_artist",
+      "data_types_series",
+      "hooks_uselanguage_uselanguage"
+    ],
+    "4": [
+      "framer_motion",
+      "package",
+      "package_dependencies",
+      "package_dependencies_framer_motion",
+      "package_dependencies_next",
+      "package_dependencies_react",
+      "package_dependencies_react_dom",
+      "package_json_next",
+      "package_name",
+      "package_private",
+      "package_scripts",
+      "package_scripts_build",
+      "package_scripts_dev",
+      "package_scripts_start",
+      "package_scripts_typecheck",
+      "package_version",
+      "react",
+      "react_dom"
+    ],
+    "5": [
+      "app_layout",
+      "app_layout_fraunces",
+      "app_layout_inter",
+      "app_layout_metadata",
+      "app_layout_rootlayout",
+      "components_imageguard",
+      "components_imageguard_imageguard",
+      "data_translations",
+      "data_translations_translations",
+      "data_translations_uistrings",
+      "data_types_language",
+      "data_types_localizedtext",
+      "hooks_uselanguage",
+      "hooks_uselanguage_languagecontext",
+      "hooks_uselanguage_languagecontextvalue",
+      "hooks_uselanguage_languageprovider",
+      "hooks_uselanguage_languageprovider_setlanguage"
+    ],
+    "6": [
+      "autoprefixer",
+      "package_devdependencies",
+      "package_devdependencies_autoprefixer",
+      "package_devdependencies_postcss",
+      "package_devdependencies_tailwindcss",
+      "package_devdependencies_types_node",
+      "package_devdependencies_types_react",
+      "package_devdependencies_types_react_dom",
+      "package_devdependencies_typescript",
+      "postcss",
+      "tailwindcss",
+      "types_node",
+      "types_react",
+      "types_react_dom",
+      "typescript"
+    ],
+    "7": [
+      "app_contacto_page",
+      "app_contacto_page_contactopage",
+      "app_sobre_mi_page",
+      "app_sobre_mi_page_sobremipage",
+      "components_comingsoonpage",
+      "components_comingsoonpage_comingsoonpage"
+    ],
+    "8": [
+      "components_wallsimulator",
+      "components_wallsimulator_loadimage",
+      "components_wallsimulator_measuredartwork",
+      "components_wallsimulator_overlayrect",
+      "components_wallsimulator_wallsimulator",
+      "components_wallsimulator_wallsimulator_handledownload",
+      "components_wallsimulator_wallsimulator_handlefilechange",
+      "components_wallsimulator_wallsimulator_handlepointerdown",
+      "components_wallsimulator_wallsimulator_handlepointermove",
+      "components_wallsimulator_wallsimulator_handlepointerup"
+    ],
+    "9": [
+      "next_config",
+      "next_config_nextconfig"
+    ],
+    "10": [
+      "next_env_d",
+      "next_env_d_rationale_5"
+    ],
+    "11": [
+      "tailwind_config",
+      "tailwind_config_config"
+    ],
+    "12": [
+      "next_next"
+    ],
+    "13": [
+      "postcss_config"
+    ]
+  },
+  "cohesion": {
+    "0": 0.07407407407407407,
+    "1": 0.1402116402116402,
+    "2": 0.18478260869565216,
+    "3": 0.1477832512315271,
+    "4": 0.1111111111111111,
+    "5": 0.16911764705882354,
+    "6": 0.13333333333333333,
+    "7": 0.4666666666666667,
+    "8": 0.2222222222222222,
+    "9": 1.0,
+    "10": 1.0,
+    "11": 1.0,
+    "12": 1.0,
+    "13": 1.0
+  },
+  "gods": [
+    {
+      "id": "hooks_uselanguage_uselanguage",
+      "label": "useLanguage()",
+      "degree": 33
+    },
+    {
+      "id": "tsconfig_compileroptions",
+      "label": "compilerOptions",
+      "degree": 16
+    },
+    {
+      "id": "components_footer_footer",
+      "label": "Footer()",
+      "degree": 10
+    },
+    {
+      "id": "components_header_header",
+      "label": "Header()",
+      "degree": 9
+    },
+    {
+      "id": "data_artist_artist",
+      "label": "artist",
+      "degree": 9
+    },
+    {
+      "id": "components_wallsimulator_wallsimulator",
+      "label": "WallSimulator()",
+      "degree": 8
+    },
+    {
+      "id": "data_types_artwork",
+      "label": "Artwork",
+      "degree": 7
+    },
+    {
+      "id": "data_site_site",
+      "label": "Site",
+      "degree": 5
+    },
+    {
+      "id": "lib_artworks_findrealartwork",
+      "label": "findRealArtwork()",
+      "degree": 5
+    },
+    {
+      "id": "components_watermark_watermark",
+      "label": "Watermark()",
+      "degree": 5
+    }
+  ],
+  "surprises": [
+    {
+      "source": "ExposicionesPage()",
+      "target": "useLanguage()",
+      "source_files": [
+        "app/exposiciones/page.tsx",
+        "hooks/useLanguage.tsx"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities; peripheral node `ExposicionesPage()` unexpectedly reaches hub `useLanguage()`"
+    },
+    {
+      "source": "ObraGrid()",
+      "target": "useLanguage()",
+      "source_files": [
+        "app/obra/page.tsx",
+        "hooks/useLanguage.tsx"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities; peripheral node `ObraGrid()` unexpectedly reaches hub `useLanguage()`"
+    },
+    {
+      "source": "ArtworkPage()",
+      "target": "findRealArtwork()",
+      "source_files": [
+        "app/obra/[id]/page.tsx",
+        "lib/artworks.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; peripheral node `ArtworkPage()` unexpectedly reaches hub `findRealArtwork()`"
+    },
+    {
+      "source": "generateMetadata()",
+      "target": "findRealArtwork()",
+      "source_files": [
+        "app/obra/[id]/page.tsx",
+        "lib/artworks.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; peripheral node `generateMetadata()` unexpectedly reaches hub `findRealArtwork()`"
+    },
+    {
+      "source": "WallSimulator()",
+      "target": "useLanguage()",
+      "source_files": [
+        "components/WallSimulator.tsx",
+        "hooks/useLanguage.tsx"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `useLanguage()` connect `Community 3` to `Community 1`, `Community 2`, `Community 5`, `Community 7`, `Community 8`?",
+      "why": "High betweenness centrality (0.094) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `WallSimulator()` connect `Community 8` to `Community 1`, `Community 3`?",
+      "why": "High betweenness centrality (0.033) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `devDependencies` connect `Community 6` to `Community 4`?",
+      "why": "High betweenness centrality (0.021) - this node is a cross-community bridge."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `MeasuredArtwork`, `OverlayRect`, `ArtworkStatus` to the rest of the system?",
+      "why": "52 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 0` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.07407407407407407 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 1` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.1402116402116402 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 3` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.1477832512315271 - nodes in this community are weakly interconnected."
+    }
+  ]
+}

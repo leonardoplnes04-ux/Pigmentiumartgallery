@@ -15,6 +15,20 @@ import type { Exhibition } from "./types";
 // of the array — slot it into its chronological position instead.
 export const exhibitions: Exhibition[] = [
   {
+    id: "exp-11",
+    // Title kept untranslated: poetic/conceptual pairing, not a plain
+    // descriptive phrase — same reasoning as exp-04/05/06.
+    title: { es: "Algoritmo, arquetipos frustrados", en: "Algoritmo, arquetipos frustrados" },
+    venue: "Galería Estereo, Monterrey, México",
+    date: "2024",
+    description: {
+      es: "Exposición de Segundo Planes en Galería Estereo.",
+      en: "Exhibition by Segundo Planes at Galería Estereo.",
+    },
+    image: "/images/expo-algoritmo-arquetipos-frustrados.jpg",
+    artistId: "segundo-planes",
+  },
+  {
     id: "exp-04",
     // Title kept untranslated: it's a wordplay/invented term ("ecuación" +
     // "error"), not a descriptive phrase — translating it would lose the pun.

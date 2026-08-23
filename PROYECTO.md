@@ -5,9 +5,9 @@
 **Foco actual (en curso):** seguimos ampliando la **sección de
 exhibición** (`/exposiciones`) — cargando exposiciones reales del
 artista una por una (título, venue, año, galería de fotos) siguiendo el
-patrón ya establecido en exp-04..exp-10 (ver "Bitácora" abajo para el
+patrón ya establecido en exp-04..exp-11 (ver "Bitácora" abajo para el
 criterio de cada una: traducción de títulos, orden de fotos, casos
-"Sin título", etc.). Van 7 exposiciones reales cargadas. Antes de
+"Sin título", etc.). Van 8 exposiciones reales cargadas. Antes de
 retomar esta sección, leer las entradas de Bitácora del 2026-08-20 en
 adelante y la lista de pendientes específicos al final de "Próximos
 pasos" (fechas por confirmar dentro de la carpeta de exp-09, títulos de
@@ -435,6 +435,24 @@ Todo lo relacionado con este proyecto vive aquí:
   Verificado: `tsc --noEmit` limpio, conteo de 79 imágenes en
   `data/exhibitionGalleries.ts["exp-10"]` cuadra con los 79 archivos en
   `public/images/exposiciones/soy-un-estupido/`.
+
+- **2026-08-23**: Agregada octava exposición real: **"Algoritmo,
+  arquetipos frustrados"** (Galería Estereo, Monterrey, México, 2024)
+  como `exp-11` — la más reciente, va primero en el array. A diferencia
+  de exp-10, esta es una muestra profesional de galería contemporánea:
+  cuadros grandes sin texto pintado encima, solo numeritos de cédula en
+  la pared para el recorrido (no legibles como títulos). Se revisaron
+  las 26 fotos; solo una pieza tiene título pintado legible ("Como
+  gotas de rocío" → "Like Dewdrops"), el resto quedó "Sin
+  título"/"Untitled" — mismo criterio que exp-05 (Lemas e himnos
+  mutilados). Carpeta fuente traía dos archivos nombrados "-1"/"-10" en
+  vez de numeración normal (destino 21 y 26, al final de la secuencia)
+  y un hueco en el 21 (no existía ese archivo). Miniatura: foto 11 del
+  origen (elegida por el usuario), vista de sala con el artista junto a
+  la instalación de palmas y las pinturas grandes. Verificado: `tsc
+  --noEmit` limpio, 26 imágenes en `data/exhibitionGalleries.ts["exp-11"]`
+  cuadran con los 26 archivos en
+  `public/images/exposiciones/algoritmo-arquetipos-frustrados/`.
 
 ## Próximos pasos
 - Cuando se sume un segundo artista real a la galería: agregar su entrada en `data/galleryArtists.ts`, tagear sus exposiciones con su `artistId` en `data/exhibitions.ts`, y el filtro por artista en `/exposiciones` aparece solo (sin tocar componentes). Si en algún momento también se necesita que `/obra` y `/sobre-mi` sean multi-artista (hoy siguen asumiendo a Segundo Planes como único artista del sitio), eso es un cambio de modelo de datos más grande — brainstorming aparte cuando se necesite de verdad.

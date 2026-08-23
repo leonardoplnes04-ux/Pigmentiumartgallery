@@ -12,6 +12,42 @@ import type { ExhibitionGalleryImage } from "./types";
 // título"/"Untitled" — not a placeholder, that's genuinely all the source
 // folder recorded for them.
 export const exhibitionGalleries: Record<string, ExhibitionGalleryImage[]> = {
+  // 2024 gallery show at Galería Estereo — big-format contemporary
+  // paintings with numbered wall placards for the room didactics
+  // (visible in several install shots), not embedded titles like
+  // exp-10's 1989 pieces. Only one canvas carries a legible painted
+  // title ("Como gotas de rocío"); the rest default to "Sin
+  // título"/"Untitled". Two extra shots (destination 21 and 26) came
+  // from source files named "-1"/"-10" instead of a number — kept,
+  // just placed at the end of the sequence.
+  "exp-11": [
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/01.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/02.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/03.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/04.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/05.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/06.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/07.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/08.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/09.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/10.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/11.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/12.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/13.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/14.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/15.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/16.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/17.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/18.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/19.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/20.jpg", alt: { es: "Como gotas de rocío", en: "Like Dewdrops" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/21.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/22.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/23.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/24.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/25.jpg", alt: { es: "Sin título", en: "Untitled" } },
+    { src: "/images/exposiciones/algoritmo-arquetipos-frustrados/26.jpg", alt: { es: "Sin título", en: "Untitled" } },
+  ],
   "exp-04": [
     { src: "/images/exposiciones/ecua-error-catatonica/01.jpg", alt: { es: "Vista general de una de las salas de la exposición", en: "General view of one of the exhibition's rooms" } },
     { src: "/images/exposiciones/ecua-error-catatonica/02.jpg", alt: { es: "Ecua-error (políptico)", en: "Ecua-error (polyptych)" } },
