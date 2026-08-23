@@ -6,3 +6,6 @@ out
 tsconfig.tsbuildinfo
 
 .vercel
+
+# graphify analysis output (regeneratable via `graphify extract .`) — not project content
+graphify-out
