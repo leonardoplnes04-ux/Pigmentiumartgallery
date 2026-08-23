@@ -38,7 +38,9 @@ function ObraGrid() {
           fill top-to-bottom within each column, left column first, which
           keeps consecutive array items visually close together without
           reordering the underlying data. */}
-      <div className="mt-8 columns-1 gap-8 sm:mt-12 sm:columns-2 lg:columns-3 xl:columns-4">
+      {/* Capped at 3 columns (was 4 up to xl) so each piece renders bigger
+          and more detail is visible, per the user's request. */}
+      <div className="mt-8 columns-1 gap-8 sm:mt-12 sm:columns-2 lg:columns-3">
         {artworks.map((artwork) => (
           <Link
             key={artwork.id}
