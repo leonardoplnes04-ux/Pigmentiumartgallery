@@ -4,7 +4,11 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useLanguage } from "@/hooks/useLanguage";
 
-export default function ComingSoonPage({ navKey }: { navKey: "sobreMi" | "exposiciones" | "contacto" }) {
+export default function ComingSoonPage({
+  navKey,
+}: {
+  navKey: "sobreMi" | "exposiciones" | "contacto";
+}) {
   const { t } = useLanguage();
 
   return (

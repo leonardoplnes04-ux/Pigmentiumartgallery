@@ -17,6 +17,8 @@ export interface UiStrings {
     cta: string;
     ctaSecondary: string;
     ctaTertiary: string;
+    ctaVideos: string;
+    ctaPerformance: string;
     altPrefix: string; // "<altPrefix> <artist name>"
   };
   featured: {
@@ -38,6 +40,17 @@ export interface UiStrings {
     filterAll: string; // "All artists" tab, only shown when the gallery has more than one
   };
   exhibitionDetail: {
+    back: string;
+  };
+  videos: {
+    eyebrow: string;
+    title: string;
+  };
+  performances: {
+    eyebrow: string;
+    title: string;
+  };
+  performanceDetail: {
     back: string;
   };
   contact: {
@@ -117,6 +130,8 @@ export const translations: Record<Language, UiStrings> = {
       cta: "Ver obra",
       ctaSecondary: "Exposiciones",
       ctaTertiary: "Obras disponibles",
+      ctaVideos: "Videos",
+      ctaPerformance: "Performance",
       altPrefix: "Obra destacada de",
     },
     featured: {
@@ -139,6 +154,17 @@ export const translations: Record<Language, UiStrings> = {
     },
     exhibitionDetail: {
       back: "← Volver a exposiciones",
+    },
+    videos: {
+      eyebrow: "Videos",
+      title: "Videos",
+    },
+    performances: {
+      eyebrow: "Performance",
+      title: "Performance",
+    },
+    performanceDetail: {
+      back: "← Volver a performance",
     },
     contact: {
       eyebrow: "Contacto",
@@ -215,6 +241,8 @@ export const translations: Record<Language, UiStrings> = {
       cta: "View work",
       ctaSecondary: "Exhibitions",
       ctaTertiary: "Available works",
+      ctaVideos: "Videos",
+      ctaPerformance: "Performance",
       altPrefix: "Featured artwork by",
     },
     featured: {
@@ -237,6 +265,17 @@ export const translations: Record<Language, UiStrings> = {
     },
     exhibitionDetail: {
       back: "← Back to exhibitions",
+    },
+    videos: {
+      eyebrow: "Videos",
+      title: "Videos",
+    },
+    performances: {
+      eyebrow: "Performance",
+      title: "Performance",
+    },
+    performanceDetail: {
+      back: "← Back to performance",
     },
     contact: {
       eyebrow: "Contact",

@@ -25,10 +25,12 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent" />
 
       <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-8 text-background sm:px-6 sm:pb-12 md:pb-16">
-        <p className="text-[10px] uppercase tracking-widest sm:text-xs">{pick(artist.tagline)}</p>
-        <h1 className="mt-2 font-serif text-3xl leading-tight sm:text-5xl md:text-7xl">
-          {artist.name}
-        </h1>
+        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <h1 className="font-serif text-3xl leading-tight sm:text-5xl md:text-7xl">
+            {artist.name}
+          </h1>
+          <p className="text-[10px] uppercase tracking-widest sm:text-xs">{pick(artist.tagline)}</p>
+        </div>
         <div className="mt-5 flex flex-wrap gap-3 sm:mt-8">
           <Link
             href="/obra"
@@ -47,6 +49,18 @@ export default function Hero() {
             className="inline-block border border-background/60 px-5 py-2.5 text-xs uppercase tracking-widest hover:bg-background hover:text-ink sm:px-6 sm:py-3"
           >
             {t.hero.ctaTertiary}
+          </Link>
+          <Link
+            href="/videos"
+            className="inline-block border border-background/60 px-5 py-2.5 text-xs uppercase tracking-widest hover:bg-background hover:text-ink sm:px-6 sm:py-3"
+          >
+            {t.hero.ctaVideos}
+          </Link>
+          <Link
+            href="/performance"
+            className="inline-block border border-background/60 px-5 py-2.5 text-xs uppercase tracking-widest hover:bg-background hover:text-ink sm:px-6 sm:py-3"
+          >
+            {t.hero.ctaPerformance}
           </Link>
         </div>
       </div>

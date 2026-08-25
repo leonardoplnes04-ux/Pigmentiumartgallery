@@ -63,6 +63,37 @@ export interface Exhibition {
   artistId: string;
 }
 
+// One photo in a performance's full gallery (see data/performanceGalleries.ts).
+// Same shape as ExhibitionGalleryImage, kept as its own type for domain
+// clarity (mirrors the Exhibition/Performance split).
+export interface PerformanceGalleryImage {
+  src: string;
+  alt: LocalizedText;
+}
+
+export interface Performance {
+  id: string;
+  // Kept untranslated, same reasoning as Exhibition.title: these are the
+  // artist's own poetic/conceptual titles, not descriptive phrases.
+  title: string;
+  year: string;
+  venue?: string;
+  description: LocalizedText;
+}
+
+// A video documenting an exhibition (inauguration night, walkthrough,
+// etc.), shown on /videos. `exhibitionId` is optional — links back to the
+// matching entry in data/exhibitions.ts when one exists, so the video card
+// can deep-link to that exhibition's page.
+export interface ExhibitionVideo {
+  id: string;
+  title: LocalizedText;
+  venue: string;
+  date: string;
+  src: string;
+  exhibitionId?: string;
+}
+
 // A minimal entity for grouping exhibitions by artist on /exposiciones.
 // Intentionally NOT the same as `Artist` below (the single-artist profile
 // used by Hero/Sobre mí/etc.) — this is scoped to the exhibitions page only,
