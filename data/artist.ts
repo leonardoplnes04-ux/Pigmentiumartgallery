@@ -4,8 +4,8 @@ import type { Artist } from "./types";
 export const artist: Artist = {
   name: "Segundo Planes",
   tagline: {
-    es: "Pintura y color como lenguaje de lo cotidiano.",
-    en: "Painting and color as a language for the everyday.",
+    es: "43 años de producción",
+    en: "43 years of work",
   },
   shortBio: {
     es: "Segundo Planes es un artista plástico cuya obra explora la memoria y el paisaje doméstico a través del color y la textura.",
@@ -18,7 +18,7 @@ export const artist: Artist = {
   portraitImage: "/images/placeholder-portrait.svg",
   heroImage: "/images/hero-segundo-planes.jpg",
   heroVideo: "/videos/hero-segundo-planes.mp4",
-  email: "hola@pigmentum.example",
+  email: "segundoplanesobras@outlook.com",
   socials: {
     instagram: "https://instagram.com/pigmentum",
   },
