@@ -14,12 +14,14 @@ export default function Hero() {
     // section quite short. object-cover fills the section edge-to-edge
     // (no side letterboxing) — the photo's own ratio (~3:2) is close
     // enough to 7:4 that the top/bottom crop this introduces is minor.
+    // object-position shifted toward the top (default center was cropping
+    // the top of the photo) so the full frame is visible.
     <section className="relative flex aspect-[7/4] max-h-[85vh] min-h-[380px] w-full items-end overflow-hidden bg-background">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={artist.heroImage}
         alt={`${t.hero.altPrefix} ${artist.name}`}
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover object-[center_20%]"
       />
 
       <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent" />

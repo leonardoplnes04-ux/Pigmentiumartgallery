@@ -83,6 +83,8 @@ export interface UiStrings {
     inquireSubjectPrefix: string; // `<inquireSubjectPrefix> "<title>"`
     criticEyebrow: string;
     detailAltSuffix: string; // "<title> — <detailAltSuffix> N"
+    viewFullscreenAria: string;
+    closeFullscreenAria: string;
   };
   footer: {
     newsletterLabel: string;
@@ -196,6 +198,8 @@ export const translations: Record<Language, UiStrings> = {
       inquireSubjectPrefix: "Consulta sobre",
       criticEyebrow: "Crítica",
       detailAltSuffix: "detalle",
+      viewFullscreenAria: "Ver en pantalla completa",
+      closeFullscreenAria: "Cerrar pantalla completa",
     },
     footer: {
       newsletterLabel: "Newsletter",
@@ -307,6 +311,8 @@ export const translations: Record<Language, UiStrings> = {
       inquireSubjectPrefix: "Inquiry about",
       criticEyebrow: "Critical reception",
       detailAltSuffix: "detail",
+      viewFullscreenAria: "View fullscreen",
+      closeFullscreenAria: "Close fullscreen",
     },
     footer: {
       newsletterLabel: "Newsletter",

@@ -48,9 +48,15 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
 
   useEffect(() => {
     measure();
-    // Cards keep each artwork's own aspect ratio, so their real width is
-    // only known once the image loads — re-measure on any layout change,
-    // not just window resize.
+    // Every card is a fixed-size box now (see the image wrapper below), so
+    // card width never changes once a screen size is set — this only needs
+    // to re-run on window resize (breakpoint change) and on mount, not per
+    // image load. Re-measuring per image load (the old behavior) was the
+    // root cause of the drag/click bug: with 100+ real artworks in the
+    // catalog, each card used to sees its own width from the image's
+    // intrinsic size, so every image finishing its network load reflowed
+    // the whole track — including mid-click, which Framer Motion read as a
+    // drag instead of a tap.
     const observer = new ResizeObserver(measure);
     if (trackRef.current) observer.observe(trackRef.current);
     window.addEventListener("resize", measure);
@@ -122,14 +128,10 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
 
   return (
     <div
-      className="relative mx-auto w-full max-w-[420px] sm:max-w-[560px] lg:max-w-[680px]"
+      className="relative mx-auto w-full max-w-[640px] sm:max-w-[920px] lg:max-w-[1120px]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* edge fades hint that the neighboring pieces peek in from here */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-6 bg-gradient-to-r from-background to-transparent sm:w-10" />
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-6 bg-gradient-to-l from-background to-transparent sm:w-10" />
-
       {/* overflow-hidden viewport: clips the drag so it never pushes the
           rest of the page sideways, even mid-elastic-overshoot */}
       <div ref={viewportRef} className="overflow-hidden">
@@ -156,38 +158,52 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
               <Link href={`/obra/${artwork.id}`} className="block" draggable={false}>
                 <motion.article
                   animate={{
-                    scale: i === index ? 1 : 0.88,
-                    opacity: i === index ? 1 : 0.45,
+                    scale: i === index ? 1.12 : 0.78,
+                    opacity: i === index ? 1 : 0.7,
+                    filter: i === index ? "brightness(1) saturate(1)" : "brightness(1.9) saturate(0.3)",
                   }}
                   whileHover={i === index ? { y: -6 } : undefined}
                   transition={{ type: "spring", stiffness: 300, damping: 24 }}
-                  className="group relative h-[300px] overflow-hidden rounded-2xl bg-line shadow-lg shadow-ink/10 sm:h-[380px] lg:h-[460px]"
+                  className="group relative flex w-[360px] flex-col overflow-hidden rounded-2xl bg-line shadow-lg shadow-ink/10 sm:w-[460px] lg:w-[560px]"
                 >
-                  {/* Natural aspect ratio kept per artwork — fixed height,
-                      width auto, so portrait and landscape pieces don't get
-                      stretched or cropped to match each other. */}
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={artwork.image}
-                    alt={pick(artwork.title)}
-                    draggable={false}
-                    onLoad={measure}
-                    className="h-full w-auto max-w-[80vw] transition-transform duration-700 ease-out group-hover:scale-105"
-                  />
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/0 to-ink/0" />
+                  {/* Fixed-size box (same for every card, portrait or
+                      landscape) with object-contain: the full artwork is
+                      always visible, at its real proportions, never cropped
+                      or stretched — it just letterboxes inside the box
+                      instead of resizing the box to match. This also keeps
+                      every card's width constant from first paint, so the
+                      layout never shifts once an image's network load
+                      finishes (see the measure() comment above). The
+                      focused card scales up (1.12) while neighbors shrink
+                      and lighten (brightness+desaturate, not just opacity,
+                      for a genuinely paler tone rather than a washed-out
+                      transparent look) to pull focus toward the active
+                      piece. */}
+                  <div className="h-[440px] overflow-hidden bg-line sm:h-[560px] lg:h-[680px]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={artwork.image}
+                      alt={pick(artwork.title)}
+                      draggable={false}
+                      loading="lazy"
+                      className="h-full w-full object-contain transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+                  </div>
 
-                  {/* glassmorphism caption panel */}
-                  <div className="absolute inset-x-3 bottom-3 rounded-xl border border-white/25 bg-white/10 px-4 py-3 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.35)] backdrop-blur-md backdrop-saturate-150">
+                  {/* glassmorphism caption panel — sits below the photo
+                      instead of overlaid on top of it, so it never
+                      obstructs the artwork itself. */}
+                  <div className="border-t border-white/50 bg-white/50 px-4 py-3 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6)] backdrop-blur-md backdrop-saturate-150">
                     <div className="flex items-baseline justify-between gap-3">
                       <div className="min-w-0">
-                        <h3 className="truncate font-serif text-lg text-white">
+                        <h3 className="truncate font-serif text-lg text-ink">
                           {pick(artwork.title)}
                         </h3>
-                        <p className="truncate text-xs text-white/80">
+                        <p className="truncate text-xs text-muted">
                           {pick(artwork.medium)}, {artwork.year}
                         </p>
                       </div>
-                      <span className="shrink-0 rounded-full border border-white/30 bg-white/10 px-2.5 py-1 text-[10px] uppercase tracking-widest text-white">
+                      <span className="shrink-0 rounded-full border border-ink/15 bg-ink/5 px-2.5 py-1 text-[10px] uppercase tracking-widest text-ink">
                         {statusLabels[artwork.status]}
                       </span>
                     </div>
