@@ -46,7 +46,8 @@ export default function ArtworkCard({ artwork }: { artwork: Artwork }) {
         <div>
           <h3 className="font-serif text-lg text-ink/70">{pick(artwork.title)}</h3>
           <p className="text-sm text-muted/60">
-            {pick(artwork.medium)}, {artwork.year}
+            {pick(artwork.medium)}
+            {artwork.year ? `, ${artwork.year}` : ""}
           </p>
         </div>
         <span className="text-xs uppercase tracking-widest text-muted/60">

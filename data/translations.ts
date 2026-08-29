@@ -71,6 +71,7 @@ export interface UiStrings {
   detail: {
     back: string;
     year: string;
+    yearTBD: string;
     technique: string;
     dimensions: string;
     status: string;
@@ -186,6 +187,7 @@ export const translations: Record<Language, UiStrings> = {
     detail: {
       back: "← Volver a obra",
       year: "Año",
+      yearTBD: "Por confirmar",
       technique: "Técnica",
       dimensions: "Dimensiones",
       status: "Estado",
@@ -299,6 +301,7 @@ export const translations: Record<Language, UiStrings> = {
     detail: {
       back: "← Back to work",
       year: "Year",
+      yearTBD: "To be confirmed",
       technique: "Technique",
       dimensions: "Dimensions",
       status: "Status",

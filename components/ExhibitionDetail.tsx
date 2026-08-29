@@ -41,6 +41,17 @@ export default function ExhibitionDetail({
             <figcaption className="mt-2 text-xs uppercase tracking-widest text-muted">
               {String(i + 1).padStart(2, "0")} — {pick(image.alt)}
             </figcaption>
+            {(image.dimensions || image.technique || image.year) && (
+              <p className="mt-1 text-xs text-muted/70">
+                {[
+                  image.dimensions && pick(image.dimensions),
+                  image.technique && pick(image.technique),
+                  image.year,
+                ]
+                  .filter(Boolean)
+                  .join(" · ")}
+              </p>
+            )}
           </figure>
         ))}
       </div>

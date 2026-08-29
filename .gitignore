@@ -9,3 +9,8 @@ tsconfig.tsbuildinfo
 
 # graphify analysis output (regeneratable via `graphify extract .`) — not project content
 graphify-out
+
+# working folder: copies of catalogue images still missing a title, for the
+# artist to review offline. Not project content — the originals live in
+# public/images/obras/. Delete once titles are filled in.
+obras-sin-titulo

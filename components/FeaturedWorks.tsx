@@ -21,7 +21,11 @@ export default function FeaturedWorks() {
       <p className="text-xs uppercase tracking-widest text-muted">{t.featured.eyebrow}</p>
       <h2 className="mt-2 font-serif text-2xl sm:text-3xl">{t.featured.title}</h2>
 
-      <div className="mt-8 sm:mt-12">
+      {/* Modest gap here — the carousel's own viewport now carries generous
+          vertical padding (see FeaturedCarousel) so the focused card can
+          scale up without its top reaching the "Obra destacada" heading or
+          being clipped. */}
+      <div className="mt-6 sm:mt-10">
         <FeaturedCarousel artworks={featured} />
       </div>
     </section>

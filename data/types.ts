@@ -22,12 +22,22 @@ export interface CriticReview {
 export interface ExhibitionGalleryImage {
   src: string;
   alt: LocalizedText;
+  // Optional technical caption data, parsed from the artist's original
+  // source filenames (title · dimensions · technique · year). Shown after
+  // the title in the figcaption when present. `alt` stays title-only so
+  // screen readers aren't read a full spec sheet per image.
+  dimensions?: LocalizedText;
+  technique?: LocalizedText;
+  year?: string;
 }
 
 export interface Artwork {
   id: string;
   title: LocalizedText;
-  year: number;
+  // Optional: many catalogue pieces reached us through source filenames
+  // that recorded size/technique but no year — those show "por confirmar"
+  // rather than a guessed date. See PROYECTO.md bitácora 2026-08-28.
+  year?: number;
   medium: LocalizedText;
   dimensions: LocalizedText;
   // Structured, machine-usable measurements — presence gates the wall

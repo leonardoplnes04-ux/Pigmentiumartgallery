@@ -133,8 +133,14 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
       onMouseLeave={() => setPaused(false)}
     >
       {/* overflow-hidden viewport: clips the drag so it never pushes the
-          rest of the page sideways, even mid-elastic-overshoot */}
-      <div ref={viewportRef} className="overflow-hidden">
+          rest of the page sideways, even mid-elastic-overshoot. The
+          vertical padding is load-bearing: overflow-hidden clips BOTH
+          axes, and the focused card grows from its centre (scale 1.06)
+          plus a hover y-lift plus a soft drop-shadow — without this
+          headroom the top/bottom of the enlarged artwork got sliced off
+          by the clip edge. Only `py` (never `px`) so the drag/centering
+          math, which reads offsetWidth, is untouched. */}
+      <div ref={viewportRef} className="overflow-hidden py-10 sm:py-14 lg:py-20">
         <motion.div
           ref={trackRef}
           className="flex cursor-grab gap-6 active:cursor-grabbing"
@@ -158,55 +164,52 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
               <Link href={`/obra/${artwork.id}`} className="block" draggable={false}>
                 <motion.article
                   animate={{
-                    scale: i === index ? 1.12 : 0.78,
-                    opacity: i === index ? 1 : 0.7,
-                    filter: i === index ? "brightness(1) saturate(1)" : "brightness(1.9) saturate(0.3)",
+                    scale: i === index ? 1.06 : 0.9,
+                    opacity: i === index ? 1 : 0.55,
                   }}
                   whileHover={i === index ? { y: -6 } : undefined}
                   transition={{ type: "spring", stiffness: 300, damping: 24 }}
-                  className="group relative flex w-[360px] flex-col overflow-hidden rounded-2xl bg-line shadow-lg shadow-ink/10 sm:w-[460px] lg:w-[560px]"
+                  className="group relative flex w-[360px] flex-col sm:w-[460px] lg:w-[560px]"
                 >
-                  {/* Fixed-size box (same for every card, portrait or
-                      landscape) with object-contain: the full artwork is
-                      always visible, at its real proportions, never cropped
-                      or stretched — it just letterboxes inside the box
-                      instead of resizing the box to match. This also keeps
-                      every card's width constant from first paint, so the
-                      layout never shifts once an image's network load
-                      finishes (see the measure() comment above). The
-                      focused card scales up (1.12) while neighbors shrink
-                      and lighten (brightness+desaturate, not just opacity,
-                      for a genuinely paler tone rather than a washed-out
-                      transparent look) to pull focus toward the active
-                      piece. */}
-                  <div className="h-[440px] overflow-hidden bg-line sm:h-[560px] lg:h-[680px]">
+                  {/* No card, no mat, no frame: the artwork sits directly on
+                      the page. object-contain shows the WHOLE piece at its
+                      real proportions (never cropped, never zoomed) and the
+                      transparent letterbox area just lets the page show
+                      through, so a portrait or a wide landscape both look
+                      like they're floating in the page rather than pasted
+                      into a slot. A soft drop-shadow (which follows the
+                      image's actual edges, not a bounding box) lifts it off
+                      the background. The box stays a fixed size so every
+                      card's width is constant from first paint and the
+                      layout never shifts once an image finishes loading
+                      (see the measure() comment above). Non-focused cards
+                      just shrink and fade (plain opacity). */}
+                  <div className="h-[440px] sm:h-[560px] lg:h-[680px]">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={artwork.image}
                       alt={pick(artwork.title)}
                       draggable={false}
                       loading="lazy"
-                      className="h-full w-full object-contain transition-transform duration-700 ease-out group-hover:scale-105"
+                      className="h-full w-full object-contain [filter:drop-shadow(0_18px_40px_rgba(30,30,30,0.16))]"
                     />
                   </div>
 
-                  {/* glassmorphism caption panel — sits below the photo
-                      instead of overlaid on top of it, so it never
-                      obstructs the artwork itself. */}
-                  <div className="border-t border-white/50 bg-white/50 px-4 py-3 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.6)] backdrop-blur-md backdrop-saturate-150">
-                    <div className="flex items-baseline justify-between gap-3">
-                      <div className="min-w-0">
-                        <h3 className="truncate font-serif text-lg text-ink">
-                          {pick(artwork.title)}
-                        </h3>
-                        <p className="truncate text-xs text-muted">
-                          {pick(artwork.medium)}, {artwork.year}
-                        </p>
-                      </div>
-                      <span className="shrink-0 rounded-full border border-ink/15 bg-ink/5 px-2.5 py-1 text-[10px] uppercase tracking-widest text-ink">
-                        {statusLabels[artwork.status]}
-                      </span>
+                  {/* caption: plain text under the piece, no panel or
+                      background — keeps the "floating artwork" feel. */}
+                  <div className="mt-5 flex items-baseline justify-between gap-3">
+                    <div className="min-w-0">
+                      <h3 className="truncate font-serif text-lg text-ink">
+                        {pick(artwork.title)}
+                      </h3>
+                      <p className="truncate text-xs text-muted">
+                        {pick(artwork.medium)}
+                        {artwork.year ? `, ${artwork.year}` : ""}
+                      </p>
                     </div>
+                    <span className="shrink-0 text-[10px] uppercase tracking-widest text-muted">
+                      {statusLabels[artwork.status]}
+                    </span>
                   </div>
                 </motion.article>
               </Link>

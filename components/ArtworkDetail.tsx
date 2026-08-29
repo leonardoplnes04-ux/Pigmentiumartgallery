@@ -88,7 +88,7 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
           <dl className="mt-6 space-y-2 border-t border-line pt-6 text-sm">
             <div className="flex justify-between gap-4">
               <dt className="text-muted">{t.detail.year}</dt>
-              <dd>{artwork.year}</dd>
+              <dd>{artwork.year ?? t.detail.yearTBD}</dd>
             </div>
             <div className="flex justify-between gap-4">
               <dt className="text-muted">{t.detail.technique}</dt>

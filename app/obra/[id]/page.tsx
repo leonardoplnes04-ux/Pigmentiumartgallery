@@ -23,7 +23,9 @@ export async function generateMetadata({
   // in docs/specs/2026-08-17-language-toggle-design.md.
   return {
     title: `${artwork.title.es} — ${artist.name}`,
-    description: `${artwork.medium.es}, ${artwork.year}.`,
+    description: artwork.year
+      ? `${artwork.medium.es}, ${artwork.year}.`
+      : `${artwork.medium.es}.`,
   };
 }
 
