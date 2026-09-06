@@ -64,7 +64,7 @@ export default function AvailableSpecModal({
         aria-modal="true"
         aria-label={title}
         onClick={(e) => e.stopPropagation()}
-        className="relative my-auto w-full max-w-4xl overflow-hidden rounded-2xl border border-line bg-background text-ink shadow-2xl"
+        className="relative my-auto w-full max-w-[1400px] overflow-hidden rounded-2xl border border-line bg-background text-ink shadow-2xl"
       >
         <button
           type="button"
@@ -75,7 +75,7 @@ export default function AvailableSpecModal({
           ×
         </button>
 
-        <div className="grid grid-cols-1 gap-6 p-5 sm:p-8 md:grid-cols-[1.3fr_1fr] md:gap-10">
+        <div className="grid grid-cols-1 gap-6 p-5 sm:p-8 md:grid-cols-[1.9fr_1fr] md:gap-12 lg:p-10">
           <div>
             <div className="group relative flex items-center justify-center bg-line">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -89,7 +89,7 @@ export default function AvailableSpecModal({
                 draggable={false}
                 decoding="async"
                 onClick={() => setZoomSrc(current)}
-                className="max-h-[70vh] w-full cursor-zoom-in object-contain"
+                className="max-h-[80vh] w-full cursor-zoom-in object-contain lg:max-h-[85vh]"
               />
               {/* Expand to full screen — same control as the /obra detail view. */}
               <button
@@ -162,7 +162,7 @@ export default function AvailableSpecModal({
             <p className="text-xs uppercase tracking-widest text-muted">
               {t.detail.statusEyebrow[artwork.status]}
             </p>
-            <h2 className="mt-2 font-serif text-2xl sm:text-3xl">{title}</h2>
+            <h2 className="mt-2 font-serif text-3xl sm:text-4xl">{title}</h2>
 
             {/* Ficha técnica */}
             <dl className="mt-6 space-y-2 border-t border-line pt-6 text-sm">

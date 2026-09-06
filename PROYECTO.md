@@ -725,6 +725,14 @@ Todo lo relacionado con este proyecto vive aquí:
   `zoomSrc`; se resetea al abrir otra obra. Verificado: `tsc` +
   `next build` limpios, rutas 200.
 
+- **2026-09-06**: Modal de ficha más grande (layout "ancho, imagen
+  protagonista", elegido por el usuario). `components/AvailableSpecModal.tsx`:
+  contenedor `max-w-4xl` → `max-w-[1400px]`; grid `md:grid-cols-[1.3fr_1fr]`
+  → `[1.9fr_1fr]` (imagen ~65 %), `md:gap-12`, `lg:p-10`; imagen
+  `max-h-[70vh]` → `max-h-[80vh] lg:max-h-[85vh]`; título `text-2xl/3xl`
+  → `text-3xl/4xl`. Iterativo — puede seguir ajustándose.
+  `tsc` + `next build` limpios.
+
 - **2026-09-06**: **Pase de rendimiento** (móvil se veía lento, "apenas
   cargan las obras"). Se lanzaron 4 subagentes de auditoría (imágenes /
   render del carrusel / build+bundle+caché / errores de runtime) y se
