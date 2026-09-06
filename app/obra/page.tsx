@@ -13,14 +13,13 @@ import { availableExtra } from "@/data/availableExtra";
 import type { Artwork } from "@/data/types";
 import { useLanguage } from "@/hooks/useLanguage";
 
-// Per-viewer, provisional custom order for the "Obras disponibles" list,
-// set with the drag tool at /obra?disponibles=1&orden=1 and stored only in
-// that browser. Never affects the published order until it's baked into
-// data/availableExtra.ts by hand.
+// Per-viewer, PROVISIONAL custom order for the "Obras disponibles" view.
+// Stored only in that browser; never affects the published order until
+// it's baked into data/availableExtra.ts by hand.
 const ORDER_KEY = "disponibles-order-v1";
 
-// Lazy — this pulls in framer-motion and only matters at ?orden=1, so it
-// must not weigh on the normal /obra bundle.
+// The draggable grid used for /obra?disponibles=1. Lazy + ssr:false so its
+// framer-motion dependency never touches the main /obra catalogue bundle.
 const DisponiblesReorder = dynamic(
   () => import("@/components/DisponiblesReorder"),
   { ssr: false }
@@ -88,23 +87,6 @@ function ObraGrid() {
   // page, and the folder order they came in is kept as-is.
   const params = useSearchParams();
   const onlyAvailable = params.get("disponibles") === "1";
-  const reorderMode = onlyAvailable && params.get("orden") === "1";
-  const artworks = onlyAvailable
-    ? [
-        ...realArtworks.filter((artwork) => artwork.status === "available"),
-        ...orderedExtra,
-      ]
-    : realArtworks;
-
-  if (reorderMode) {
-    return (
-      <DisponiblesReorder
-        items={orderedExtra}
-        onChange={saveOrder}
-        onReset={resetOrder}
-      />
-    );
-  }
 
   return (
     <main className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-14 md:py-16">
@@ -113,33 +95,22 @@ function ObraGrid() {
         {onlyAvailable ? t.hero.ctaTertiary : t.catalog.title}
       </h1>
 
-      {/* CSS-columns masonry instead of a grid: each artwork keeps its own
-          aspect ratio (components/ArtworkCard.tsx) and the column layout
-          packs the next card right under the shortest column instead of
-          leaving a row-height gap under it, like a grid would with mixed
-          card heights. break-inside-avoid keeps a card from splitting
-          across two columns. This only changes how the *same* array is
-          laid out visually — `artworks` itself is never re-sorted, so the
-          chosen order (see data/artworks.ts) is preserved: CSS columns
-          fill top-to-bottom within each column, left column first, which
-          keeps consecutive array items visually close together without
-          reordering the underlying data. */}
-      {/* Capped at 3 columns (was 4 up to xl) so each piece renders bigger
-          and more detail is visible, per the user's request. */}
-      <div className="mt-8 columns-1 gap-8 sm:mt-12 sm:columns-2 lg:columns-3">
-        {artworks.map((artwork) =>
-          artwork.noDetailPage ? (
-            // Available-only piece: no /obra/[id] route — clicking opens its
-            // spec sheet in a modal on this same page.
-            <button
-              key={artwork.id}
-              type="button"
-              onClick={() => setSpecArtwork(artwork)}
-              className="mb-8 block w-full break-inside-avoid text-left"
-            >
-              <ArtworkCard artwork={artwork} />
-            </button>
-          ) : (
+      {onlyAvailable ? (
+        // Provisional: the "Obras disponibles" grid is drag-to-reorder in
+        // place. A tap opens the spec modal; a drag rearranges (saved
+        // per-browser only).
+        <DisponiblesReorder
+          items={orderedExtra}
+          onChange={saveOrder}
+          onReset={resetOrder}
+          onOpen={setSpecArtwork}
+        />
+      ) : (
+        // CSS-columns masonry: each piece keeps its own aspect ratio and
+        // packs under the shortest column. Order in data/artworks.ts is
+        // preserved (columns fill top-to-bottom, left column first).
+        <div className="mt-8 columns-1 gap-8 sm:mt-12 sm:columns-2 lg:columns-3">
+          {realArtworks.map((artwork) => (
             <Link
               key={artwork.id}
               href={`/obra/${artwork.id}`}
@@ -147,9 +118,9 @@ function ObraGrid() {
             >
               <ArtworkCard artwork={artwork} />
             </Link>
-          )
-        )}
-      </div>
+          ))}
+        </div>
+      )}
 
       <AvailableSpecModal
         artwork={specArtwork}

@@ -5,39 +5,36 @@ import { motion } from "framer-motion";
 import type { Artwork } from "@/data/types";
 import { useLanguage } from "@/hooks/useLanguage";
 
-// PROVISIONAL tool. Reached only at /obra?disponibles=1&orden=1. Lets the
-// gallery owner drag the available pieces into an arrangement they like;
-// the grid reflows live and the order is kept in that browser's
-// localStorage (per-viewer, never shipped). "Copiar orden" exports the id
-// list so the final order can be baked into data/availableExtra.ts.
+// PROVISIONAL. This is the grid for the "Obras disponibles" view
+// (/obra?disponibles=1). A tap on a card opens its spec modal (onOpen); a
+// drag rearranges the grid live. The chosen order is kept in that
+// browser's localStorage only (handled by the parent) and never published
+// until it's baked into data/availableExtra.ts by hand.
 //
-// Uses raw pointer events (not the native HTML5 drag API) on purpose: the
-// site's ImageGuard blocks image drags globally, framer-motion hijacks
-// onDragStart on its components, and native DnD is flaky across browsers.
-// Pointer events sidestep all of that.
+// Drag is implemented with raw pointer events, NOT the HTML5 drag API:
+// the site's ImageGuard blocks image drags globally and framer-motion
+// swallows onDragStart on its components. Pointer events sidestep both.
 export default function DisponiblesReorder({
   items,
   onChange,
   onReset,
+  onOpen,
 }: {
   items: Artwork[];
   onChange: (ids: string[]) => void;
   onReset: () => void;
+  onOpen: (artwork: Artwork) => void;
 }) {
   const { pick } = useLanguage();
   const [order, setOrder] = useState<Artwork[]>(items);
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
-  // Rebuild if the underlying list changes (e.g. more works added later).
   useEffect(() => setOrder(items), [items]);
 
-  // Mutable drag state that must not trigger re-renders.
   const press = useRef<{ id: string; x: number; y: number; moved: boolean } | null>(
     null
   );
-  const orderRef = useRef(order);
-  orderRef.current = order;
 
   const moveDraggedOver = (overId: string) => {
     const fromId = press.current?.id;
@@ -56,8 +53,7 @@ export default function DisponiblesReorder({
 
   const idAtPoint = (clientX: number, clientY: number): string | null => {
     const el = document.elementFromPoint(clientX, clientY) as HTMLElement | null;
-    const card = el?.closest<HTMLElement>("[data-reorder-id]");
-    return card?.dataset.reorderId ?? null;
+    return el?.closest<HTMLElement>("[data-reorder-id]")?.dataset.reorderId ?? null;
   };
 
   const onPointerDown = (e: React.PointerEvent, id: string) => {
@@ -85,8 +81,14 @@ export default function DisponiblesReorder({
     } catch {
       /* ignore */
     }
+    const p = press.current;
     press.current = null;
     setDraggingId(null);
+    // A press that never moved = a tap → open the spec sheet.
+    if (p && !p.moved) {
+      const art = order.find((a) => a.id === p.id);
+      if (art) onOpen(art);
+    }
   };
 
   const copyOrder = async () => {
@@ -101,21 +103,16 @@ export default function DisponiblesReorder({
   };
 
   return (
-    <main className="mx-auto max-w-6xl px-5 py-6 sm:px-6">
-      <div className="sticky top-0 z-20 -mx-5 mb-6 flex flex-wrap items-center gap-3 border-b border-line bg-background/90 px-5 py-3 backdrop-blur sm:-mx-6 sm:px-6">
-        <div>
-          <p className="text-xs uppercase tracking-widest text-muted">
-            Modo provisional · {order.length} obras
-          </p>
-          <p className="text-sm text-ink/70">
-            Arrastra para reordenar. Cuando te guste, pulsa «Copiar orden» y compártelo.
-          </p>
-        </div>
+    <>
+      <div className="mt-6 flex flex-wrap items-center gap-3 rounded-lg border border-line bg-line/40 px-4 py-3 text-sm">
+        <span className="text-ink/70">
+          Arrastra las obras para reordenarlas · un toque abre su ficha.
+        </span>
         <div className="ml-auto flex gap-2">
           <button
             type="button"
             onClick={copyOrder}
-            className="border border-ink px-4 py-2 text-xs uppercase tracking-widest transition hover:bg-ink hover:text-background"
+            className="border border-ink px-3 py-1.5 text-[11px] uppercase tracking-widest transition hover:bg-ink hover:text-background"
           >
             {copied ? "¡Copiado!" : "Copiar orden"}
           </button>
@@ -125,14 +122,14 @@ export default function DisponiblesReorder({
               onReset();
               setOrder(items);
             }}
-            className="border border-line px-4 py-2 text-xs uppercase tracking-widest transition hover:border-ink"
+            className="border border-line px-3 py-1.5 text-[11px] uppercase tracking-widest transition hover:border-ink"
           >
             Reiniciar
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
         {order.map((a, i) => {
           const dragging = draggingId === a.id;
           return (
@@ -165,13 +162,13 @@ export default function DisponiblesReorder({
                   {i + 1}
                 </span>
               </div>
-              <p className="pointer-events-none mt-1 truncate text-[11px] text-muted">
+              <p className="pointer-events-none mt-1.5 truncate text-xs text-muted">
                 {pick(a.title)}
               </p>
             </motion.div>
           );
         })}
       </div>
-    </main>
+    </>
   );
 }
