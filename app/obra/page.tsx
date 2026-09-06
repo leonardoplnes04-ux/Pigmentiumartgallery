@@ -17,6 +17,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 // Stored only in that browser; never affects the published order until
 // it's baked into data/availableExtra.ts by hand.
 const ORDER_KEY = "disponibles-order-v1";
+const HIDDEN_KEY = "disponibles-hidden-v1";
 
 // The draggable grid used for /obra?disponibles=1. Lazy + ssr:false so its
 // framer-motion dependency never touches the main /obra catalogue bundle.
@@ -47,6 +48,38 @@ function ObraGrid() {
   // its spec sheet in a modal instead (see components/AvailableSpecModal).
   const [specArtwork, setSpecArtwork] = useState<Artwork | null>(null);
 
+  // Provisionally hidden pieces (the "×" on a card). Separate from the
+  // order so removing a piece never disturbs the arrangement.
+  const [hidden, setHidden] = useState<string[]>([]);
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(HIDDEN_KEY);
+      if (raw) setHidden(JSON.parse(raw));
+    } catch {
+      /* ignore */
+    }
+  }, []);
+  const hideArtwork = (id: string) => {
+    setHidden((prev) => {
+      if (prev.includes(id)) return prev;
+      const next = [...prev, id];
+      try {
+        localStorage.setItem(HIDDEN_KEY, JSON.stringify(next));
+      } catch {
+        /* ignore */
+      }
+      return next;
+    });
+  };
+  const restoreHidden = () => {
+    try {
+      localStorage.removeItem(HIDDEN_KEY);
+    } catch {
+      /* ignore */
+    }
+    setHidden([]);
+  };
+
   const [savedOrder, setSavedOrder] = useState<string[] | null>(null);
   useEffect(() => {
     try {
@@ -56,13 +89,23 @@ function ObraGrid() {
       /* ignore */
     }
   }, []);
-  const saveOrder = (ids: string[]) => {
+  // `visibleIds` is the new order of the *visible* cards only. Merge it
+  // back into the full list without moving the hidden pieces, so hiding a
+  // piece never disturbs the arrangement (and it lands back in place if
+  // restored).
+  const saveOrder = (visibleIds: string[]) => {
+    const full = applyOrder(availableExtra, savedOrder).map((a) => a.id);
+    const hiddenSet = new Set(hidden);
+    let vi = 0;
+    const merged = full.map((id) =>
+      hiddenSet.has(id) ? id : visibleIds[vi++] ?? id
+    );
     try {
-      localStorage.setItem(ORDER_KEY, JSON.stringify(ids));
+      localStorage.setItem(ORDER_KEY, JSON.stringify(merged));
     } catch {
       /* ignore */
     }
-    setSavedOrder(ids);
+    setSavedOrder(merged);
   };
   const resetOrder = () => {
     try {
@@ -72,9 +115,14 @@ function ObraGrid() {
     }
     setSavedOrder(null);
   };
+
   const orderedExtra = useMemo(
     () => applyOrder(availableExtra, savedOrder),
     [savedOrder]
+  );
+  const visibleExtra = useMemo(
+    () => orderedExtra.filter((a) => !hidden.includes(a.id)),
+    [orderedExtra, hidden]
   );
   // "Obras disponibles" (Hero) links here with ?disponibles=1 to show only
   // artworks still for sale, instead of duplicating /obra as a new route.
@@ -100,10 +148,13 @@ function ObraGrid() {
         // place. A tap opens the spec modal; a drag rearranges (saved
         // per-browser only).
         <DisponiblesReorder
-          items={orderedExtra}
+          items={visibleExtra}
           onChange={saveOrder}
           onReset={resetOrder}
           onOpen={setSpecArtwork}
+          onHide={hideArtwork}
+          hiddenCount={hidden.length}
+          onRestoreHidden={restoreHidden}
         />
       ) : (
         // CSS-columns masonry: each piece keeps its own aspect ratio and

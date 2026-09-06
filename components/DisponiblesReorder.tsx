@@ -19,11 +19,17 @@ export default function DisponiblesReorder({
   onChange,
   onReset,
   onOpen,
+  onHide,
+  hiddenCount,
+  onRestoreHidden,
 }: {
   items: Artwork[];
   onChange: (ids: string[]) => void;
   onReset: () => void;
   onOpen: (artwork: Artwork) => void;
+  onHide: (id: string) => void;
+  hiddenCount: number;
+  onRestoreHidden: () => void;
 }) {
   const { pick } = useLanguage();
   const [order, setOrder] = useState<Artwork[]>(items);
@@ -106,9 +112,18 @@ export default function DisponiblesReorder({
     <>
       <div className="mt-6 flex flex-wrap items-center gap-3 rounded-lg border border-line bg-line/40 px-4 py-3 text-sm">
         <span className="text-ink/70">
-          Arrastra las obras para reordenarlas · un toque abre su ficha.
+          Arrastra para reordenar · un toque abre la ficha · «×» quita la obra.
         </span>
-        <div className="ml-auto flex gap-2">
+        <div className="ml-auto flex flex-wrap gap-2">
+          {hiddenCount > 0 && (
+            <button
+              type="button"
+              onClick={onRestoreHidden}
+              className="border border-line px-3 py-1.5 text-[11px] uppercase tracking-widest transition hover:border-ink"
+            >
+              Restaurar ocultas ({hiddenCount})
+            </button>
+          )}
           <button
             type="button"
             onClick={copyOrder}
@@ -124,7 +139,7 @@ export default function DisponiblesReorder({
             }}
             className="border border-line px-3 py-1.5 text-[11px] uppercase tracking-widest transition hover:border-ink"
           >
-            Reiniciar
+            Reiniciar orden
           </button>
         </div>
       </div>
@@ -161,6 +176,20 @@ export default function DisponiblesReorder({
                 <span className="pointer-events-none absolute left-1 top-1 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-medium tabular-nums text-white">
                   {i + 1}
                 </span>
+                <button
+                  type="button"
+                  aria-label="Quitar esta obra"
+                  // stopPropagation so pressing × never starts a drag
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOrder((prev) => prev.filter((x) => x.id !== a.id));
+                    onHide(a.id);
+                  }}
+                  className="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-black/55 text-sm leading-none text-white transition hover:bg-black/80"
+                >
+                  ×
+                </button>
               </div>
               <p className="pointer-events-none mt-1.5 truncate text-xs text-muted">
                 {pick(a.title)}
