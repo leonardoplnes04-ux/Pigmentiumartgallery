@@ -30,6 +30,10 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
   const [maxDrag, setMaxDrag] = useState(0);
   const [layout, setLayout] = useState<ItemLayout[]>([]);
   const [paused, setPaused] = useState(false);
+  // Autoplay only runs while the carousel is actually on screen — an
+  // off-screen carousel with 200+ animated cards was burning CPU on a
+  // forever-running timer.
+  const [onScreen, setOnScreen] = useState(true);
 
   // Live index for the native wheel listener (added once, would otherwise
   // close over a stale value).
@@ -106,10 +110,23 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
     [controls, count, centerTarget]
   );
 
-  // Autoplay — advances exactly one artwork at a time, pauses on
-  // hover/drag or before layout is measured.
+  // Pause autoplay (and its per-tick re-render of every card) whenever the
+  // carousel scrolls out of view.
   useEffect(() => {
-    if (paused || layout.length === 0) return;
+    const el = viewportRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      ([entry]) => setOnScreen(entry.isIntersecting),
+      { rootMargin: "200px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // Autoplay — advances exactly one artwork at a time, pauses on
+  // hover/drag, while off screen, or before layout is measured.
+  useEffect(() => {
+    if (paused || !onScreen || layout.length === 0) return;
     const id = setInterval(() => {
       setIndex((prev) => {
         const next = prev + 1 >= count ? 0 : prev + 1;
@@ -121,7 +138,7 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
       });
     }, AUTOPLAY_DELAY_MS);
     return () => clearInterval(id);
-  }, [paused, layout, count, controls, centerTarget]);
+  }, [paused, onScreen, layout, count, controls, centerTarget]);
 
   // Trackpad / wheel navigation — a horizontal two-finger swipe (or
   // shift+wheel) steps the carousel exactly like the ‹ › buttons, so you
@@ -265,6 +282,7 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
                       alt={pick(artwork.title)}
                       draggable={false}
                       loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-contain [filter:drop-shadow(0_18px_40px_rgba(30,30,30,0.16))]"
                     />
                   </div>
@@ -331,20 +349,29 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
         ›
       </button>
 
-      {/* progress dots */}
-      <div className="mt-6 flex justify-center gap-2">
-        {artworks.map((artwork, i) => (
-          <button
-            key={artwork.id}
-            type="button"
-            aria-label={`${t.carousel.goToAriaPrefix} ${pick(artwork.title)}`}
-            onClick={() => goTo(i)}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
-              i === index ? "w-6 bg-ink" : "w-1.5 bg-line hover:bg-muted"
-            }`}
-          />
-        ))}
-      </div>
+      {/* Progress indicator. One dot per card is fine for a short reel but
+          becomes 200+ nodes (and an unusable crush of 1px dots) with the
+          full catalogue behind the carousel — past a threshold, show a
+          compact "n / total" counter instead. */}
+      {count <= 24 ? (
+        <div className="mt-6 flex justify-center gap-2">
+          {artworks.map((artwork, i) => (
+            <button
+              key={artwork.id}
+              type="button"
+              aria-label={`${t.carousel.goToAriaPrefix} ${pick(artwork.title)}`}
+              onClick={() => goTo(i)}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                i === index ? "w-6 bg-ink" : "w-1.5 bg-line hover:bg-muted"
+              }`}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="mt-6 text-center text-xs tabular-nums tracking-widest text-muted">
+          {index + 1} / {count}
+        </div>
+      )}
     </div>
   );
 }

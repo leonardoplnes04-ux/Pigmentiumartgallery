@@ -21,6 +21,9 @@ export default function Hero() {
       <img
         src={artist.heroImage}
         alt={`${t.hero.altPrefix} ${artist.name}`}
+        // LCP image of the homepage — load it eagerly and early.
+        fetchPriority="high"
+        decoding="async"
         className="absolute inset-0 h-full w-full object-cover object-[center_20%]"
       />
 

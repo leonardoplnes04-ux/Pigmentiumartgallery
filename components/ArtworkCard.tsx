@@ -1,23 +1,22 @@
 "use client";
 
 import type { Artwork } from "@/data/types";
+import { aspectRatioOf } from "@/data/imageDimensions";
 import { useLanguage } from "@/hooks/useLanguage";
 
 export default function ArtworkCard({ artwork }: { artwork: Artwork }) {
   const { t, pick } = useLanguage();
 
-  // Respect each piece's own proportions instead of forcing a uniform
-  // crop: when the real physical dimensions are on file, the card's
-  // aspect ratio matches the actual artwork (object-cover trims only the
-  // photo's own framing slack, not the piece); otherwise there's no
-  // reliable real-world ratio to use, so the photo renders at its native
-  // aspect ratio uncropped. Either way, cards in the grid end up
-  // different heights on purpose — see components/ArtworkCard.tsx usage
-  // in app/obra/page.tsx, which sets align-items: start on the grid so
-  // rows don't stretch shorter cards to match taller neighbors.
+  // Reserve the card's height BEFORE the image loads so the CSS-columns
+  // masonry in /obra doesn't reflow as each photo arrives (big CLS win on
+  // mobile). Prefer the real physical proportions when on file (object-cover
+  // then trims only the photo's framing slack, not the piece); otherwise
+  // fall back to the photo's own pixel ratio from the generated
+  // data/imageDimensions.ts map. Only when neither is known do we let the
+  // image define its own height (old behavior).
   const ratio = artwork.realDimensionsCm
     ? `${artwork.realDimensionsCm.width} / ${artwork.realDimensionsCm.height}`
-    : undefined;
+    : aspectRatioOf(artwork.image);
 
   return (
     <article className="group">
@@ -30,6 +29,8 @@ export default function ArtworkCard({ artwork }: { artwork: Artwork }) {
           src={artwork.image}
           alt={pick(artwork.title)}
           draggable={false}
+          loading="lazy"
+          decoding="async"
           className={
             ratio
               ? "h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"

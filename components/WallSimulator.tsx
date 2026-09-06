@@ -185,6 +185,7 @@ export default function WallSimulator({ artwork }: { artwork: MeasuredArtwork })
             <img
               src={photoUrl}
               alt=""
+              decoding="async"
               className="pointer-events-none absolute inset-0 h-full w-full object-cover"
             />
 
@@ -202,6 +203,7 @@ export default function WallSimulator({ artwork }: { artwork: MeasuredArtwork })
                 src={artwork.image}
                 alt={title}
                 draggable={false}
+                decoding="async"
                 className="pointer-events-none w-full shadow-lg"
               />
 

@@ -49,6 +49,8 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
                 src={src}
                 alt={i === 0 ? title : `${title} — ${t.detail.detailAltSuffix} ${i + 1}`}
                 draggable={false}
+                loading={i === 0 ? undefined : "lazy"}
+                decoding="async"
                 className="h-auto w-full cursor-zoom-in"
                 onClick={() => setFullscreenSrc(src)}
               />
@@ -179,6 +181,7 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
             src={fullscreenSrc}
             alt={title}
             draggable={false}
+            decoding="async"
             onClick={(e) => e.stopPropagation()}
             className="max-h-full max-w-full object-contain"
           />

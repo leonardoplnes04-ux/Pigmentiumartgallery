@@ -48,6 +48,8 @@ export default function PerformancePage() {
                     <img
                       src={cover.src}
                       alt={pick(cover.alt)}
+                      loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
                     />
                   </Link>

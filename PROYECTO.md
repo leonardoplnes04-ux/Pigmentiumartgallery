@@ -680,6 +680,50 @@ Todo lo relacionado con este proyecto vive aquí:
   (`<button>` que abren el modal) en orden; `/obra` y `/` con 0
   referencias a `images/disponibles`.
 
+- **2026-09-06**: **Pase de rendimiento** (móvil se veía lento, "apenas
+  cargan las obras"). Se lanzaron 4 subagentes de auditoría (imágenes /
+  render del carrusel / build+bundle+caché / errores de runtime) y se
+  aplicaron los arreglos prioritarios en los que coincidían:
+  - **Re-compresión de todas las imágenes** `public/images/**` en sitio
+    (`scratchpad/reencode_images.mjs` con `sharp`): auto-rotar, borde
+    largo ≤ 2200 px, JPEG q80 mozjpeg, sin metadatos. **1,183 MB → 139 MB**
+    (−88 %). Sin pérdida visible a tamaños de galería. Genera
+    `data/imageDimensions.ts` (640 entradas: dimensiones finales por
+    imagen).
+  - `data/imageDimensions.ts` + `components/ArtworkCard.tsx`: ahora
+    **todas** las tarjetas del grid reservan su caja `aspect-ratio` antes
+    de cargar (proporción física si hay `realDimensionsCm`, si no la
+    proporción real del píxel) → se acaba el reflujo/CLS del masonry en
+    `/obra`.
+  - `loading="lazy"` + `decoding="async"` en **todos** los `<img>` salvo
+    el Hero (14 archivos). `/obra` pasó de 0 a 124 imágenes diferidas.
+  - Hero: `fetchPriority="high"` + `<link rel="preload" as="image">` en
+    `app/layout.tsx` (es el LCP de la home).
+  - `app/layout.tsx`: `<html suppressHydrationWarning>` — el script de
+    tema mete `class="dark"` antes de hidratar y React marcaba mismatch
+    para visitantes en modo oscuro.
+  - `next.config.mjs` (antes `{}`): `headers()` → `/images/:path*` con
+    `Cache-Control: public, max-age=31536000, immutable`;
+    `poweredByHeader: false`; `experimental.optimizePackageImports:
+    ["framer-motion"]`.
+  - `components/FeaturedCarousel.tsx`: autoplay ahora se **pausa fuera de
+    viewport** (IntersectionObserver) — 230 tarjetas animadas dejaban de
+    re-renderizar cada 4.2 s con la sección fuera de pantalla; y la fila
+    de "dots" (una por tarjeta) se reemplaza por un contador "n / total"
+    cuando hay > 24.
+  - Limpieza: se quitó el campo muerto `artist.heroVideo` (nunca se
+    consumía) de `data/artist.ts` y `data/types.ts`; se agregó
+    `.vercelignore` (docs, PROYECTO.md, .claude, graphify-out, etc.).
+  - **Pendiente / no aplicado** (más invasivo, para un segundo pase):
+    migrar Hero + grid a `next/image`; mover `featuredExtra`/
+    `availableExtra`/`artworks` a render server-side para sacar ~10 kB gz
+    del bundle cliente; `next/dynamic` para `FeaturedCarousel` (saca
+    framer-motion ~42 kB gz del critical path de la home); windowing real
+    del carrusel (solo montar ~9 tarjetas); skeleton en el `<Suspense>` de
+    `/obra` (en prod la cuadrícula es 100 % cliente).
+  Verificado: `tsc --noEmit` limpio, `next build` limpio (146 páginas,
+  todas ○/●), todas las rutas 200. `public/images` 1,183 MB → 139 MB.
+
 - **2026-09-06**: Se agregó un hook `SessionStart` en
   `.claude/settings.json` (nuevo) que corre `graphify update .` al iniciar
   cada sesión de Claude Code en este proyecto — mantiene

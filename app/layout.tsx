@@ -37,9 +37,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={`${fraunces.variable} ${inter.variable}`}>
+    <html
+      lang="es"
+      suppressHydrationWarning
+      className={`${fraunces.variable} ${inter.variable}`}
+    >
       <head>
+        {/* themeScript adds class="dark" to <html> before hydration; the
+            suppressHydrationWarning above is what keeps React from flagging
+            that server/client <html> className mismatch. */}
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        {/* Homepage LCP image — start fetching it before the CSS/JS parse. */}
+        <link rel="preload" as="image" href={artist.heroImage} fetchPriority="high" />
       </head>
       <body className="bg-background font-sans text-ink antialiased">
         <ImageGuard />

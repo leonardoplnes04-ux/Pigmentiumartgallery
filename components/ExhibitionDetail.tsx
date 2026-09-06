@@ -36,7 +36,13 @@ export default function ExhibitionDetail({
           <figure key={image.src}>
             <div className="overflow-hidden rounded-2xl bg-line">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={image.src} alt={pick(image.alt)} className="h-auto w-full" />
+              <img
+                src={image.src}
+                alt={pick(image.alt)}
+                loading="lazy"
+                decoding="async"
+                className="h-auto w-full"
+              />
             </div>
             <figcaption className="mt-2 text-xs uppercase tracking-widest text-muted">
               {String(i + 1).padStart(2, "0")} — {pick(image.alt)}

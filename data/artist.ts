@@ -17,7 +17,6 @@ export const artist: Artist = {
   },
   portraitImage: "/images/placeholder-portrait.svg",
   heroImage: "/images/hero-segundo-planes.jpg",
-  heroVideo: "/videos/hero-segundo-planes.mp4",
   email: "segundoplanesobras@outlook.com",
   socials: {
     instagram: "https://instagram.com/pigmentum",

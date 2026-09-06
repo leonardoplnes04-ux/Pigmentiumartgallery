@@ -14,6 +14,8 @@ export default function ArtistStatement() {
         <img
           src={artist.portraitImage}
           alt={`${t.statement.portraitAltPrefix} ${artist.name}`}
+          loading="lazy"
+          decoding="async"
           className="h-full w-full object-cover"
         />
       </div>

@@ -131,7 +131,6 @@ export interface Artist {
   longBio: LocalizedText;
   portraitImage: string;
   heroImage: string;
-  heroVideo: string;
   email: string;
   socials: {
     instagram?: string;

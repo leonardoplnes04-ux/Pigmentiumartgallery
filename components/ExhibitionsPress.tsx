@@ -56,6 +56,8 @@ export default function ExhibitionsPress() {
                       <img
                         src={item.image}
                         alt={pick(item.title)}
+                        loading="lazy"
+                        decoding="async"
                         className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
                       />
                     </Link>
@@ -65,6 +67,8 @@ export default function ExhibitionsPress() {
                       <img
                         src={item.image}
                         alt={pick(item.title)}
+                        loading="lazy"
+                        decoding="async"
                         className="h-full w-full object-cover"
                       />
                     </div>

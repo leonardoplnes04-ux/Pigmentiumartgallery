@@ -1,0 +1,8 @@
+# Not needed for the build or runtime — keeps the Vercel upload smaller.
+docs
+PROYECTO.md
+.claude
+graphify-out
+obras-sin-titulo
+scratchpad
+_reencode.mjs

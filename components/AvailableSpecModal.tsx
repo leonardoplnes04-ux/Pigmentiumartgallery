@@ -65,6 +65,7 @@ export default function AvailableSpecModal({
               src={artwork.image}
               alt={title}
               draggable={false}
+              decoding="async"
               className="max-h-[70vh] w-full object-contain"
             />
           </div>
