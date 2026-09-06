@@ -715,6 +715,16 @@ Todo lo relacionado con este proyecto vive aquí:
   tarjetas (las de detalle solo viven dentro del modal). Pendiente: el
   artista debe dar título/técnica/medidas de estas 2.
 
+- **2026-09-06**: **Pantalla completa en el modal de "Obras disponibles"**
+  (igual que en el detalle de `/obra`). `components/AvailableSpecModal.tsx`:
+  clic en la imagen grande (o en el botón de expandir, mismo ícono de
+  esquinas que `ArtworkDetail`, abajo-derecha al hacer hover) abre un
+  lightbox `fixed inset-0 z-[60] bg-black/90` con la imagen a tamaño
+  completo (`object-contain`). Cierra con `×`, clic en el fondo o `Esc`
+  (Esc cierra primero el lightbox y, si no hay, el modal). Estado
+  `zoomSrc`; se resetea al abrir otra obra. Verificado: `tsc` +
+  `next build` limpios, rutas 200.
+
 - **2026-09-06**: **Pase de rendimiento** (móvil se veía lento, "apenas
   cargan las obras"). Se lanzaron 4 subagentes de auditoría (imágenes /
   render del carrusel / build+bundle+caché / errores de runtime) y se

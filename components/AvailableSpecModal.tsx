@@ -19,15 +19,23 @@ export default function AvailableSpecModal({
 }) {
   const { t, pick } = useLanguage();
 
-  // Which image of the piece is shown large. Reset whenever a different
-  // piece opens the modal.
+  // Which image of the piece is shown large, and the src currently blown
+  // up to a full-screen lightbox (null = closed). Both reset when a
+  // different piece opens the modal.
   const [activeImg, setActiveImg] = useState(0);
-  useEffect(() => setActiveImg(0), [artwork]);
+  const [zoomSrc, setZoomSrc] = useState<string | null>(null);
+  useEffect(() => {
+    setActiveImg(0);
+    setZoomSrc(null);
+  }, [artwork]);
 
   useEffect(() => {
     if (!artwork) return;
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key !== "Escape") return;
+      // Escape backs out one layer at a time: lightbox first, then modal.
+      if (zoomSrc) setZoomSrc(null);
+      else onClose();
     };
     document.addEventListener("keydown", onKeyDown);
     const previousOverflow = document.body.style.overflow;
@@ -36,7 +44,7 @@ export default function AvailableSpecModal({
       document.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = previousOverflow;
     };
-  }, [artwork, onClose]);
+  }, [artwork, onClose, zoomSrc]);
 
   if (!artwork) return null;
 
@@ -46,6 +54,7 @@ export default function AvailableSpecModal({
   const current = images[Math.min(activeImg, images.length - 1)];
 
   return (
+   <>
     <div
       className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/70 p-4 backdrop-blur-sm sm:p-8"
       onClick={onClose}
@@ -68,7 +77,7 @@ export default function AvailableSpecModal({
 
         <div className="grid grid-cols-1 gap-6 p-5 sm:p-8 md:grid-cols-[1.3fr_1fr] md:gap-10">
           <div>
-            <div className="relative flex items-center justify-center bg-line">
+            <div className="group relative flex items-center justify-center bg-line">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={current}
@@ -79,8 +88,32 @@ export default function AvailableSpecModal({
                 }
                 draggable={false}
                 decoding="async"
-                className="max-h-[70vh] w-full object-contain"
+                onClick={() => setZoomSrc(current)}
+                className="max-h-[70vh] w-full cursor-zoom-in object-contain"
               />
+              {/* Expand to full screen — same control as the /obra detail view. */}
+              <button
+                type="button"
+                aria-label={t.detail.viewFullscreenAria}
+                onClick={() => setZoomSrc(current)}
+                className="absolute bottom-3 right-3 flex h-9 w-9 items-center justify-center rounded-full border border-white/40 bg-white/25 text-neutral-900 opacity-0 shadow-md backdrop-blur-md transition hover:bg-white/60 focus-visible:opacity-100 group-hover:opacity-100"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-4 w-4"
+                  aria-hidden="true"
+                >
+                  <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+                  <path d="M16 3h3a2 2 0 0 1 2 2v3" />
+                  <path d="M8 21H5a2 2 0 0 1-2-2v-3" />
+                  <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+                </svg>
+              </button>
               {hasMultiple && (
                 <button
                   type="button"
@@ -163,5 +196,31 @@ export default function AvailableSpecModal({
         </div>
       </div>
     </div>
+
+    {zoomSrc && (
+      <div
+        className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90 p-4"
+        onClick={() => setZoomSrc(null)}
+      >
+        <button
+          type="button"
+          aria-label={t.detail.closeFullscreenAria}
+          onClick={() => setZoomSrc(null)}
+          className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border border-white/40 bg-white/20 text-xl text-neutral-900 shadow-md backdrop-blur-md transition hover:bg-white/50"
+        >
+          ×
+        </button>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={zoomSrc}
+          alt={title}
+          draggable={false}
+          decoding="async"
+          onClick={(e) => e.stopPropagation()}
+          className="max-h-full max-w-full object-contain"
+        />
+      </div>
+    )}
+   </>
   );
 }
