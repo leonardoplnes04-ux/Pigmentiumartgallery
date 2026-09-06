@@ -680,6 +680,22 @@ Todo lo relacionado con este proyecto vive aquí:
   (`<button>` que abren el modal) en orden; `/obra` y `/` con 0
   referencias a `images/disponibles`.
 
+- **2026-09-06**: Batch 3 de "Obras disponibles" — carpeta maestra
+  `E:\OBRAS DISPONIBLES TODAS` (61 archivos). Contra las 49 ya cargadas:
+  20 faltaban, 8 de las actuales no están en esa carpeta. El usuario
+  eligió **solo agregar** (no quitar) → se añadieron las **20 nuevas** al
+  final de `data/availableExtra.ts` en orden de carpeta: `1.jpg`–`13.jpg`
+  (con `8.JPG`/`11.JPG` en mayúscula) y 7 `IMG_2020…`/`IMG_2021…`. Sin
+  gemela en el proyecto → ficha "por confirmar". Imágenes comprimidas con
+  el mismo `sharp` (≤2200 px, q80) y copiadas a
+  `public/images/disponibles/`; `data/imageDimensions.ts` actualizado con
+  las 20. Ids `disp-1`…`disp-13`, `disp-img-20200906-102750`, … **Total:
+  69** obras disponibles. Verificado: `tsc` + `next build` limpios;
+  `/obra?disponibles=1` = 69 tarjetas; `/obra` y `/` con 0 referencias a
+  `images/disponibles`. Nota: hay 8 obras en la sección que NO están en
+  `OBRAS DISPONIBLES TODAS` (`1.8`, `1.57`, `1.58`, `1.90`, `1.104`,
+  `1.111`, `1.119`, `1.131`) — se dejaron a propósito.
+
 - **2026-09-06**: **Pase de rendimiento** (móvil se veía lento, "apenas
   cargan las obras"). Se lanzaron 4 subagentes de auditoría (imágenes /
   render del carrusel / build+bundle+caché / errores de runtime) y se

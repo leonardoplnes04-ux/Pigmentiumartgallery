@@ -641,7 +641,7 @@ export const imageDimensions: Record<string, { w: number; h: number }> = {
   "/images/performances/una-caja-de-cristal-encima-del-cielo/04.jpg": { w: 1815, h: 2000 },
   "/images/performances/una-caja-de-cristal-encima-del-cielo/05.jpg": { w: 1863, h: 2000 },
   "/images/performances/una-caja-de-cristal-encima-del-cielo/06.jpg": { w: 1863, h: 2000 },
-  "/images/performances/una-caja-de-cristal-encima-del-cielo/07.jpg": { w: 1622, h: 2000 },
+  "/images/performances/una-caja-de-cristal-encima-del-cielo/07.jpg": { w: 1622, h: 2000 },  "/images/disponibles/1.jpg": { w: 2168, h: 2200 },  "/images/disponibles/2.jpg": { w: 2000, h: 1143 },  "/images/disponibles/3.jpg": { w: 2155, h: 2200 },  "/images/disponibles/4.jpg": { w: 2200, h: 1457 },  "/images/disponibles/5.jpg": { w: 800, h: 795 },  "/images/disponibles/6.jpg": { w: 1300, h: 1296 },  "/images/disponibles/7.jpg": { w: 1143, h: 1300 },  "/images/disponibles/8.JPG": { w: 2200, h: 1467 },  "/images/disponibles/9.jpg": { w: 1721, h: 2000 },  "/images/disponibles/10.jpg": { w: 2000, h: 1336 },  "/images/disponibles/11.JPG": { w: 1465, h: 2200 },  "/images/disponibles/12.jpg": { w: 800, h: 641 },  "/images/disponibles/13.jpg": { w: 1650, h: 2200 },  "/images/disponibles/IMG_20200906_102750.jpg": { w: 2200, h: 1650 },  "/images/disponibles/IMG_20200906_102939.jpg": { w: 1650, h: 2200 },  "/images/disponibles/IMG_20200906_105954.jpg": { w: 2200, h: 1650 },  "/images/disponibles/IMG_20200906_110121.jpg": { w: 1650, h: 2200 },  "/images/disponibles/IMG_20200906_115659.jpg": { w: 2200, h: 1650 },  "/images/disponibles/IMG_20210514_101437.jpg": { w: 1650, h: 2200 },  "/images/disponibles/IMG_20210725_102420.jpg": { w: 1650, h: 2200 },
 };
 
 export function aspectRatioOf(src: string): string | undefined {
