@@ -23,6 +23,7 @@ export default function DisponiblesReorder({
   const { pick } = useLanguage();
   const [order, setOrder] = useState<Artwork[]>(items);
   const dragId = useRef<string | null>(null);
+  const [draggingId, setDraggingId] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   // If the underlying list changes (e.g. more works added later), rebuild
@@ -89,39 +90,62 @@ export default function DisponiblesReorder({
       </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-        {order.map((a, i) => (
-          <motion.div
-            key={a.id}
-            layout
-            transition={{ type: "spring", stiffness: 520, damping: 42 }}
-            draggable
-            onDragStart={() => {
-              dragId.current = a.id;
-            }}
-            onDragEnter={() => moveOver(a.id)}
-            onDragOver={(e) => e.preventDefault()}
-            onDragEnd={() => {
-              dragId.current = null;
-            }}
-            className="cursor-grab select-none active:cursor-grabbing"
-          >
-            <div className="relative aspect-square overflow-hidden rounded-md border border-line bg-line">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={a.image}
-                alt={pick(a.title)}
-                draggable={false}
-                loading="lazy"
-                decoding="async"
-                className="pointer-events-none h-full w-full object-cover"
-              />
-              <span className="absolute left-1 top-1 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-medium tabular-nums text-white">
-                {i + 1}
-              </span>
-            </div>
-            <p className="mt-1 truncate text-[11px] text-muted">{pick(a.title)}</p>
-          </motion.div>
-        ))}
+        {order.map((a, i) => {
+          const dragging = draggingId === a.id;
+          return (
+            // Outer motion.div ONLY animates the position when the order
+            // changes (`layout`). The native drag handlers live on the
+            // plain <div> below — framer-motion hijacks onDragStart/onDragEnd
+            // on its own components, which silently breaks native DnD.
+            <motion.div
+              key={a.id}
+              layout
+              transition={{ type: "spring", stiffness: 520, damping: 42 }}
+            >
+              <div
+                draggable
+                onDragStart={(e) => {
+                  dragId.current = a.id;
+                  setDraggingId(a.id);
+                  e.dataTransfer.effectAllowed = "move";
+                  // Firefox needs data set or dragstart is cancelled.
+                  e.dataTransfer.setData("text/plain", a.id);
+                }}
+                onDragEnter={(e) => {
+                  e.preventDefault();
+                  moveOver(a.id);
+                }}
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={(e) => e.preventDefault()}
+                onDragEnd={() => {
+                  dragId.current = null;
+                  setDraggingId(null);
+                }}
+                className={`cursor-grab select-none rounded-md transition-opacity active:cursor-grabbing ${
+                  dragging ? "opacity-40" : "opacity-100"
+                }`}
+              >
+                <div className="pointer-events-none relative aspect-square overflow-hidden rounded-md border border-line bg-line">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={a.image}
+                    alt={pick(a.title)}
+                    draggable={false}
+                    loading="lazy"
+                    decoding="async"
+                    className="h-full w-full object-cover"
+                  />
+                  <span className="absolute left-1 top-1 rounded bg-black/60 px-1.5 py-0.5 text-[10px] font-medium tabular-nums text-white">
+                    {i + 1}
+                  </span>
+                </div>
+                <p className="pointer-events-none mt-1 truncate text-[11px] text-muted">
+                  {pick(a.title)}
+                </p>
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
     </main>
   );
