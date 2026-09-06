@@ -696,6 +696,12 @@ Todo lo relacionado con este proyecto vive aquí:
   `OBRAS DISPONIBLES TODAS` (`1.8`, `1.57`, `1.58`, `1.90`, `1.104`,
   `1.111`, `1.119`, `1.131`) — se dejaron a propósito.
 
+- **2026-09-06**: +2 tondos de `1-EXPO.ECUA-ERROR CATATONICA` (`033.jpg`,
+  `035.jpg`) a "Obras disponibles" → `disp-ecua-033`, `disp-ecua-035`
+  (`public/images/disponibles/ecua-033.jpg` / `ecua-035.jpg`, comprimidas
+  con `sharp`, dims en `data/imageDimensions.ts`). Ficha "por confirmar"
+  (no hay gemela; el título/medidas los debe dar el artista). **Total: 71.**
+
 - **2026-09-06**: **Pase de rendimiento** (móvil se veía lento, "apenas
   cargan las obras"). Se lanzaron 4 subagentes de auditoría (imágenes /
   render del carrusel / build+bundle+caché / errores de runtime) y se

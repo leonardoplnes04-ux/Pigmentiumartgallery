@@ -733,4 +733,27 @@ export const availableExtra: Artwork[] = [
     status: "available",
     noDetailPage: true,
   },
+
+  // --- 2026-09-06: two more from E:\\Expos-2015-...\\1-EXPO.ECUA-ERROR CATATONICA
+  // (033.jpg, 035.jpg). Specs pending.
+  {
+    id: "disp-ecua-033",
+    title: { es: "Sin título", en: "Untitled" },
+    medium: { es: "Técnica por confirmar", en: "Medium to be confirmed" },
+    dimensions: { es: "Dimensiones por confirmar", en: "Dimensions to be confirmed" },
+    image: "/images/disponibles/ecua-033.jpg",
+    seriesId: "serie-obras-2008-2015",
+    status: "available",
+    noDetailPage: true,
+  },
+  {
+    id: "disp-ecua-035",
+    title: { es: "Sin título", en: "Untitled" },
+    medium: { es: "Técnica por confirmar", en: "Medium to be confirmed" },
+    dimensions: { es: "Dimensiones por confirmar", en: "Dimensions to be confirmed" },
+    image: "/images/disponibles/ecua-035.jpg",
+    seriesId: "serie-obras-2008-2015",
+    status: "available",
+    noDetailPage: true,
+  },
 ];
