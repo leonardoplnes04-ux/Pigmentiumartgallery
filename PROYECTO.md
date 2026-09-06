@@ -733,6 +733,16 @@ Todo lo relacionado con este proyecto vive aquí:
   → `text-3xl/4xl`. Iterativo — puede seguir ajustándose.
   `tsc` + `next build` limpios.
 
+- **2026-09-06**: +5 fotos de `E:\OBRAS DISPONIBLES TODAS\POR AGREGAR` a
+  "Obras disponibles" (append, comprimidas con `sharp`): `disp-img-20190521-151523`,
+  `disp-img-20190604-154845`, `disp-img-20240325-wa0040`,
+  `disp-img-20250611-wa0136`, `disp-plan6`. Sin gemela → ficha "por
+  confirmar". `data/imageDimensions.ts` actualizado. **Total: 76.**
+  (Orden de estas 5: quedó cronológico 2019→2025→PLAN6, no el estricto de
+  Explorer; el usuario no especificó orden para este lote.) `tsc` +
+  `next build` limpios; `/obra?disponibles=1` = 76 tarjetas; `/obra` y `/`
+  con 0 referencias a `images/disponibles`.
+
 - **2026-09-06**: **Pase de rendimiento** (móvil se veía lento, "apenas
   cargan las obras"). Se lanzaron 4 subagentes de auditoría (imágenes /
   render del carrusel / build+bundle+caché / errores de runtime) y se
