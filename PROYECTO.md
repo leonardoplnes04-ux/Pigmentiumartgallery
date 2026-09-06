@@ -702,6 +702,19 @@ Todo lo relacionado con este proyecto vive aquí:
   con `sharp`, dims en `data/imageDimensions.ts`). Ficha "por confirmar"
   (no hay gemela; el título/medidas los debe dar el artista). **Total: 71.**
 
+- **2026-09-06**: **Modal de ficha con varias imágenes.** `034.jpg` y
+  `036.jpg` (tomas de detalle de los tondos 033 y 035) se agregaron como
+  `additionalImages` de `disp-ecua-033` / `disp-ecua-035`
+  (`ecua-034.jpg` / `ecua-036.jpg`). `components/AvailableSpecModal.tsx`:
+  cuando una obra tiene `additionalImages`, la imagen grande muestra un
+  botón `›` (siguiente, con wrap) y debajo una fila de miniaturas 64×64
+  (una por foto, resalta la activa) para navegar. `activeImg` se resetea
+  al abrir otra obra. Las obras sin `additionalImages` (las otras 69) se
+  ven exactamente igual que antes. Verificado: `tsc` + `next build`
+  limpios; las 4 imágenes sirven 200; `/obra?disponibles=1` sigue en 71
+  tarjetas (las de detalle solo viven dentro del modal). Pendiente: el
+  artista debe dar título/técnica/medidas de estas 2.
+
 - **2026-09-06**: **Pase de rendimiento** (móvil se veía lento, "apenas
   cargan las obras"). Se lanzaron 4 subagentes de auditoría (imágenes /
   render del carrusel / build+bundle+caché / errores de runtime) y se
