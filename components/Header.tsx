@@ -3,11 +3,15 @@
 import { useState } from "react";
 import Link from "next/link";
 import { site } from "@/data/site";
+import type { UiStrings } from "@/data/translations";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useTheme } from "@/hooks/useTheme";
+import type { Theme } from "@/hooks/useTheme";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { language, setLanguage, t } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
 
   const navLinks = [
     { href: "/obra", label: t.nav.obra },
@@ -39,6 +43,7 @@ export default function Header() {
 
         <div className="hidden items-center gap-6 md:flex">
           <LanguageToggle language={language} onChange={setLanguage} />
+          <ThemeToggle theme={theme} onToggle={toggleTheme} t={t} />
           <Link
             href="/contacto"
             className="border border-ink px-5 py-2 text-xs uppercase tracking-widest hover:bg-ink hover:text-background"
@@ -49,6 +54,7 @@ export default function Header() {
 
         <div className="flex items-center gap-4 md:hidden">
           <LanguageToggle language={language} onChange={setLanguage} />
+          <ThemeToggle theme={theme} onToggle={toggleTheme} t={t} />
           <button
             type="button"
             aria-label={menuOpen ? t.menu.closeAria : t.menu.openAria}
@@ -74,6 +80,57 @@ export default function Header() {
         </nav>
       )}
     </header>
+  );
+}
+
+function ThemeToggle({
+  theme,
+  onToggle,
+  t,
+}: {
+  theme: Theme;
+  onToggle: () => void;
+  t: UiStrings;
+}) {
+  const isDark = theme === "dark";
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      aria-label={isDark ? t.theme.toLightAria : t.theme.toDarkAria}
+      className="shrink-0 text-muted transition-colors hover:text-ink"
+    >
+      {isDark ? (
+        // sun — currently dark, click for light
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.75"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="h-[18px] w-[18px]"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+        </svg>
+      ) : (
+        // moon — currently light, click for dark
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.75"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="h-[18px] w-[18px]"
+          aria-hidden="true"
+        >
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+      )}
+    </button>
   );
 }
 

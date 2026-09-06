@@ -13,6 +13,10 @@ export interface UiStrings {
     openAria: string;
     closeAria: string;
   };
+  theme: {
+    toDarkAria: string;
+    toLightAria: string;
+  };
   hero: {
     cta: string;
     ctaSecondary: string;
@@ -129,6 +133,10 @@ export const translations: Record<Language, UiStrings> = {
       openAria: "Abrir menú",
       closeAria: "Cerrar menú",
     },
+    theme: {
+      toDarkAria: "Activar modo oscuro",
+      toLightAria: "Activar modo claro",
+    },
     hero: {
       cta: "Ver obra",
       ctaSecondary: "Exposiciones",
@@ -242,6 +250,10 @@ export const translations: Record<Language, UiStrings> = {
       close: "Close",
       openAria: "Open menu",
       closeAria: "Close menu",
+    },
+    theme: {
+      toDarkAria: "Switch to dark mode",
+      toLightAria: "Switch to light mode",
     },
     hero: {
       cta: "View work",

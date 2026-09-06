@@ -56,7 +56,7 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
                 type="button"
                 aria-label={t.detail.viewFullscreenAria}
                 onClick={() => setFullscreenSrc(src)}
-                className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full border border-white/40 bg-white/20 text-ink opacity-0 shadow-md backdrop-blur-md transition hover:bg-white/50 focus-visible:opacity-100 group-hover:opacity-100"
+                className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full border border-white/40 bg-white/20 text-neutral-900 opacity-0 shadow-md backdrop-blur-md transition hover:bg-white/50 focus-visible:opacity-100 group-hover:opacity-100"
               >
                 <svg
                   viewBox="0 0 24 24"

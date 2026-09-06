@@ -3,8 +3,13 @@ import { Fraunces, Inter } from "next/font/google";
 import { artist } from "@/data/artist";
 import { site } from "@/data/site";
 import { LanguageProvider } from "@/hooks/useLanguage";
+import { ThemeProvider } from "@/hooks/useTheme";
 import ImageGuard from "@/components/ImageGuard";
 import "./globals.css";
+
+// Runs before first paint so dark-mode visitors never see a light flash.
+// Keep in sync with hooks/useTheme.tsx: saved preference wins, else OS setting.
+const themeScript = `(function(){try{var t=localStorage.getItem("dartgallery-theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme: dark)").matches)){document.documentElement.classList.add("dark");}}catch(e){}})();`;
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -33,9 +38,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={`${fraunces.variable} ${inter.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="bg-background font-sans text-ink antialiased">
         <ImageGuard />
-        <LanguageProvider>{children}</LanguageProvider>
+        <ThemeProvider>
+          <LanguageProvider>{children}</LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

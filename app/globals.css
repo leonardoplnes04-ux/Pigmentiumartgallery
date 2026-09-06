@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Theme tokens. The four semantic colours are defined here as
+   space-separated RGB channels so Tailwind's `rgb(var(--x) / <alpha-value>)`
+   in tailwind.config.ts keeps opacity/gradient utilities (from-ink, bg-ink/20)
+   working. Dark mode only overrides the four values — every existing
+   bg-background / text-ink / border-line / text-muted class flips with it.
+   The <html> element gets `.dark` from the no-flash script in layout.tsx
+   before first paint, and from the ThemeProvider (hooks/useTheme.tsx) after. */
+:root {
+  --color-background: 249 249 249; /* #F9F9F9 */
+  --color-ink: 30 30 30;           /* #1E1E1E */
+  --color-line: 224 224 224;       /* #E0E0E0 */
+  --color-muted: 112 112 112;      /* #707070 */
+}
+
+.dark {
+  --color-background: 26 26 26;    /* #1A1A1A  carbón cálido */
+  --color-ink: 237 237 237;        /* #EDEDED */
+  --color-line: 56 56 56;          /* #383838 */
+  --color-muted: 154 154 154;      /* #9A9A9A  lifted for contrast on dark */
+}
+
 /* Anti-copy deterrent (see ImageGuard + Watermark components and the
    2026-08-23 PROYECTO.md entry for what this can't do — screenshots and
    photos of the screen are outside any web page's control). Blocks the
