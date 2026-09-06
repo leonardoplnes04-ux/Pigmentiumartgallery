@@ -121,11 +121,11 @@ export default function DisponiblesReorder({
                   dragId.current = null;
                   setDraggingId(null);
                 }}
-                className={`cursor-grab select-none rounded-md transition-opacity active:cursor-grabbing ${
+                className={`cursor-grab rounded-md [-webkit-user-drag:element] transition-opacity active:cursor-grabbing ${
                   dragging ? "opacity-40" : "opacity-100"
                 }`}
               >
-                <div className="pointer-events-none relative aspect-square overflow-hidden rounded-md border border-line bg-line">
+                <div className="relative aspect-square overflow-hidden rounded-md border border-line bg-line">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={a.image}
@@ -139,7 +139,7 @@ export default function DisponiblesReorder({
                     {i + 1}
                   </span>
                 </div>
-                <p className="pointer-events-none mt-1 truncate text-[11px] text-muted">
+                <p className="mt-1 truncate text-[11px] text-muted">
                   {pick(a.title)}
                 </p>
               </div>

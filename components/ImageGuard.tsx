@@ -20,9 +20,11 @@ export default function ImageGuard() {
       }
     };
     const blockImageDrag = (e: DragEvent) => {
-      if (e.target instanceof HTMLElement && e.target.closest("img")) {
-        e.preventDefault();
-      }
+      if (!(e.target instanceof HTMLElement)) return;
+      // Don't fight intentional drag-and-drop (e.g. the provisional
+      // reorder tool for "Obras disponibles") — only block bare image drags.
+      if (e.target.closest('[draggable="true"]')) return;
+      if (e.target.closest("img")) e.preventDefault();
     };
     // Ctrl/Cmd+S (save page) — a courtesy speed bump, not a real barrier.
     const blockSaveShortcut = (e: KeyboardEvent) => {
