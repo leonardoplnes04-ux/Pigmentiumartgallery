@@ -31,6 +31,13 @@ hasta confirmar sus medidas. Detalle en "Bitácora" y en
 duplicados en ambos idiomas — ver detalle en "Bitácora" y en
 `docs/specs/2026-08-17-language-toggle-design.md`.
 
+**Tema claro/oscuro:** botón sol/luna en el Header (bajo protagonismo),
+key `dartgallery-theme` en `localStorage`, primera visita sigue el SO
+(`prefers-color-scheme`). Los 4 tokens de color son variables CSS en
+`app/globals.css` (`:root` claro / `.dark` carbón cálido); provider en
+`hooks/useTheme.tsx`; no-flash script en `app/layout.tsx`. Ver entrada
+del 2026-08-29 en "Bitácora".
+
 **Qué es:** galería digital para el artista plástico contemporáneo Segundo
 Planes, marca del sitio "PIGMENTUM ART GALLERY". Home construida y
 funcional; subpáginas (`/obra`, `/sobre-mi`, `/exposiciones`, `/contacto`)
@@ -516,6 +523,175 @@ Todo lo relacionado con este proyecto vive aquí:
   Técnica/año y el estado (disponible/vendida/consultar): de
   `text-muted` a `text-muted/60`. Solo color/opacidad, tamaños sin
   cambio. Verificado: `tsc --noEmit` limpio.
+
+- **2026-08-29**: **Modo oscuro / claro** para todo el sitio. Botón de
+  bajo protagonismo en el Header (solo ícono sol/luna, sin borde,
+  `text-muted hover:text-ink`), al lado del selector de idioma, en los
+  dos clusters (desktop y móvil). Técnica: los 4 tokens de color
+  (`background`, `ink`, `line`, `muted`) pasan de hex fijo en
+  `tailwind.config.ts` a variables CSS en canales RGB definidas en
+  `app/globals.css` (`:root` = claro, `.dark` = carbón cálido:
+  bg `#1A1A1A`, ink `#EDEDED`, line `#383838`, muted `#9A9A9A` subido
+  para contraste). `darkMode: "class"` y `colors` apuntando a
+  `rgb(var(--color-*) / <alpha-value>)` — así los ~180 usos existentes
+  de `bg-background`/`text-ink`/etc. se invierten solos y siguen
+  funcionando `from-ink`/opacidades. Provider nuevo
+  `hooks/useTheme.tsx` (espejo de `useLanguage`): key
+  `dartgallery-theme` en `localStorage`, en primera visita sigue
+  `prefers-color-scheme` del SO y luego recuerda la elección. Script
+  inline en `<head>` de `layout.tsx` aplica `.dark` antes del primer
+  paint (sin flash de claro para quien usa oscuro). Ajuste menor: los
+  glifos de los 3 botones de vidrio esmerilado (flechas del carrusel +
+  botón pantalla completa en `ArtworkDetail`) se fijaron a
+  `text-neutral-900` para que no se pierdan sobre el vidrio blanco en
+  modo oscuro. `Watermark` ya era a prueba de tema
+  (`mix-blend-difference`). Verificado: `tsc --noEmit` y `next build`
+  (146 páginas) limpios. Pendiente: prueba visual/click en el
+  navegador (la extensión de Chrome no estaba conectada en la sesión).
+
+- **2026-09-06**: Reordenado el inicio del carrusel **"Obra destacada"** a
+  pedido del usuario, para que abra con el políptico "Ecua-error" (2015).
+  Orden nuevo de las 5 primeras tarjetas: (1) **vista de sala del
+  políptico completo** con el artista en el encuadre — NO es una obra del
+  catálogo: es una tarjeta sintética `featuredOnly` definida en
+  `components/FeaturedWorks.tsx` (`POLYPTYCH_LEAD`), se muestra como
+  figura plana sin link ni página `/obra`, sin badge de estado; la foto se
+  copió de `public/images/exposiciones/ecua-error-catatonica/02.jpg` a
+  `public/images/featured/ecua-error-politico.jpg`. (2) Estrellas verdes
+  (`obra-51`), (3) Ecua-error (`obra-52`), (4) Cardinales suicidas
+  (`obra-53`), (5) Estrellas maduras (`obra-54`). No hubo duplicados que
+  eliminar: cada panel aparecía una sola vez. Cambios de soporte: campo
+  opcional `featuredOnly` en `Artwork` (`data/types.ts`);
+  `FeaturedCarousel.tsx` ahora envuelve cada tarjeta en `<Link>` solo si
+  no es `featuredOnly` (si lo es, `<div>` plano) y oculta el badge de
+  estado en ese caso.
+
+  **Corrección 2026-09-06 (mismo día):** el reorden debía tocar SOLO el
+  carrusel de la home, no el catálogo `/obra`. Primera versión había
+  movido los bloques `obra-51..54` al frente del array en
+  `data/artworks.ts`, lo que también reordenaba el mosaico `/obra`. Se
+  revirtió: `data/artworks.ts` vuelve a su orden numérico original
+  (`obra-51..54` de nuevo tras "El viaje"/`obra-50`) y el orden del
+  carrusel vive únicamente en `components/FeaturedWorks.tsx` vía la lista
+  `LEAD_PANEL_IDS = ["obra-51","obra-52","obra-53","obra-54"]`, que se
+  antepone al resto del catálogo en el arreglo `featured` que recibe
+  `FeaturedCarousel`. Verificado: `tsc --noEmit` limpio; `/` sirve el
+  carrusel en el orden pedido y `/obra` vuelve a mostrar
+  ...48, 49, 50, 51, 52, 53, 54, 55... como antes.
+
+  Nota suelta detectada de paso (no tocada): hay dos entradas con título
+  "Cazador de estrellas" en `data/artworks.ts` (`obra-49` = `037.jpg` y
+  otra más abajo) — revisar si es duplicado real.
+
+- **2026-09-06**: Se agregaron **105 fotos** de `E:\adicional` al final del
+  carrusel "Obra destacada" de la home, **solo ahí** (no van a `/obra`, ni
+  a página de detalle, ni a ninguna serie). Nuevo archivo
+  `data/featuredExtra.ts` con 105 entradas `featuredOnly: true`
+  (título/medio/dimensiones placeholder "por confirmar"); imágenes en
+  `public/images/featured/adicional/` (nombre original, mismo case).
+  `components/FeaturedWorks.tsx` ahora hace
+  `featured = [POLYPTYCH_LEAD, ...leadPanels, ...rest, ...featuredExtra]`.
+  Orden pedido por el usuario: **orden de la carpeta (Explorer /
+  StrCmpLogicalW) INVERTIDO**, para que el último archivo de la carpeta
+  (`PLA5.jpg`) quede justo después de la última tarjeta actual del
+  carrusel ("Atardecer alado" / `obra-12`) y el primero (`1.jpg`) cierre
+  el carrusel. `data/artworks.ts` no se tocó. Verificado: `tsc --noEmit`
+  limpio; `/` sirve 105 tarjetas nuevas en ese orden y las imágenes
+  responden 200; `/obra` no contiene ninguna referencia a `adicional`.
+  Pendiente: (a) el artista debe dar títulos/técnica/medidas reales de
+  esas 105; (b) con ~220 tarjetas los "dots" de progreso del carrusel se
+  ven apretados/en varias filas — evaluar si conviene ocultarlos o
+  paginarlos cuando el conteo es alto.
+
+- **2026-09-06**: Carrusel "Obra destacada" — se agregó navegación por
+  **rueda / trackpad**: un deslizamiento horizontal de dos dedos (o
+  shift+rueda) avanza/retrocede una tarjeta, igual que los botones ‹ ›.
+  Es aditivo: botones, dots, arrastre y autoplay quedan intactos. Sólo
+  intercepta gestos horizontales (`|deltaX| > |deltaY|`) vía un listener
+  `wheel` nativo no-pasivo sobre el viewport (`{ passive: false }` para
+  poder `preventDefault` y de paso frenar el "history-swipe" de macOS); el
+  scroll vertical sobre el carrusel sigue moviendo la página. Acumulador
+  de `deltaX` con umbral de 45 px por paso + cooldown de 380 ms para que
+  un "flick" o la inercia del trackpad no salte varias tarjetas.
+  `components/FeaturedCarousel.tsx`. Verificado: `tsc --noEmit` limpio,
+  dev server recompila sin errores. Prueba de gesto pendiente de
+  confirmación visual del usuario (extensión de Chrome no conectada).
+  Iteración (mismo día): el modelo "acumular + cooldown" saltaba 2-3 obras
+  por gesto y luego, al forzar "1 por gesto", ya no dejaba pasar rápido.
+  Modelo final: el track sigue la rueda **en vivo** (`x.set` con clamp a
+  `[-maxDrag, 0]`, `controls.stop()` al empezar el gesto) — un scroll
+  fuerte se desliza fluido por muchas obras; cuando la rueda queda en
+  silencio 120 ms hace `settle()` y encaja en la obra más cercana (misma
+  matemática que `handleDragEnd`). Si el gesto fue un toque suave que no
+  llegó a cambiar de obra pero superó 18 px, avanza exactamente 1 en su
+  dirección. Así conviven "toque suave = 1 obra" y "scroll largo = paso
+  rápido y fluido".
+
+- **2026-09-06**: "Obras disponibles" (`/obra?disponibles=1`) — se
+  agregaron **36 fotos** de
+  `E:\Expos-2015-2012-2011-2008-\OBRAS DISPONIBLES+`, **solo en esa vista**
+  y sin reordenar nada. Antes esa vista estaba vacía (los únicos
+  `status: "available"` eran placeholders, que `realArtworks` filtra).
+  Nuevo `data/availableExtra.ts` con 36 entradas (`status: "available"`,
+  `noDetailPage: true`, título/técnica/medidas placeholder), imágenes en
+  `public/images/disponibles/` (nombre original, incl. dos `.JPG`). Orden:
+  el de la carpeta (Explorer / StrCmpLogicalW), tal cual —
+  `1.8 … 1.132`. `app/obra/page.tsx`: cuando `?disponibles=1`,
+  `artworks = [...realArtworks.filter(available), ...availableExtra]`; las
+  tarjetas con `noDetailPage` se renderizan en un `<div>` (sin `<Link>`,
+  porque no existe ruta `/obra/[id]` para ellas — `generateStaticParams`
+  sigue leyendo solo `realArtworks`). Nuevo campo opcional `noDetailPage`
+  en `Artwork` (`data/types.ts`). NO se tocó `data/artworks.ts` /
+  `lib/artworks.ts`: el catálogo completo `/obra`, el carrusel de la home,
+  las páginas de detalle y el simulador de pared quedan idénticos.
+  Verificado: `tsc --noEmit` limpio; `/obra?disponibles=1` muestra las 36
+  en orden de carpeta; `/obra` (completo) y `/` tienen 0 referencias a
+  `images/disponibles`; las imágenes sirven 200. Pendiente: el artista
+  debe dar título/técnica/medidas reales de esas 36.
+
+- **2026-09-06**: Ficha técnica de "Obras disponibles". Al hacer clic en
+  una obra disponible abre un **modal** en la misma página (no ruta nueva)
+  con la imagen grande + año/técnica/medidas/estado + botón "Consultar
+  disponibilidad" (mailto, mismo patrón que `ArtworkDetail`). Cierra con
+  Esc, clic fuera o ×; bloquea scroll de fondo.
+  `components/AvailableSpecModal.tsx` (nuevo); `app/obra/page.tsx` — las
+  tarjetas `noDetailPage` pasan de `<div>` a `<button>` que setea
+  `specArtwork` y renderiza el modal. `data/availableExtra.ts` regenerado:
+  cada entrada rellena su título/año/técnica/medidas desde su imagen
+  gemela byte-idéntica (26 del catálogo `data/artworks.ts`, 10 de la
+  galería exp-11); lo que la gemela tiene "por confirmar" se queda así
+  (~15/36 con título real, ~18 con medidas, ~17 con año). Sigue sin tocar
+  `data/artworks.ts` / `lib/artworks.ts`. Verificado: `tsc --noEmit`
+  limpio; `/obra?disponibles=1` = 36 tarjetas-`<button>` en orden de
+  carpeta con títulos reales visibles; `/obra` y `/` con 0 referencias a
+  `images/disponibles`. Prueba de clic/modal pendiente de confirmación
+  visual del usuario (extensión de Chrome no conectada).
+
+- **2026-09-06**: Batch 2 de "Obras disponibles" — 13 fotos de
+  `E:\obras disponibles 2` añadidas al final de `data/availableExtra.ts`
+  (append, sin tocar las 36 de batch 1), en orden de carpeta: CUADROS, M2,
+  M6, M13, M15, M21, M43, M46, M47, M48, NEW9, new33, P3. Las 13 son
+  gemelas byte-idénticas del lote del carrusel (`E:\adicional` →
+  `public/images/featured/adicional/`), que no tiene ficha, así que todas
+  quedan "Sin título / por confirmar" hasta que el artista las complete.
+  Imágenes copiadas a `public/images/disponibles/` (nombre original). Ids
+  `disp-cuadros`, `disp-m2`, … Total ahora: **49** obras disponibles.
+  Verificado: `tsc --noEmit` limpio; `/obra?disponibles=1` = 49 tarjetas
+  (`<button>` que abren el modal) en orden; `/obra` y `/` con 0
+  referencias a `images/disponibles`.
+
+- **2026-09-06**: Se agregó un hook `SessionStart` en
+  `.claude/settings.json` (nuevo) que corre `graphify update .` al iniciar
+  cada sesión de Claude Code en este proyecto — mantiene
+  `graphify-out/graph.json` + `GRAPH_REPORT.md` al día con los cambios de
+  código sin costo de tokens (solo AST, sin LLM; ~5 s). Objetivo: poder
+  responder preguntas de arquitectura vía `graphify query` en vez de leer
+  medio árbol, para bajar el gasto de tokens. Limitaciones: `graphify
+  update` solo cubre archivos de código — tras cambios en docs/`PROYECTO.md`
+  hay que correr `/graphify --update` a mano, y el re-etiquetado de
+  comunidades (LLM, con costo) es manual con `graphify label`. El hook no
+  aplica en la sesión donde se creó (el watcher de settings no vigilaba
+  `.claude/`); toma efecto desde la siguiente sesión o tras abrir `/hooks`.
 
 ## Próximos pasos
 - Cuando se sume un segundo artista real a la galería: agregar su entrada en `data/galleryArtists.ts`, tagear sus exposiciones con su `artistId` en `data/exhibitions.ts`, y el filtro por artista en `/exposiciones` aparece solo (sin tocar componentes). Si en algún momento también se necesita que `/obra` y `/sobre-mi` sean multi-artista (hoy siguen asumiendo a Segundo Planes como único artista del sitio), eso es un cambio de modelo de datos más grande — brainstorming aparte cuando se necesite de verdad.

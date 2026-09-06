@@ -50,6 +50,16 @@ export interface Artwork {
   seriesId: string;
   status: ArtworkStatus;
   criticReviews?: CriticReview[];
+  // Set on synthetic entries that exist ONLY as a lead card in the
+  // "Obra destacada" carousel (e.g. an installation shot of a polyptych):
+  // the carousel renders them as a plain, non-clickable figure and they
+  // never reach the /obra catalogue or get a detail page. See
+  // components/FeaturedWorks.tsx.
+  featuredOnly?: boolean;
+  // Set on entries that appear ONLY in the "Obras disponibles" view
+  // (/obra?disponibles=1) and have no /obra/[id] detail route — the grid
+  // renders their card without a link. See data/availableExtra.ts.
+  noDetailPage?: boolean;
 }
 
 export interface Series {

@@ -31,6 +31,20 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
   const [layout, setLayout] = useState<ItemLayout[]>([]);
   const [paused, setPaused] = useState(false);
 
+  // Live index for the native wheel listener (added once, would otherwise
+  // close over a stale value).
+  const indexRef = useRef(index);
+  indexRef.current = index;
+
+  // Wheel / trackpad state. The track follows the wheel live (fluid, fast
+  // scrolling moves many cards), and when the wheel goes quiet it snaps to
+  // the nearest card. A gentle flick that didn't travel far still advances
+  // exactly one card in its direction.
+  const wheelActiveRef = useRef(false);
+  const wheelAccumRef = useRef(0);
+  const wheelStartIndexRef = useRef(0);
+  const wheelIdleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const count = artworks.length;
 
   const measure = useCallback(() => {
@@ -109,6 +123,73 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
     return () => clearInterval(id);
   }, [paused, layout, count, controls, centerTarget]);
 
+  // Trackpad / wheel navigation — a horizontal two-finger swipe (or
+  // shift+wheel) steps the carousel exactly like the ‹ › buttons, so you
+  // don't have to click for every card. This is ADDITIVE: the buttons,
+  // the dots, the drag gesture and the autoplay are all untouched.
+  // Vertical-dominant wheel events are ignored on purpose so scrolling
+  // "through" the carousel still moves the page.
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+
+    const IDLE_MS = 120; // wheel silent this long ⇒ gesture over, snap
+    const MIN_FLICK_PX = 18; // a smaller nudge than this is just noise
+
+    const settle = () => {
+      wheelActiveRef.current = false;
+      if (!viewportRef.current || layout.length === 0) return;
+      const viewportWidth = viewportRef.current.offsetWidth;
+      const focalPoint = viewportWidth / 2 - x.get();
+      let nearest = 0;
+      let smallestDiff = Infinity;
+      layout.forEach((item, i) => {
+        const diff = Math.abs(item.left + item.width / 2 - focalPoint);
+        if (diff < smallestDiff) {
+          smallestDiff = diff;
+          nearest = i;
+        }
+      });
+      // A gentle flick that didn't move far enough to reach the next card
+      // still advances exactly one, in the direction it was going.
+      if (nearest === wheelStartIndexRef.current && Math.abs(wheelAccumRef.current) > MIN_FLICK_PX) {
+        nearest = wheelStartIndexRef.current + (wheelAccumRef.current > 0 ? 1 : -1);
+      }
+      goTo(nearest, 260, 30);
+    };
+
+    const onWheel = (event: WheelEvent) => {
+      if (layout.length === 0) return;
+      // Only hijack a clearly horizontal gesture; leave page scroll alone.
+      if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+
+      event.preventDefault(); // also suppresses macOS history-swipe
+      setPaused(true);
+
+      if (!wheelActiveRef.current) {
+        wheelActiveRef.current = true;
+        wheelStartIndexRef.current = indexRef.current;
+        wheelAccumRef.current = 0;
+        controls.stop(); // hand x over to the wheel for the gesture
+      }
+
+      wheelAccumRef.current += event.deltaX;
+      // Follow the wheel live so fast scrolling glides across many cards.
+      x.set(Math.max(-maxDrag, Math.min(0, x.get() - event.deltaX)));
+
+      // Each event (incl. the momentum tail) pushes the settle back, so it
+      // only fires once scrolling has actually stopped.
+      if (wheelIdleTimerRef.current) clearTimeout(wheelIdleTimerRef.current);
+      wheelIdleTimerRef.current = setTimeout(settle, IDLE_MS);
+    };
+
+    viewport.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      viewport.removeEventListener("wheel", onWheel);
+      if (wheelIdleTimerRef.current) clearTimeout(wheelIdleTimerRef.current);
+    };
+  }, [goTo, layout, maxDrag, x, controls]);
+
   const handleDragEnd = () => {
     if (!viewportRef.current || layout.length === 0) return;
     const viewportWidth = viewportRef.current.offsetWidth;
@@ -153,16 +234,9 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
           onDragStart={() => setPaused(true)}
           onDragEnd={handleDragEnd}
         >
-          {artworks.map((artwork, i) => (
-            <div
-              key={artwork.id}
-              ref={(el) => {
-                itemRefs.current[i] = el;
-              }}
-              className="shrink-0 select-none"
-            >
-              <Link href={`/obra/${artwork.id}`} className="block" draggable={false}>
-                <motion.article
+          {artworks.map((artwork, i) => {
+            const card = (
+              <motion.article
                   animate={{
                     scale: i === index ? 1.06 : 0.9,
                     opacity: i === index ? 1 : 0.55,
@@ -207,14 +281,35 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
                         {artwork.year ? `, ${artwork.year}` : ""}
                       </p>
                     </div>
-                    <span className="shrink-0 text-[10px] uppercase tracking-widest text-muted">
-                      {statusLabels[artwork.status]}
-                    </span>
+                    {!artwork.featuredOnly && (
+                      <span className="shrink-0 text-[10px] uppercase tracking-widest text-muted">
+                        {statusLabels[artwork.status]}
+                      </span>
+                    )}
                   </div>
                 </motion.article>
-              </Link>
-            </div>
-          ))}
+            );
+
+            return (
+              <div
+                key={artwork.id}
+                ref={(el) => {
+                  itemRefs.current[i] = el;
+                }}
+                className="shrink-0 select-none"
+              >
+                {artwork.featuredOnly ? (
+                  // featured-only lead (e.g. the polyptych room-shot): no
+                  // detail page to link to, so it's a plain figure.
+                  <div className="block">{card}</div>
+                ) : (
+                  <Link href={`/obra/${artwork.id}`} className="block" draggable={false}>
+                    {card}
+                  </Link>
+                )}
+              </div>
+            );
+          })}
         </motion.div>
       </div>
 
@@ -223,7 +318,7 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
         type="button"
         aria-label={t.carousel.prevAria}
         onClick={() => goTo(index - 1)}
-        className="absolute left-2 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-white/20 text-lg text-ink shadow-md backdrop-blur-md transition hover:bg-white/50"
+        className="absolute left-2 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-white/20 text-lg text-neutral-900 shadow-md backdrop-blur-md transition hover:bg-white/50"
       >
         ‹
       </button>
@@ -231,7 +326,7 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
         type="button"
         aria-label={t.carousel.nextAria}
         onClick={() => goTo(index + 1)}
-        className="absolute right-2 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-white/20 text-lg text-ink shadow-md backdrop-blur-md transition hover:bg-white/50"
+        className="absolute right-2 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-white/20 text-lg text-neutral-900 shadow-md backdrop-blur-md transition hover:bg-white/50"
       >
         ›
       </button>

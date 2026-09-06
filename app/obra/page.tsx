@@ -1,23 +1,37 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ArtworkCard from "@/components/ArtworkCard";
+import AvailableSpecModal from "@/components/AvailableSpecModal";
 import { realArtworks } from "@/lib/artworks";
+import { availableExtra } from "@/data/availableExtra";
+import type { Artwork } from "@/data/types";
 import { useLanguage } from "@/hooks/useLanguage";
 
 function ObraGrid() {
   const { t } = useLanguage();
+  // The "Obras disponibles" pieces have no detail route; clicking one opens
+  // its spec sheet in a modal instead (see components/AvailableSpecModal).
+  const [specArtwork, setSpecArtwork] = useState<Artwork | null>(null);
   // "Obras disponibles" (Hero) links here with ?disponibles=1 to show only
   // artworks still for sale, instead of duplicating /obra as a new route.
   // useSearchParams needs a Suspense boundary (see wrapper below) or Next's
   // build fails on this page.
+  //
+  // The available view also gets `availableExtra` (data/availableExtra.ts)
+  // appended AFTER the catalogue's available works — those pieces live
+  // only here, never in the full /obra grid, the carousel, or a detail
+  // page, and the folder order they came in is kept as-is.
   const onlyAvailable = useSearchParams().get("disponibles") === "1";
   const artworks = onlyAvailable
-    ? realArtworks.filter((artwork) => artwork.status === "available")
+    ? [
+        ...realArtworks.filter((artwork) => artwork.status === "available"),
+        ...availableExtra,
+      ]
     : realArtworks;
 
   return (
@@ -41,16 +55,34 @@ function ObraGrid() {
       {/* Capped at 3 columns (was 4 up to xl) so each piece renders bigger
           and more detail is visible, per the user's request. */}
       <div className="mt-8 columns-1 gap-8 sm:mt-12 sm:columns-2 lg:columns-3">
-        {artworks.map((artwork) => (
-          <Link
-            key={artwork.id}
-            href={`/obra/${artwork.id}`}
-            className="mb-8 block break-inside-avoid"
-          >
-            <ArtworkCard artwork={artwork} />
-          </Link>
-        ))}
+        {artworks.map((artwork) =>
+          artwork.noDetailPage ? (
+            // Available-only piece: no /obra/[id] route — clicking opens its
+            // spec sheet in a modal on this same page.
+            <button
+              key={artwork.id}
+              type="button"
+              onClick={() => setSpecArtwork(artwork)}
+              className="mb-8 block w-full break-inside-avoid text-left"
+            >
+              <ArtworkCard artwork={artwork} />
+            </button>
+          ) : (
+            <Link
+              key={artwork.id}
+              href={`/obra/${artwork.id}`}
+              className="mb-8 block break-inside-avoid"
+            >
+              <ArtworkCard artwork={artwork} />
+            </Link>
+          )
+        )}
       </div>
+
+      <AvailableSpecModal
+        artwork={specArtwork}
+        onClose={() => setSpecArtwork(null)}
+      />
     </main>
   );
 }
