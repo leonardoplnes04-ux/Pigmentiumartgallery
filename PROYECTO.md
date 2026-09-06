@@ -743,6 +743,23 @@ Todo lo relacionado con este proyecto vive aquí:
   `next build` limpios; `/obra?disponibles=1` = 76 tarjetas; `/obra` y `/`
   con 0 referencias a `images/disponibles`.
 
+- **2026-09-06**: **Herramienta provisional para reordenar "Obras
+  disponibles"** arrastrando. Ruta oculta
+  `/obra?disponibles=1&orden=1` → `components/DisponiblesReorder.tsx`
+  (nuevo): cuadrícula uniforme 2/3/4 col con miniaturas cuadradas,
+  `draggable` nativo + `onDragEnter` id-based que reordena en vivo, cada
+  tarjeta con `layout` de framer-motion para que las demás se deslizan a
+  su sitio. Barra pegajosa con «Copiar orden» (copia el array de ids al
+  portapapeles, o `prompt()` si el clipboard está bloqueado) y
+  «Reiniciar». El orden se guarda en `localStorage["disponibles-order-v1"]`
+  (por navegador, nunca se publica) y `app/obra/page.tsx` lo aplica también
+  a la vista normal `?disponibles=1` de ese visitante vía `applyOrder()`
+  (ids guardados primero, los nuevos al final). `DisponiblesReorder` se
+  carga con `next/dynamic` (`ssr:false`) para no meter framer-motion al
+  bundle de `/obra` (First Load JS quedó en 125 kB). `data/availableExtra.ts`
+  NO se toca hasta que el usuario pase el orden final. Verificado: `tsc` +
+  `next build` limpios (146 páginas), las 3 rutas 200.
+
 - **2026-09-06**: **Pase de rendimiento** (móvil se veía lento, "apenas
   cargan las obras"). Se lanzaron 4 subagentes de auditoría (imágenes /
   render del carrusel / build+bundle+caché / errores de runtime) y se
