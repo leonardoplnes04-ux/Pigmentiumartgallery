@@ -763,6 +763,29 @@ Todo lo relacionado con este proyecto vive aquí:
   final lo que no está en el orden guardado). `tsc` + `next build` limpios;
   imágenes sirven 200.
 
+- **2026-09-06**: **"Obras disponibles" → mosaico + orden curado fijado.**
+  El usuario terminó de acomodar con la herramienta y pasó su lista
+  («Copiar orden»). Se aplicó:
+  - `data/availableExtra.ts` reordenado exactamente a esa lista; **13
+    entradas eliminadas** (`disp-5`..`disp-13`, `disp-img-20200906-110121`,
+    `disp-plan6`, `disp-nc6-03`, `disp-nc6-13`) → **76 obras**. Sus
+    imágenes borradas de `public/images/disponibles/` y sus líneas de
+    `data/imageDimensions.ts`. El comentario de cabecera del archivo marca
+    que el orden es el curado por el dueño + fecha del último "bake".
+  - `app/obra/page.tsx`: la vista `?disponibles=1` pasa de la cuadrícula
+    cuadrada (recorte uniforme) al **mismo masonry `columns` + `ArtworkCard`
+    que `/obra`** — cada obra con su proporción real (caja reservada desde
+    `data/imageDimensions.ts`), sin recortes. Las `noDetailPage` van en
+    `<button>` que abre el modal de ficha.
+  - La **herramienta de arrastrar/agregar/eliminar se conserva**, ahora
+    detrás de `?disponibles=1&orden=1` (`components/DisponiblesReorder.tsx`,
+    lazy). Flujo para cambiar el orden en el futuro: abrir esa URL,
+    reacomodar/eliminar, «Copiar orden», pegarme la lista, yo re-bakeo
+    `data/availableExtra.ts`. (También anotado en memoria auto.)
+  Verificado: `tsc` + `next build` limpios; `/obra?disponibles=1` sirve las
+  76 en el orden curado con `columns`; `&orden=1` sigue 200; las imágenes
+  borradas dan 404.
+
 - **2026-09-06**: **Herramienta provisional para reordenar "Obras
   disponibles"** arrastrando. Ruta oculta
   `/obra?disponibles=1&orden=1` → `components/DisponiblesReorder.tsx`

@@ -124,29 +124,27 @@ function ObraGrid() {
     () => orderedExtra.filter((a) => !hidden.includes(a.id)),
     [orderedExtra, hidden]
   );
-  // "Obras disponibles" (Hero) links here with ?disponibles=1 to show only
-  // artworks still for sale, instead of duplicating /obra as a new route.
-  // useSearchParams needs a Suspense boundary (see wrapper below) or Next's
-  // build fails on this page.
-  //
-  // The available view also gets `availableExtra` (data/availableExtra.ts)
-  // appended AFTER the catalogue's available works — those pieces live
-  // only here, never in the full /obra grid, the carousel, or a detail
-  // page, and the folder order they came in is kept as-is.
+  // /obra              -> full catalogue (masonry, links to detail pages)
+  // /obra?disponibles=1 -> only the available pieces (masonry, tap = spec
+  //                        modal; they have no detail route)
+  // /obra?disponibles=1&orden=1 -> the PROVISIONAL drag tool to reorder /
+  //                        add / remove those pieces (see DisponiblesReorder
+  //                        + PROYECTO.md). Its result is pasted back and
+  //                        baked into data/availableExtra.ts, which is
+  //                        already in the owner's curated order.
   const params = useSearchParams();
   const onlyAvailable = params.get("disponibles") === "1";
+  const reorderMode = onlyAvailable && params.get("orden") === "1";
 
-  return (
-    <main className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-14 md:py-16">
-      <p className="text-xs uppercase tracking-widest text-muted">{t.catalog.eyebrow}</p>
-      <h1 className="mt-2 font-serif text-3xl sm:text-4xl">
-        {onlyAvailable ? t.hero.ctaTertiary : t.catalog.title}
-      </h1>
-
-      {onlyAvailable ? (
-        // Provisional: the "Obras disponibles" grid is drag-to-reorder in
-        // place. A tap opens the spec modal; a drag rearranges (saved
-        // per-browser only).
+  if (reorderMode) {
+    return (
+      <main className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-14 md:py-16">
+        <p className="text-xs uppercase tracking-widest text-muted">
+          {t.catalog.eyebrow}
+        </p>
+        <h1 className="mt-2 font-serif text-3xl sm:text-4xl">
+          {t.hero.ctaTertiary}
+        </h1>
         <DisponiblesReorder
           items={visibleExtra}
           onChange={saveOrder}
@@ -156,12 +154,40 @@ function ObraGrid() {
           hiddenCount={hidden.length}
           onRestoreHidden={restoreHidden}
         />
-      ) : (
-        // CSS-columns masonry: each piece keeps its own aspect ratio and
-        // packs under the shortest column. Order in data/artworks.ts is
-        // preserved (columns fill top-to-bottom, left column first).
-        <div className="mt-8 columns-1 gap-8 sm:mt-12 sm:columns-2 lg:columns-3">
-          {realArtworks.map((artwork) => (
+        <AvailableSpecModal
+          artwork={specArtwork}
+          onClose={() => setSpecArtwork(null)}
+        />
+      </main>
+    );
+  }
+
+  const items = onlyAvailable ? availableExtra : realArtworks;
+
+  return (
+    <main className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-14 md:py-16">
+      <p className="text-xs uppercase tracking-widest text-muted">{t.catalog.eyebrow}</p>
+      <h1 className="mt-2 font-serif text-3xl sm:text-4xl">
+        {onlyAvailable ? t.hero.ctaTertiary : t.catalog.title}
+      </h1>
+
+      {/* CSS-columns masonry: every piece keeps its own aspect ratio
+          (ArtworkCard reserves a box from data/imageDimensions.ts) and
+          packs under the shortest column — nothing is cropped to a
+          uniform cell. The array order is rendered as-is (columns fill
+          top-to-bottom, left column first). */}
+      <div className="mt-8 columns-1 gap-8 sm:mt-12 sm:columns-2 lg:columns-3">
+        {items.map((artwork) =>
+          artwork.noDetailPage ? (
+            <button
+              key={artwork.id}
+              type="button"
+              onClick={() => setSpecArtwork(artwork)}
+              className="mb-8 block w-full break-inside-avoid text-left"
+            >
+              <ArtworkCard artwork={artwork} />
+            </button>
+          ) : (
             <Link
               key={artwork.id}
               href={`/obra/${artwork.id}`}
@@ -169,9 +195,9 @@ function ObraGrid() {
             >
               <ArtworkCard artwork={artwork} />
             </Link>
-          ))}
-        </div>
-      )}
+          )
+        )}
+      </div>
 
       <AvailableSpecModal
         artwork={specArtwork}
