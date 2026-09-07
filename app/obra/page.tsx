@@ -176,19 +176,30 @@ function ObraGrid() {
         {onlyAvailable ? t.hero.ctaTertiary : t.catalog.title}
       </h1>
 
-      {/* CSS-columns masonry: every piece keeps its own aspect ratio
-          (ArtworkCard reserves a box from data/imageDimensions.ts) and
-          packs under the shortest column — nothing is cropped to a
-          uniform cell. The array order is rendered as-is (columns fill
-          top-to-bottom, left column first). */}
-      <div className="mt-8 columns-1 gap-8 sm:mt-12 sm:columns-2 lg:columns-3">
+      {/* /obra: CSS-columns masonry (packs under the shortest column).
+          /obra?disponibles=1: a real CSS grid so the pieces read strictly
+          left-to-right, top-to-bottom in the curated order — rows can be
+          uneven height (items-start) because each card keeps the photo's
+          own aspect ratio (ArtworkCard, from data/imageDimensions.ts),
+          nothing is cropped to a square. */}
+      <div
+        className={
+          onlyAvailable
+            ? "mt-8 grid grid-cols-2 items-start gap-4 sm:mt-12 sm:grid-cols-3 lg:grid-cols-4"
+            : "mt-8 columns-1 gap-8 sm:mt-12 sm:columns-2 lg:columns-3"
+        }
+      >
         {items.map((artwork) =>
           artwork.noDetailPage ? (
             <button
               key={artwork.id}
               type="button"
               onClick={() => setSpecArtwork(artwork)}
-              className="mb-8 block w-full break-inside-avoid text-left"
+              className={
+                onlyAvailable
+                  ? "block w-full text-left"
+                  : "mb-8 block w-full break-inside-avoid text-left"
+              }
             >
               <ArtworkCard artwork={artwork} />
             </button>
