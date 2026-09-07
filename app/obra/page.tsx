@@ -54,7 +54,10 @@ function ObraGrid() {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(HIDDEN_KEY);
-      if (raw) setHidden(JSON.parse(raw));
+      if (!raw) return;
+      const live = new Set(availableExtra.map((a) => a.id));
+      // Drop ids that no longer exist (e.g. baked out of the data file).
+      setHidden((JSON.parse(raw) as string[]).filter((id) => live.has(id)));
     } catch {
       /* ignore */
     }
@@ -84,7 +87,9 @@ function ObraGrid() {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(ORDER_KEY);
-      if (raw) setSavedOrder(JSON.parse(raw));
+      if (!raw) return;
+      const live = new Set(availableExtra.map((a) => a.id));
+      setSavedOrder((JSON.parse(raw) as string[]).filter((id) => live.has(id)));
     } catch {
       /* ignore */
     }
