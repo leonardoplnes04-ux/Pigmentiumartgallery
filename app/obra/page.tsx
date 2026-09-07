@@ -170,7 +170,15 @@ function ObraGrid() {
   const items = onlyAvailable ? availableExtra : realArtworks;
 
   return (
-    <main className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-14 md:py-16">
+    <main
+      className={
+        // Wider shell for the available grid so 4 columns land at roughly
+        // the same card size the 3-column layout had at max-w-6xl.
+        onlyAvailable
+          ? "mx-auto max-w-screen-2xl px-5 py-10 sm:px-6 sm:py-14 md:py-16"
+          : "mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-14 md:py-16"
+      }
+    >
       <p className="text-xs uppercase tracking-widest text-muted">{t.catalog.eyebrow}</p>
       <h1 className="mt-2 font-serif text-3xl sm:text-4xl">
         {onlyAvailable ? t.hero.ctaTertiary : t.catalog.title}
@@ -185,7 +193,7 @@ function ObraGrid() {
       <div
         className={
           onlyAvailable
-            ? "mt-8 grid grid-cols-2 items-start gap-4 sm:mt-12 sm:grid-cols-3"
+            ? "mt-8 grid grid-cols-2 items-start gap-4 sm:mt-12 sm:grid-cols-3 lg:grid-cols-4"
             : "mt-8 columns-1 gap-8 sm:mt-12 sm:columns-2 lg:columns-3"
         }
       >
