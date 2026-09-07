@@ -16,7 +16,12 @@ export default function Hero() {
     // enough to 7:4 that the top/bottom crop this introduces is minor.
     // object-position shifted toward the top (default center was cropping
     // the top of the photo) so the full frame is visible.
-    <section className="relative flex aspect-[7/4] max-h-[85vh] min-h-[380px] w-full items-end overflow-hidden bg-background">
+    // The hero is a photo with light text on it — it stays the same in
+    // light and dark mode. Everything on top of the image is a FIXED
+    // dark-scrim / white-text pairing (not theme tokens), otherwise in
+    // dark mode `from-ink` and `text-background` invert and paint a white
+    // blur behind "SEGUNDO PLANES".
+    <section className="relative flex aspect-[7/4] max-h-[85vh] min-h-[380px] w-full items-end overflow-hidden bg-neutral-900">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={artist.heroImage}
@@ -27,9 +32,9 @@ export default function Hero() {
         className="absolute inset-0 h-full w-full object-cover object-[center_20%]"
       />
 
-      <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
 
-      <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-8 text-background sm:px-6 sm:pb-12 md:pb-16">
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-8 text-white sm:px-6 sm:pb-12 md:pb-16">
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <h1 className="font-serif text-3xl leading-tight sm:text-5xl md:text-7xl">
             {artist.name}
@@ -39,31 +44,31 @@ export default function Hero() {
         <div className="mt-5 flex flex-wrap gap-3 sm:mt-8">
           <Link
             href="/obra"
-            className="inline-block border border-background px-5 py-2.5 text-xs uppercase tracking-widest hover:bg-background hover:text-ink sm:px-6 sm:py-3"
+            className="inline-block border border-white px-5 py-2.5 text-xs uppercase tracking-widest hover:bg-white hover:text-neutral-900 sm:px-6 sm:py-3"
           >
             {t.hero.cta}
           </Link>
           <Link
             href="/exposiciones"
-            className="inline-block border border-background/60 px-5 py-2.5 text-xs uppercase tracking-widest hover:bg-background hover:text-ink sm:px-6 sm:py-3"
+            className="inline-block border border-white/60 px-5 py-2.5 text-xs uppercase tracking-widest hover:bg-white hover:text-neutral-900 sm:px-6 sm:py-3"
           >
             {t.hero.ctaSecondary}
           </Link>
           <Link
             href="/obra?disponibles=1"
-            className="inline-block border border-background/60 px-5 py-2.5 text-xs uppercase tracking-widest hover:bg-background hover:text-ink sm:px-6 sm:py-3"
+            className="inline-block border border-white/60 px-5 py-2.5 text-xs uppercase tracking-widest hover:bg-white hover:text-neutral-900 sm:px-6 sm:py-3"
           >
             {t.hero.ctaTertiary}
           </Link>
           <Link
             href="/videos"
-            className="inline-block border border-background/60 px-5 py-2.5 text-xs uppercase tracking-widest hover:bg-background hover:text-ink sm:px-6 sm:py-3"
+            className="inline-block border border-white/60 px-5 py-2.5 text-xs uppercase tracking-widest hover:bg-white hover:text-neutral-900 sm:px-6 sm:py-3"
           >
             {t.hero.ctaVideos}
           </Link>
           <Link
             href="/performance"
-            className="inline-block border border-background/60 px-5 py-2.5 text-xs uppercase tracking-widest hover:bg-background hover:text-ink sm:px-6 sm:py-3"
+            className="inline-block border border-white/60 px-5 py-2.5 text-xs uppercase tracking-widest hover:bg-white hover:text-neutral-900 sm:px-6 sm:py-3"
           >
             {t.hero.ctaPerformance}
           </Link>
