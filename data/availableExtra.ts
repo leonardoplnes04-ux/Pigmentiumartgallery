@@ -3,7 +3,7 @@ import type { Artwork } from "./types";
 // Works shown ONLY on the "Obras disponibles" view (/obra?disponibles=1).
 // ORDER IS CURATED: this array's order is exactly the arrangement the
 // gallery owner set with the drag tool (/obra?disponibles=1&orden=1 ->
-// "Copiar orden"), last baked 2026-09-06. To change it again: reorder /
+// "Copiar orden"), last baked 2026-09-06 (re-baked same day). To change it again: reorder /
 // add / remove with that tool, hit "Copiar orden", and re-bake here.
 //
 // Deliberately NOT in data/artworks.ts / lib/artworks.ts: never in the
@@ -507,39 +507,6 @@ export const availableExtra: Artwork[] = [
     medium: { es: "Técnica por confirmar", en: "Medium to be confirmed" },
     dimensions: { es: "Dimensiones por confirmar", en: "Dimensions to be confirmed" },
     image: "/images/disponibles/nc6-11.jpg",
-    seriesId: "serie-obras-2008-2015",
-    status: "available",
-    noDetailPage: true,
-  },
-  {
-    id: "disp-nc6-06",
-    title: { es: "Sin título", en: "Untitled" },
-    year: 2010,
-    medium: { es: "Técnica mixta sobre cartulina", en: "Mixed media on card" },
-    dimensions: { es: "51 × 35 cm (cada uno)", en: "51 × 35 cm (each)" },
-    image: "/images/disponibles/nc6-06.jpg",
-    seriesId: "serie-obras-2008-2015",
-    status: "available",
-    noDetailPage: true,
-  },
-  {
-    id: "disp-nc6-07",
-    title: { es: "Sin título", en: "Untitled" },
-    year: 2010,
-    medium: { es: "Técnica mixta sobre cartulina", en: "Mixed media on card" },
-    dimensions: { es: "51 × 35 cm (cada uno)", en: "51 × 35 cm (each)" },
-    image: "/images/disponibles/nc6-07.jpg",
-    seriesId: "serie-obras-2008-2015",
-    status: "available",
-    noDetailPage: true,
-  },
-  {
-    id: "disp-nc6-08",
-    title: { es: "Sin título", en: "Untitled" },
-    year: 2010,
-    medium: { es: "Acuarela y plumón sobre cartulina", en: "Watercolour and marker on card" },
-    dimensions: { es: "51 × 35 cm", en: "51 × 35 cm" },
-    image: "/images/disponibles/nc6-08.jpg",
     seriesId: "serie-obras-2008-2015",
     status: "available",
     noDetailPage: true,
