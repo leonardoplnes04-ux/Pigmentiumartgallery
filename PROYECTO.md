@@ -743,6 +743,26 @@ Todo lo relacionado con este proyecto vive aquí:
   `next build` limpios; `/obra?disponibles=1` = 76 tarjetas; `/obra` y `/`
   con 0 referencias a `images/disponibles`.
 
+- **2026-09-06**: +13 fotos de `E:\Nueva carpeta (6)` a "Obras
+  disponibles", **al final**, sin tocar el orden previo del array. Copiadas
+  como `nc6-01.jpg`..`nc6-13.jpg` (nombres originales largos/ con espacios;
+  el mapeo va abajo), comprimidas con el mismo `sharp`,
+  `data/imageDimensions.ts` actualizado. Ids `disp-nc6-01`..`disp-nc6-13`.
+  **Total: 89.** Año/medidas/técnica **parseados del nombre de archivo del
+  artista** donde venían:
+  - `nc6-01` ← `3-110x120 cms-2012.` → 110 × 120 cm, 2012
+  - `nc6-02` ← `3.jpg` → por confirmar
+  - `nc6-03` ← `9-160x110 cms-2019-2022.` → 160 × 110 cm (año rango, sin fijar)
+  - `nc6-04/05` ← `21-` / `22-200x160 cms-cada uno-1999.` → 200 × 160 cm (cada uno), 1999
+  - `nc6-06/07` ← `878/879-2010-51x35cms cada uno-mixta sobre cartulina.` → 51 × 35 cm (cada uno), 2010, técnica mixta sobre cartulina
+  - `nc6-08` ← `880-2010-51X35CMS-ACUARELA Y PLUMON SOBRE CARTULINA.` → 51 × 35 cm, 2010, acuarela y plumón sobre cartulina
+  - `nc6-09..13` ← `IMG_20150427_004118`, `n`, `SEGUNDOPLANES3/4/7` → por confirmar
+
+  El usuario reordena a mano con la herramienta de arrastre; su orden vive
+  en `localStorage`, estas 13 le aparecen al final (`applyOrder` manda al
+  final lo que no está en el orden guardado). `tsc` + `next build` limpios;
+  imágenes sirven 200.
+
 - **2026-09-06**: **Herramienta provisional para reordenar "Obras
   disponibles"** arrastrando. Ruta oculta
   `/obra?disponibles=1&orden=1` → `components/DisponiblesReorder.tsx`
