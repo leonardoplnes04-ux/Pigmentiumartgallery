@@ -4,7 +4,15 @@ import type { Artwork } from "@/data/types";
 import { aspectRatioOf } from "@/data/imageDimensions";
 import { useLanguage } from "@/hooks/useLanguage";
 
-export default function ArtworkCard({ artwork }: { artwork: Artwork }) {
+export default function ArtworkCard({
+  artwork,
+  hideCaption = false,
+}: {
+  artwork: Artwork;
+  // Drop the title/medium/status line under the image (used in the
+  // "Obras disponibles" grid, where the spec appears on click instead).
+  hideCaption?: boolean;
+}) {
   const { t, pick } = useLanguage();
 
   // Reserve the card's height BEFORE the image loads so the CSS-columns
@@ -43,18 +51,20 @@ export default function ArtworkCard({ artwork }: { artwork: Artwork }) {
           text-ink/70 instead of the page's default full-contrast ink,
           and the secondary lines drop further to /60 so the image stays
           the loudest thing on the card. */}
-      <div className="mt-3 flex items-baseline justify-between">
-        <div>
-          <h3 className="font-serif text-lg text-ink/70">{pick(artwork.title)}</h3>
-          <p className="text-sm text-muted/60">
-            {pick(artwork.medium)}
-            {artwork.year ? `, ${artwork.year}` : ""}
-          </p>
+      {!hideCaption && (
+        <div className="mt-3 flex items-baseline justify-between">
+          <div>
+            <h3 className="font-serif text-lg text-ink/70">{pick(artwork.title)}</h3>
+            <p className="text-sm text-muted/60">
+              {pick(artwork.medium)}
+              {artwork.year ? `, ${artwork.year}` : ""}
+            </p>
+          </div>
+          <span className="text-xs uppercase tracking-widest text-muted/60">
+            {t.status[artwork.status]}
+          </span>
         </div>
-        <span className="text-xs uppercase tracking-widest text-muted/60">
-          {t.status[artwork.status]}
-        </span>
-      </div>
+      )}
     </article>
   );
 }

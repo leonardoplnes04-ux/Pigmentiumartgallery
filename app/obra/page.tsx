@@ -185,7 +185,7 @@ function ObraGrid() {
       <div
         className={
           onlyAvailable
-            ? "mt-8 grid grid-cols-2 items-start gap-4 sm:mt-12 sm:grid-cols-3 lg:grid-cols-4"
+            ? "mt-8 grid grid-cols-2 items-start gap-4 sm:mt-12 sm:grid-cols-3"
             : "mt-8 columns-1 gap-8 sm:mt-12 sm:columns-2 lg:columns-3"
         }
       >
@@ -201,7 +201,7 @@ function ObraGrid() {
                   : "mb-8 block w-full break-inside-avoid text-left"
               }
             >
-              <ArtworkCard artwork={artwork} />
+              <ArtworkCard artwork={artwork} hideCaption={onlyAvailable} />
             </button>
           ) : (
             <Link
