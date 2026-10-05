@@ -7,11 +7,25 @@ import type { UiStrings } from "@/data/translations";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useTheme } from "@/hooks/useTheme";
 import type { Theme } from "@/hooks/useTheme";
+import { GlowButton } from "@/components/unlumen-ui/primitives/glow";
+
+// Glow for the Contacto nav button. Dark mode swaps to a white aura (per the user's request)
+// instead of the multicolor rotate, which read as muddy against the dark
+// background.
+const GLOW_COLORS_LIGHT = ["#FF5733", "#33FF57", "#3357FF", "#F1C40F"];
+const GLOW_COLORS_DARK = ["#FFFFFF", "#F2F2F2", "#FFFFFF", "#E6E6E6"];
+// The white dark-mode aura reads bigger than the multicolor one at the same
+// scale/blur, so it's dialed back to keep it from overwhelming the buttons.
+const GLOW_SCALE_LIGHT = 1;
+const GLOW_SCALE_DARK = 0.75;
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { language, setLanguage, t } = useLanguage();
   const { theme, toggleTheme } = useTheme();
+  const glowColors = theme === "dark" ? GLOW_COLORS_DARK : GLOW_COLORS_LIGHT;
+  const glowScale = theme === "dark" ? GLOW_SCALE_DARK : GLOW_SCALE_LIGHT;
+  const glowBlur = theme === "dark" ? "medium" : "strong";
 
   const navLinks = [
     { href: "/obra", label: t.nav.obra },
@@ -44,12 +58,17 @@ export default function Header() {
         <div className="hidden items-center gap-6 md:flex">
           <LanguageToggle language={language} onChange={setLanguage} />
           <ThemeToggle theme={theme} onToggle={toggleTheme} t={t} />
-          <Link
-            href="/contacto"
-            className="border border-ink px-5 py-2 text-xs uppercase tracking-widest hover:bg-ink hover:text-background"
+          <GlowButton
+            asChild
+            mode="rotate"
+            blur={glowBlur}
+            duration={5}
+            glowScale={glowScale}
+            colors={glowColors}
+            className="bg-ink text-background shadow-sm hover:bg-ink/90"
           >
-            {t.nav.contacto}
-          </Link>
+            <Link href="/contacto">{t.nav.contacto}</Link>
+          </GlowButton>
         </div>
 
         <div className="flex items-center gap-4 md:hidden">

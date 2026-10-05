@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { exhibitions } from "@/data/exhibitions";
 import { exhibitionGalleries } from "@/data/exhibitionGalleries";
+import ArrowLink from "@/components/ArrowLink";
 import { useLanguage } from "@/hooks/useLanguage";
 
 export default function ExhibitionsPress() {
@@ -11,8 +12,13 @@ export default function ExhibitionsPress() {
   return (
     <section className="border-t border-line px-5 py-16 sm:px-6 sm:py-20 md:py-24">
       <div className="mx-auto max-w-6xl">
-        <p className="text-xs uppercase tracking-widest text-muted">{t.exhibitions.eyebrow}</p>
-        <h2 className="mt-2 font-serif text-2xl sm:text-3xl">{t.exhibitions.title}</h2>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="text-xs uppercase tracking-widest text-muted">{t.exhibitions.eyebrow}</p>
+            <h2 className="mt-2 font-serif text-3xl sm:text-4xl">{t.exhibitions.title}</h2>
+          </div>
+          <ArrowLink href="/exposiciones">{t.exhibitions.viewAll}</ArrowLink>
+        </div>
 
         <ul className="mt-8 divide-y divide-line sm:mt-12">
           {exhibitions.map((item) => {

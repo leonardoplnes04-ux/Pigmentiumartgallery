@@ -112,6 +112,14 @@ export interface ExhibitionVideo {
   date: string;
   src: string;
   exhibitionId?: string;
+  // Portrait footage (phone-shot): rendered at phone width instead of the
+  // full 16:9 column so it doesn't tower over the page.
+  vertical?: boolean;
+  // Still frame for the /videos list (public/images/videos/), so the page
+  // shows thumbnails instead of loading every <video> up front.
+  poster?: string;
+  // Display length, "m:ss".
+  duration?: string;
 }
 
 // A minimal entity for grouping exhibitions by artist on /exposiciones.
@@ -124,12 +132,20 @@ export interface GalleryArtist {
   name: string;
 }
 
+export interface BiographySection {
+  heading?: LocalizedText;
+  paragraphs: LocalizedText[];
+}
+
 export interface Artist {
   name: string;
   tagline: LocalizedText;
   shortBio: LocalizedText;
-  longBio: LocalizedText;
+  // Full biography for /sobre-mi, one entry per section. `heading` is
+  // optional so a section can run on as plain prose.
+  biography: BiographySection[];
   portraitImage: string;
+  portraitCredit?: string;
   heroImage: string;
   email: string;
   socials: {

@@ -860,6 +860,168 @@ Todo lo relacionado con este proyecto vive aquí:
   aplica en la sesión donde se creó (el watcher de settings no vigilaba
   `.claude/`); toma efecto desde la siguiente sesión o tras abrir `/hooks`.
 
+- **2026-09-12**: SEO técnico on-page, a pedido del usuario ("que la página
+  salga entre las primeras opciones de Google al buscar Segundo Planes").
+  Nuevo `lib/seo.ts` con `SITE_URL` (única fuente de verdad, hoy la URL de
+  Vercel). Cambios: (1) `app/layout.tsx` — metadata enriquecida
+  (`metadataBase`, `keywords` con "Segundo Planes", Open Graph, Twitter
+  card, `robots: {index:true}`) y JSON-LD `schema.org/Person` en el
+  `<head>` de cada página (nombre, bio, imagen, redes) para que Google
+  pueda asociar el sitio directamente con el nombre del artista; (2)
+  `app/sitemap.ts` y `app/robots.ts` nuevos (`/sitemap.xml`, `/robots.txt`,
+  autogenerados por Next.js) — el sitemap deriva sus 142 URLs de los mismos
+  datos que renderizan las páginas (obras/exposiciones/performances reales
+  con detalle), así que una pieza nueva aparece sola; (3) metadata propia
+  por página: `sobre-mi` y `contacto` (server components, directa);
+  `obra`, `exposiciones`, `performance`, `videos` son client components y
+  no pueden exportar `metadata`, así que cada uno tiene ahora un
+  `layout.tsx` server-only al lado que la provee; (4) las páginas de
+  detalle (`obra/[id]`, `exposiciones/[id]`, `performance/[id]`), que ya
+  tenían `generateMetadata`, suman `alternates.canonical` + Open
+  Graph/Twitter con la imagen de la pieza/exposición/performance.
+  Verificado en local: `/robots.txt`, `/sitemap.xml` (142 URLs), título +
+  meta description + og:* + JSON-LD correctos en home y en `/obra`;
+  `npx tsc --noEmit` limpio.
+  **Fuera de alcance de este cambio** (no es código, o es una decisión de
+  producto aparte): verificar el sitio en Google Search Console y enviar
+  el sitemap (acelera la indexación — sin esto Google puede tardar en
+  encontrarlo solo), dominio propio en vez de `pigmentiumartgallery.vercel.app`
+  (ayuda mucho a rankear por el nombre), favicon/ícono del sitio (no existe
+  ninguno todavía), backlinks desde redes/prensa del artista.
+
+- **2026-10-04**: Página **Biografía** (`/sobre-mi`) construida con la
+  biografía real del artista (fuente: `biografia_segundo_planes.docx` que
+  entregó el usuario). Antes era "Próximamente". Cambios: (1)
+  `data/types.ts` — `Artist.longBio` (sin uso) reemplazado por
+  `biography: BiographySection[]` (heading opcional + párrafos ES/EN);
+  (2) `data/artist.ts` — biografía completa en 6 secciones (formación y
+  trayectoria, exposiciones individuales, performance, bienales y ferias,
+  premios, colecciones). El español es literal del docx salvo erratas
+  obvias ("Portgual", "osea"); el inglés es traducción nuestra. `shortBio`
+  (homepage + meta description) reescrita con datos reales — la anterior
+  era placeholder y decía "n. 1987" / "memoria y paisaje doméstico"; (3)
+  nuevo `components/BiographyPage.tsx` (client, bilingüe) y
+  `app/sobre-mi/page.tsx` lo usa; título SEO pasa a "Biografía — …".
+  `npx tsc --noEmit` limpio, `/sobre-mi` responde 200.
+  Pendiente: que el artista revise la traducción al inglés.
+  - Mismo día: `shortBio` ES/EN reescrita al texto exacto que dio el
+    usuario ("…generación de los 80s de la plástica cubana (del llamado
+    renacimiento del arte cubano)…").
+  - Mismo día: **retrato real**. `public/images/retrato-segundo-planes-32reales-v2.jpg`
+    (800×1000, 4:5) = close-up del hombre del centro de la foto grupal
+    "Bernardo Bremer, Segundo Planes y Gabriel Elizondo" (Omar Valdez,
+    Chic Magazine, dic 2024, inauguración de "Algoritmo, arquetipos
+    frustrados" en Galería Estereo). Recorte de 280×350 px del original
+    1200×740, escalado ×2.86 con LANCZOS + unsharp: se ve algo suave en
+    pantallas grandes. Reemplaza `placeholder-portrait.svg` en
+    `artist.portraitImage` → aparece en `/sobre-mi` (arriba a la derecha,
+    con crédito `artist.portraitCredit`) y en el bloque Biografía del
+    homepage. **Pendiente:** conseguir un retrato propio en alta
+    resolución y con derechos (la foto es de la revista).
+  - Mismo día (reemplaza lo anterior): retrato cambiado por la foto de
+    32reales.com (`segundo-planes.jpg`, 1600², fondo = mural rojo). Recorte
+    4:5 → 1000×1250; persona segmentada con `rembg` (`u2net_human_seg`, venv
+    temporal en scratchpad) y **fondo en blanco y negro**, artista a color.
+    Máscara erosionada + limpieza de rojos bajo el cuello para quitar halo.
+    Foto pasa a la **izquierda** en `/sobre-mi`; crédito "Foto: 32 Reales".
+    Luego: fondo aclarado y con menos contraste (contraste ×0.55, mezcla
+    45% hacia gris claro) para darle protagonismo al artista; limpieza del
+    hilo rojo junto al brazo. Archivo final
+    `public/images/retrato-segundo-planes-32reales-v2.jpg` (el nombre cambia
+    en cada versión para evitar la caché del navegador).
+
+- **2026-10-04**: Retirada la sección "Series / Cuerpos de obra" del
+  homepage (`app/page.tsx` ya no renderiza `<SeriesGrid />`). El componente
+  `components/SeriesGrid.tsx` y `data/series.ts` se conservan por si se
+  quiere restaurar (basta volver a importarlo en `app/page.tsx`).
+
+- **2026-10-04**: Retirado el botón de **Tienda** (ícono de tienda, arriba a
+  la derecha del header, sin destino todavía). Se borró `StoreButton` de
+  `components/Header.tsx`; queda solo el botón Contacto con su glow. La
+  traducción `nav.tiendaAria` sigue en `data/translations.ts` por si se
+  agrega una tienda real más adelante.
+
+- **2026-10-04**: Página **Contacto** (`/contacto`) construida — antes era
+  "Próximamente". Formulario de captación de prospectos + canales directos.
+  - `components/ContactPage.tsx` (client, ES/EN). Desktop: 2 columnas —
+    izquierda sticky con título, intro y "Contacto directo" (correo con
+    botón copiar, Instagram, Estudio Monterrey · La Habana, nota "respondemos
+    en 48 h hábiles"); derecha el formulario en un panel con borde. Móvil:
+    todo apilado.
+  - Campos: Nombre*, Correo*, Teléfono/WhatsApp (opcional), "¿Qué te
+    interesa?"* (chips: Adquirir una obra / Encargo / Exposición o
+    colaboración / Prensa / Otro — radios nativos, accesibles por teclado),
+    "Obra de interés" (opcional, aparece con animación solo si eligen
+    Adquirir o Encargo), Mensaje* (contador /2000). Validación en línea al
+    salir del campo y al enviar (foco al primer error, aria-invalid,
+    mensajes en rojo), botón con estado "Enviando…", pantalla de éxito que
+    conserva la altura del panel, alerta de error con el correo como
+    alternativa. Honeypot anti-spam. Inputs a 16px en móvil (sin zoom iOS).
+  - Deep link: `/contacto?obra=<título>` preselecciona "Adquirir una obra"
+    y llena la obra. Los botones **"Consultar"** de `ArtworkDetail`
+    (`/obra/[id]`) y `AvailableSpecModal` (obras disponibles) ya no abren
+    el correo: llevan a `/contacto?obra=Título (año) · ref. obra-XX` — la
+    ref. de catálogo distingue las muchas piezas "Sin título".
+    Además pasan `&img=<artwork.image>`: el formulario muestra una
+    **miniatura de referencia** (56×56) a la izquierda del campo "Obra de
+    interés" (se quita si borran el texto) y el correo del prospecto incluye
+    la imagen (URL absoluta con `SITE_URL`). Solo se aceptan rutas propias
+    `/images/…` (`isArtworkImagePath` en `lib/contact.ts`).
+  - `lib/contact.ts`: validación + armado del correo.
+  - `app/api/contact/route.ts`: revalida y envía el prospecto por correo
+    vía **Resend** (REST, sin dependencia nueva), `reply_to` = correo del
+    prospecto. Env vars en Vercel: `RESEND_API_KEY` (obligatoria),
+    `CONTACT_TO_EMAIL` (default `artist.email`), `CONTACT_FROM_EMAIL`
+    (remitente de dominio verificado; sin él usa `onboarding@resend.dev`,
+    que solo entrega al correo dueño de la cuenta Resend). **Sin la key:**
+    en dev el prospecto se imprime en la consola del servidor; en
+    producción responde 503 y el formulario muestra el correo directo.
+  - `ContactBanner` del homepage: el botón "Escribir" ahora lleva a
+    `/contacto` en vez de abrir el correo.
+  - Verificado en navegador: validación, chip + campo condicional, envío
+    exitoso, deep link, vista móvil 390px; API probada (200 / 422 /
+    honeypot). `npx tsc --noEmit` limpio.
+  - **Pendiente:** crear cuenta Resend + verificar dominio y cargar las env
+    vars en Vercel para que los prospectos lleguen por correo en producción.
+
+- **2026-10-04**: **Envío de prospectos sin intermediarios** (a pedido del
+  usuario: nada de FormSubmit/Resend). Se probó FormSubmit y su correo de
+  activación nunca llegó al Outlook; se descartó. Ahora al dar "Enviar" el
+  formulario abre la **app de correo del visitante (mailto:)** dirigida a
+  segundoplanesobras@outlook.com con asunto "<Interés> — <Nombre> ·
+  PIGMENTUM ART GALLERY" y cuerpo con todos los campos (nombre, correo,
+  teléfono, interés, obra + URL de la imagen, mensaje). El visitante solo
+  presiona Enviar en su correo. Pantalla posterior "Tu mensaje está listo"
+  con respaldo si no se abrió su app: botones Gmail web, Outlook web, abrir
+  app de correo y copiar mensaje. Se borró `app/api/contact/` y `.env.local`;
+  la composición vive en `lib/contact.ts` (`buildLeadEmail`, `mailtoUrl`).
+  Limitación inherente: el correo sale desde la cuenta del visitante y solo
+  llega si él presiona Enviar.
+
+- **2026-10-04**: Nuevo video en `/videos`: **"Recorrido — Algoritmo,
+  arquetipos frustrados"** (2024, Galería Estereo, `exhibitionId: exp-11`),
+  primero de la lista. Fuente: video de WhatsApp que pasó el usuario (año
+  2024 confirmado por él; la exposición se infirió por ser la única de 2024 y
+  coincidir con las fotos de Chic Magazine — confirmar). Copiado sin
+  recomprimir con `+faststart` a
+  `public/videos/algoritmo-arquetipos-frustrados-recorrido-2024-sin-audio.mp4`
+  (480×864 vertical, 2:12, 25 MB, **sin audio** — pista de sonido eliminada a pedido del usuario). Nuevo campo `ExhibitionVideo.vertical`:
+  los videos verticales se muestran a ancho de celular (`aspect-[9/16]`,
+  máx. 360px) en vez de ocupar toda la columna.
+
+- **2026-10-04**: **Rediseño de `/videos`** para que todos los videos se
+  vean en la primera pantalla, con el mismo ritmo de lista que
+  `/exposiciones`: fila = año · título (link a la exposición) + sede +
+  "▶ Ver video · m:ss" · miniatura 16:9 (240px) con botón play y duración.
+  Ya no se cargan los `<video>` en la página: al dar clic se abre un
+  **reproductor a pantalla completa** (fondo negro, título/sede/contador
+  "1/3", cerrar con ×, Esc o clic fuera; flechas ←/→ y botones para
+  anterior/siguiente; foco regresa a la miniatura; videos verticales a su
+  proporción). Posters generados con ffmpeg (frame al 30% del video; el de
+  2011 recortado sin barras negras) en `public/images/videos/`. Nuevos
+  campos `ExhibitionVideo.poster` y `.duration`; textos nuevos en
+  `t.videos` (intro, watch, playAriaPrefix, close, prev/nextAria).
+
 ## Próximos pasos
 - Cuando se sume un segundo artista real a la galería: agregar su entrada en `data/galleryArtists.ts`, tagear sus exposiciones con su `artistId` en `data/exhibitions.ts`, y el filtro por artista en `/exposiciones` aparece solo (sin tocar componentes). Si en algún momento también se necesita que `/obra` y `/sobre-mi` sean multi-artista (hoy siguen asumiendo a Segundo Planes como único artista del sitio), eso es un cambio de modelo de datos más grande — brainstorming aparte cuando se necesite de verdad.
 - Confirmar con el artista: títulos definitivos, año y dimensiones exactas del resto de la serie Aviario (`obra-08`..`obra-12`, `obra-07` ya confirmada); citas reales de críticos (hoy son placeholder); reemplazar o retirar los placeholders restantes de Interiores/Derivas. **Esto también activa "Ver en tu pared"** por obra — en cuanto tenga `realDimensionsCm` cargado, el botón aparece solo.

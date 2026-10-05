@@ -22,9 +22,22 @@ export async function generateMetadata({
   // Server-rendered metadata can't know the client's localStorage language
   // choice, so it's fixed to Spanish — see "Límite aceptado" in
   // docs/specs/2026-08-17-language-toggle-design.md.
+  const title = `${performance.title} — ${artist.name}`;
+  const description = performance.venue
+    ? `${performance.venue}, ${performance.year}.`
+    : performance.year;
+  const image = findPerformanceGallery(id)?.[0]?.src;
   return {
-    title: `${performance.title} — ${artist.name}`,
-    description: performance.venue ? `${performance.venue}, ${performance.year}.` : performance.year,
+    title,
+    description,
+    alternates: { canonical: `/performance/${performance.id}` },
+    openGraph: { title, description, images: image ? [{ url: image }] : undefined },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: image ? [image] : undefined,
+    },
   };
 }
 

@@ -22,9 +22,21 @@ export async function generateMetadata({
   // Server-rendered metadata can't know the client's localStorage language
   // choice, so it's fixed to Spanish — see "Límite aceptado" in
   // docs/specs/2026-08-17-language-toggle-design.md.
+  const title = `${exhibition.title.es} — ${artist.name}`;
+  const description = `${exhibition.venue}, ${exhibition.date}.`;
+  const galleryImage = findExhibitionGallery(id)?.[0]?.src;
+  const image = exhibition.image ?? galleryImage;
   return {
-    title: `${exhibition.title.es} — ${artist.name}`,
-    description: `${exhibition.venue}, ${exhibition.date}.`,
+    title,
+    description,
+    alternates: { canonical: `/exposiciones/${exhibition.id}` },
+    openGraph: { title, description, images: image ? [{ url: image }] : undefined },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: image ? [image] : undefined,
+    },
   };
 }
 

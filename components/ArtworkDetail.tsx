@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { Artwork } from "@/data/types";
-import { artist } from "@/data/artist";
 import { useLanguage } from "@/hooks/useLanguage";
 
 export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
@@ -107,14 +106,14 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
           </dl>
 
           <div className="mt-8 flex flex-wrap gap-3">
-            <a
-              href={`mailto:${artist.email}?subject=${encodeURIComponent(
-                `${t.detail.inquireSubjectPrefix} "${title}"`
-              )}`}
+            <Link
+              href={`/contacto?obra=${encodeURIComponent(
+                `${artwork.year ? `${title} (${artwork.year})` : title} · ref. ${artwork.id}`
+              )}&img=${encodeURIComponent(artwork.image)}`}
               className="inline-block border border-ink px-6 py-3 text-xs uppercase tracking-widest hover:bg-ink hover:text-background"
             >
               {t.detail.inquireCta}
-            </a>
+            </Link>
             {artwork.realDimensionsCm && (
               <Link
                 href={`/obra/${artwork.id}/simulador`}

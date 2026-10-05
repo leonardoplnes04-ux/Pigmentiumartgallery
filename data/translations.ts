@@ -6,6 +6,7 @@ export interface UiStrings {
     sobreMi: string;
     exposiciones: string;
     contacto: string;
+    tiendaAria: string;
   };
   menu: {
     open: string;
@@ -37,11 +38,13 @@ export interface UiStrings {
   series: {
     eyebrow: string;
     title: string;
+    viewAll: string;
   };
   exhibitions: {
     eyebrow: string;
     title: string;
     filterAll: string; // "All artists" tab, only shown when the gallery has more than one
+    viewAll: string;
   };
   exhibitionDetail: {
     back: string;
@@ -49,6 +52,12 @@ export interface UiStrings {
   videos: {
     eyebrow: string;
     title: string;
+    intro: string;
+    watch: string;
+    playAriaPrefix: string; // "<playAriaPrefix> <title>"
+    close: string;
+    prevAria: string;
+    nextAria: string;
   };
   performances: {
     eyebrow: string;
@@ -62,6 +71,44 @@ export interface UiStrings {
     title: string;
     body: string;
     cta: string;
+  };
+  contactPage: {
+    eyebrow: string;
+    title: string;
+    intro: string;
+    directLabel: string;
+    emailLabel: string;
+    copy: string;
+    copied: string;
+    instagramLabel: string;
+    studioLabel: string;
+    studioValue: string;
+    responseNote: string;
+    formTitle: string;
+    nameLabel: string;
+    namePlaceholder: string;
+    emailFieldLabel: string;
+    emailPlaceholder: string;
+    phoneLabel: string;
+    phonePlaceholder: string;
+    optional: string;
+    interestLabel: string;
+    interests: { purchase: string; commission: string; exhibition: string; press: string; other: string };
+    artworkLabel: string;
+    artworkPlaceholder: string;
+    messageLabel: string;
+    messagePlaceholder: string;
+    privacy: string;
+    submit: string;
+    errors: { name: string; email: string; message: string; interest: string };
+    errorSummary: string;
+    successTitle: string;
+    successBody: string;
+    sendAnother: string;
+    notOpened: string;
+    openMailApp: string;
+    copyMessage: string;
+    copiedMessage: string;
   };
   status: {
     available: string;
@@ -92,6 +139,8 @@ export interface UiStrings {
     closeFullscreenAria: string;
   };
   footer: {
+    navLabel: string;
+    connectLabel: string;
     newsletterLabel: string;
     emailPlaceholder: string;
     submit: string;
@@ -126,6 +175,7 @@ export const translations: Record<Language, UiStrings> = {
       sobreMi: "Biografía",
       exposiciones: "Exposiciones",
       contacto: "Contacto",
+      tiendaAria: "Tienda",
     },
     menu: {
       open: "Menú",
@@ -157,11 +207,13 @@ export const translations: Record<Language, UiStrings> = {
     series: {
       eyebrow: "Series",
       title: "Cuerpos de obra",
+      viewAll: "Ver toda la obra",
     },
     exhibitions: {
       eyebrow: "Exposiciones y prensa",
       title: "Trayectoria",
       filterAll: "Todos",
+      viewAll: "Ver todas las exposiciones",
     },
     exhibitionDetail: {
       back: "← Volver a exposiciones",
@@ -169,6 +221,12 @@ export const translations: Record<Language, UiStrings> = {
     videos: {
       eyebrow: "Videos",
       title: "Videos",
+      intro: "Inauguraciones y recorridos por las exposiciones de Segundo Planes.",
+      watch: "Ver video",
+      playAriaPrefix: "Reproducir",
+      close: "Cerrar",
+      prevAria: "Video anterior",
+      nextAria: "Video siguiente",
     },
     performances: {
       eyebrow: "Performance",
@@ -182,6 +240,55 @@ export const translations: Record<Language, UiStrings> = {
       title: "¿Te interesa una pieza?",
       body: "Escríbeme para consultar disponibilidad, precio o encargos a medida.",
       cta: "Escribir",
+    },
+    contactPage: {
+      eyebrow: "Contacto",
+      title: "Conversemos sobre la obra",
+      intro: "Para adquirir una pieza, solicitar un encargo, proponer una exposición o una entrevista, déjanos tus datos y te responderemos personalmente.",
+      directLabel: "Contacto directo",
+      emailLabel: "Correo",
+      copy: "Copiar",
+      copied: "Copiado",
+      instagramLabel: "Instagram",
+      studioLabel: "Estudio",
+      studioValue: "Monterrey, México · La Habana, Cuba",
+      responseNote: "Respondemos en un plazo de 48 horas hábiles.",
+      formTitle: "Envíanos un mensaje",
+      nameLabel: "Nombre",
+      namePlaceholder: "Tu nombre completo",
+      emailFieldLabel: "Correo electrónico",
+      emailPlaceholder: "nombre@correo.com",
+      phoneLabel: "Teléfono o WhatsApp",
+      phonePlaceholder: "+52 81 0000 0000",
+      optional: "Opcional",
+      interestLabel: "¿Qué te interesa?",
+      interests: {
+        purchase: "Adquirir una obra",
+        commission: "Encargo",
+        exhibition: "Exposición o colaboración",
+        press: "Prensa",
+        other: "Otro",
+      },
+      artworkLabel: "Obra de interés",
+      artworkPlaceholder: "Título o serie, si ya tienes una en mente",
+      messageLabel: "Mensaje",
+      messagePlaceholder: "Cuéntanos qué buscas: espacio, medidas, plazos…",
+      privacy: "Usaremos tus datos únicamente para responder a tu mensaje. No los compartimos con terceros.",
+      submit: "Enviar mensaje",
+      errors: {
+        name: "Escribe tu nombre.",
+        email: "Escribe un correo válido.",
+        message: "Cuéntanos un poco más (mínimo 10 caracteres).",
+        interest: "Elige una opción.",
+      },
+      errorSummary: "Revisa los campos marcados.",
+      successTitle: "Tu mensaje está listo",
+      successBody: "Se abrió tu aplicación de correo con todos tus datos ya escritos. Solo presiona «Enviar» para que nos llegue.",
+      sendAnother: "Volver al formulario",
+      notOpened: "¿No se abrió tu correo? Envíalo desde",
+      openMailApp: "App de correo",
+      copyMessage: "Copiar mensaje",
+      copiedMessage: "Copiado",
     },
     status: {
       available: "Disponible",
@@ -212,6 +319,8 @@ export const translations: Record<Language, UiStrings> = {
       closeFullscreenAria: "Cerrar pantalla completa",
     },
     footer: {
+      navLabel: "Navegar",
+      connectLabel: "Conectar",
       newsletterLabel: "Newsletter",
       emailPlaceholder: "Tu correo",
       submit: "Enviar",
@@ -244,6 +353,7 @@ export const translations: Record<Language, UiStrings> = {
       sobreMi: "Biography",
       exposiciones: "Exhibitions",
       contacto: "Contact",
+      tiendaAria: "Store",
     },
     menu: {
       open: "Menu",
@@ -275,11 +385,13 @@ export const translations: Record<Language, UiStrings> = {
     series: {
       eyebrow: "Series",
       title: "Bodies of work",
+      viewAll: "See all work",
     },
     exhibitions: {
       eyebrow: "Exhibitions & press",
       title: "Trajectory",
       filterAll: "All",
+      viewAll: "See all exhibitions",
     },
     exhibitionDetail: {
       back: "← Back to exhibitions",
@@ -287,6 +399,12 @@ export const translations: Record<Language, UiStrings> = {
     videos: {
       eyebrow: "Videos",
       title: "Videos",
+      intro: "Openings and walkthroughs of Segundo Planes’s exhibitions.",
+      watch: "Watch video",
+      playAriaPrefix: "Play",
+      close: "Close",
+      prevAria: "Previous video",
+      nextAria: "Next video",
     },
     performances: {
       eyebrow: "Performance",
@@ -300,6 +418,55 @@ export const translations: Record<Language, UiStrings> = {
       title: "Interested in a piece?",
       body: "Write to me to ask about availability, price, or custom commissions.",
       cta: "Write",
+    },
+    contactPage: {
+      eyebrow: "Contact",
+      title: "Let’s talk about the work",
+      intro: "To acquire a piece, request a commission, propose an exhibition or an interview, leave your details and we’ll get back to you personally.",
+      directLabel: "Direct contact",
+      emailLabel: "Email",
+      copy: "Copy",
+      copied: "Copied",
+      instagramLabel: "Instagram",
+      studioLabel: "Studio",
+      studioValue: "Monterrey, Mexico · Havana, Cuba",
+      responseNote: "We reply within 48 business hours.",
+      formTitle: "Send us a message",
+      nameLabel: "Name",
+      namePlaceholder: "Your full name",
+      emailFieldLabel: "Email",
+      emailPlaceholder: "name@email.com",
+      phoneLabel: "Phone or WhatsApp",
+      phonePlaceholder: "+1 555 000 0000",
+      optional: "Optional",
+      interestLabel: "What are you interested in?",
+      interests: {
+        purchase: "Acquiring a work",
+        commission: "Commission",
+        exhibition: "Exhibition or collaboration",
+        press: "Press",
+        other: "Other",
+      },
+      artworkLabel: "Work of interest",
+      artworkPlaceholder: "Title or series, if you already have one in mind",
+      messageLabel: "Message",
+      messagePlaceholder: "Tell us what you’re looking for: space, size, timing…",
+      privacy: "We’ll only use your details to reply to your message. We never share them with third parties.",
+      submit: "Send message",
+      errors: {
+        name: "Please enter your name.",
+        email: "Please enter a valid email.",
+        message: "Tell us a bit more (at least 10 characters).",
+        interest: "Please choose an option.",
+      },
+      errorSummary: "Please check the highlighted fields.",
+      successTitle: "Your message is ready",
+      successBody: "Your email app opened with all your details already written. Just press “Send” so it reaches us.",
+      sendAnother: "Back to the form",
+      notOpened: "Email app didn’t open? Send it from",
+      openMailApp: "Email app",
+      copyMessage: "Copy message",
+      copiedMessage: "Copied",
     },
     status: {
       available: "Available",
@@ -330,6 +497,8 @@ export const translations: Record<Language, UiStrings> = {
       closeFullscreenAria: "Close fullscreen",
     },
     footer: {
+      navLabel: "Browse",
+      connectLabel: "Connect",
       newsletterLabel: "Newsletter",
       emailPlaceholder: "Your email",
       submit: "Submit",

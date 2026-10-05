@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { artist } from "@/data/artist";
+import ArrowLink from "@/components/ArrowLink";
 import { useLanguage } from "@/hooks/useLanguage";
 
 export default function ArtistStatement() {
@@ -22,13 +22,10 @@ export default function ArtistStatement() {
 
       <div>
         <p className="text-xs uppercase tracking-widest text-muted">{t.statement.eyebrow}</p>
-        <p className="mt-4 font-serif text-xl leading-relaxed sm:text-2xl">{pick(artist.shortBio)}</p>
-        <Link
-          href="/sobre-mi"
-          className="mt-6 inline-block text-xs uppercase tracking-widest underline underline-offset-4"
-        >
+        <p className="mt-4 font-serif text-2xl leading-relaxed sm:text-3xl">{pick(artist.shortBio)}</p>
+        <ArrowLink href="/sobre-mi" className="mt-6">
           {t.statement.readMore}
-        </Link>
+        </ArrowLink>
       </div>
     </section>
   );
