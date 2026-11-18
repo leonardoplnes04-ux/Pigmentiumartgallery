@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import type { Artwork } from "@/data/types";
 import { useLanguage } from "@/hooks/useLanguage";
+import InquireBlock from "@/components/InquireBlock";
 
 // Spec sheet ("ficha técnica") for an "Obras disponibles" piece. These
 // works have no /obra/[id] route (see data/availableExtra.ts), so instead
@@ -182,16 +182,17 @@ export default function AvailableSpecModal({
                 <dt className="text-muted">{t.detail.status}</dt>
                 <dd>{t.status[artwork.status]}</dd>
               </div>
+              {artwork.status !== "sold" && (
+                <div className="flex justify-between gap-4">
+                  <dt className="text-muted">{t.detail.priceLabel}</dt>
+                  <dd>{t.detail.priceOnRequest}</dd>
+                </div>
+              )}
             </dl>
 
-            <Link
-              href={`/contacto?obra=${encodeURIComponent(
-                `${artwork.year ? `${title} (${artwork.year})` : title} · ref. ${artwork.id}`
-              )}&img=${encodeURIComponent(artwork.image)}`}
-              className="mt-8 inline-block border border-ink px-6 py-3 text-xs uppercase tracking-widest hover:bg-ink hover:text-background"
-            >
-              {t.detail.inquireCta}
-            </Link>
+            <div className="mt-8">
+              <InquireBlock artwork={artwork} title={title} />
+            </div>
           </div>
         </div>
       </div>

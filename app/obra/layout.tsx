@@ -5,7 +5,7 @@ import { artist } from "@/data/artist";
 // export `metadata` itself — this server layout carries it instead. Same
 // pattern used by exposiciones/, performance/, and videos/.
 export const metadata: Metadata = {
-  title: `Obra de ${artist.name} — Pinturas disponibles`,
+  title: `Obra de ${artist.name} — Pintura cubana contemporánea`,
   description: `Catálogo de obra de ${artist.name}: pinturas y piezas disponibles.`,
   alternates: { canonical: "/obra" },
 };

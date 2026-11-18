@@ -134,6 +134,9 @@ export interface UiStrings {
       inquire: string;
     };
     inquireCta: string;
+    inquireNote: string; // shown under the CTA; explains why there is no public price
+    priceLabel: string;
+    priceOnRequest: string;
     inquireSubjectPrefix: string; // `<inquireSubjectPrefix> "<title>"`
     criticEyebrow: string;
     detailAltSuffix: string; // "<title> — <detailAltSuffix> N"
@@ -317,7 +320,10 @@ export const translations: Record<Language, UiStrings> = {
         sold: "Vendida",
         inquire: "Consultar disponibilidad",
       },
-      inquireCta: "Consultar disponibilidad",
+      inquireCta: "Solicitar información y precio",
+      inquireNote: "Para recibir atención personalizada.",
+      priceLabel: "Precio",
+      priceOnRequest: "Bajo consulta",
       inquireSubjectPrefix: "Consulta sobre",
       criticEyebrow: "Crítica",
       detailAltSuffix: "detalle",
@@ -499,7 +505,10 @@ export const translations: Record<Language, UiStrings> = {
         sold: "Sold",
         inquire: "Inquire about availability",
       },
-      inquireCta: "Inquire about availability",
+      inquireCta: "Request information and price",
+      inquireNote: "To receive personalised attention.",
+      priceLabel: "Price",
+      priceOnRequest: "On request",
       inquireSubjectPrefix: "Inquiry about",
       criticEyebrow: "Critical reception",
       detailAltSuffix: "detail",

@@ -83,6 +83,6 @@ export const artist: Artist = {
   heroImage: "/images/hero-segundo-planes.jpg",
   email: "segundoplanesobras@outlook.com",
   socials: {
-    instagram: "https://instagram.com/pigmentum",
+    instagram: "https://www.instagram.com/segundoplanes/",
   },
 };

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { Artwork } from "@/data/types";
 import { useLanguage } from "@/hooks/useLanguage";
+import InquireBlock from "@/components/InquireBlock";
 
 export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
   const { t, pick } = useLanguage();
@@ -103,21 +104,20 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
               <dt className="text-muted">{t.detail.status}</dt>
               <dd>{t.status[artwork.status]}</dd>
             </div>
+            {artwork.status !== "sold" && (
+              <div className="flex justify-between gap-4">
+                <dt className="text-muted">{t.detail.priceLabel}</dt>
+                <dd>{t.detail.priceOnRequest}</dd>
+              </div>
+            )}
           </dl>
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              href={`/contacto?obra=${encodeURIComponent(
-                `${artwork.year ? `${title} (${artwork.year})` : title} · ref. ${artwork.id}`
-              )}&img=${encodeURIComponent(artwork.image)}`}
-              className="inline-block border border-ink px-6 py-3 text-xs uppercase tracking-widest hover:bg-ink hover:text-background"
-            >
-              {t.detail.inquireCta}
-            </Link>
+          <div className="mt-8">
+            <InquireBlock artwork={artwork} title={title} />
             {artwork.realDimensionsCm && (
               <Link
                 href={`/obra/${artwork.id}/simulador`}
-                className="inline-block border border-line px-6 py-3 text-xs uppercase tracking-widest hover:border-ink"
+                className="mt-4 inline-block text-xs uppercase tracking-widest text-muted underline-offset-4 hover:text-ink hover:underline"
               >
                 {t.simulator.cta}
               </Link>
