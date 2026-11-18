@@ -3,5 +3,5 @@ export interface Site {
 }
 
 export const site: Site = {
-  name: "PIGMENTUM ART GALLERY",
+  name: "Segundo Planes",
 };

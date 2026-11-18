@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { api } from "@/convex/_generated/api";
+import { getConvex } from "@/lib/convexClient";
 import Link from "next/link";
 import { artist } from "@/data/artist";
 import { site } from "@/data/site";
@@ -8,8 +10,8 @@ import { useLanguage } from "@/hooks/useLanguage";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const { t, pick } = useLanguage();
+  const [state, setState] = useState<"idle" | "sending" | "done" | "error">("idle");
+  const { t, pick, language } = useLanguage();
 
   const footerNav = [
     { href: "/obra", label: t.nav.obra },
@@ -18,9 +20,19 @@ export default function Footer() {
     { href: "/contacto", label: t.nav.contacto },
   ];
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setSubmitted(true);
+    if (state === "sending") return;
+    setState("sending");
+    try {
+      const convex = getConvex();
+      if (!convex) throw new Error("convex_not_configured");
+      await convex.mutation(api.subscribers.subscribe, { email, lang: language });
+      setState("done");
+      setEmail("");
+    } catch {
+      setState("error");
+    }
   }
 
   return (
@@ -71,11 +83,24 @@ export default function Footer() {
                 onChange={(event) => setEmail(event.target.value)}
                 className="w-full bg-transparent px-3 py-2 text-sm outline-none"
               />
-              <button type="submit" className="px-3 text-xs uppercase tracking-widest">
-                {t.footer.submit}
+              <button
+                type="submit"
+                disabled={state === "sending"}
+                className="px-3 text-xs uppercase tracking-widest disabled:cursor-wait disabled:opacity-60"
+              >
+                {state === "sending" ? t.footer.sending : t.footer.submit}
               </button>
             </div>
-            {submitted && <p className="text-xs text-muted">{t.footer.thanks}</p>}
+            {state === "done" && (
+              <p role="status" className="text-xs text-muted">
+                {t.footer.thanks}
+              </p>
+            )}
+            {state === "error" && (
+              <p role="alert" className="text-xs text-red-700 dark:text-red-400">
+                {t.footer.error}
+              </p>
+            )}
           </form>
         </div>
 

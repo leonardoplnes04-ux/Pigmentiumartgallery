@@ -106,6 +106,8 @@ export interface UiStrings {
     successBody: string;
     sendAnother: string;
     notOpened: string;
+    sending: string;
+    sendError: string;
     openMailApp: string;
     copyMessage: string;
     copiedMessage: string;
@@ -145,6 +147,8 @@ export interface UiStrings {
     emailPlaceholder: string;
     submit: string;
     thanks: string;
+    sending: string;
+    error: string;
     rights: string;
   };
   comingSoon: {
@@ -283,9 +287,11 @@ export const translations: Record<Language, UiStrings> = {
       },
       errorSummary: "Revisa los campos marcados.",
       successTitle: "Tu mensaje está listo",
-      successBody: "Se abrió tu aplicación de correo con todos tus datos ya escritos. Solo presiona «Enviar» para que nos llegue.",
+      successBody: "Recibimos tu mensaje. Te responderemos al correo que nos dejaste.",
       sendAnother: "Volver al formulario",
       notOpened: "¿No se abrió tu correo? Envíalo desde",
+      sending: "Enviando…",
+      sendError: "No pudimos enviar tu mensaje. Inténtalo de nuevo o envíalo desde tu correo:",
       openMailApp: "App de correo",
       copyMessage: "Copiar mensaje",
       copiedMessage: "Copiado",
@@ -325,6 +331,8 @@ export const translations: Record<Language, UiStrings> = {
       emailPlaceholder: "Tu correo",
       submit: "Enviar",
       thanks: "Gracias por suscribirte.",
+      sending: "Enviando…",
+      error: "No pudimos suscribirte. Inténtalo de nuevo.",
       rights: "Todos los derechos reservados.",
     },
     comingSoon: {
@@ -461,9 +469,11 @@ export const translations: Record<Language, UiStrings> = {
       },
       errorSummary: "Please check the highlighted fields.",
       successTitle: "Your message is ready",
-      successBody: "Your email app opened with all your details already written. Just press “Send” so it reaches us.",
+      successBody: "We got your message. We’ll reply to the email you gave us.",
       sendAnother: "Back to the form",
       notOpened: "Email app didn’t open? Send it from",
+      sending: "Sending…",
+      sendError: "We couldn’t send your message. Try again or send it from your email:",
       openMailApp: "Email app",
       copyMessage: "Copy message",
       copiedMessage: "Copied",
@@ -503,6 +513,8 @@ export const translations: Record<Language, UiStrings> = {
       emailPlaceholder: "Your email",
       submit: "Submit",
       thanks: "Thanks for subscribing.",
+      sending: "Sending…",
+      error: "We couldn’t subscribe you. Please try again.",
       rights: "All rights reserved.",
     },
     comingSoon: {

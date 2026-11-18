@@ -1022,6 +1022,46 @@ Todo lo relacionado con este proyecto vive aquí:
   campos `ExhibitionVideo.poster` y `.duration`; textos nuevos en
   `t.videos` (intro, watch, playAriaPrefix, close, prev/nextAria).
 
+- **2026-10-04**: **Deploy a producción** — commit `163ee6f` ("Biografía,
+  contacto con formulario, videos y SEO", 43 archivos: todo lo pendiente
+  desde `2acbf06`, incluido el SEO de 2026-09-12 y el glow del header)
+  pusheado a `main`; Vercel lo publicó en ~80 s. `npm run build` local
+  limpio antes del push (148 páginas). Verificado en vivo: `/`, `/sobre-mi`,
+  `/contacto`, `/videos`, `/sitemap.xml`, retrato, posters y el video nuevo
+  responden 200; "Cuerpos de obra" ya no aparece en el home.
+
+- **2026-11-17**: **Auditoría de títulos y datos de las obras pendientes** (PDF
+  `OBRAS-PENDIENTES-TITULO.docx.pdf` llenado por el artista, 81 fichas). Las 81
+  coinciden por imagen con su `obra-NN` en `data/artworks.ts`. Se cargaron
+  títulos (mismo texto es/en; solo ortografía mecánica: tildes y espacios tras
+  puntuación, sin punto final; se conserva "villar", "Em el villar", "fué") y los
+  datos nuevos de medidas/técnica/año según el PDF (obra-14: 400 × 530,
+  obra-15: 400 × 265, obra-95/96: 45 × 40, obra-132: 285 × 400 acrílico y óleo
+  sobre lienzo). Fichas con dos obras en una foto (77, 78, 79, 83, 84): solo se
+  cargó la primera. Títulos repetidos se dejaron idénticos. Títulos finales de
+  obra-45 "Universo Etéreo", obra-82 "Maternidad y 3 moscas (detalle)" y
+  obra-85/86/87 "Conjunto de la serie “acertijos”"; técnica de obra-77 y 87:
+  acrílico y óleo sobre lienzo. Ya no queda ninguna "Sin título" en `/obra`.
+  Pendientes de confirmar: medidas de obra-32 (¿170 × 200?), medidas de un solo
+  número (77, 78, 111, 113-115), si el título de obra-62 es uno o cuatro, segundas
+  obras de 77/78/79/83/84, año de 111/112, y 18 obras con datos faltantes (ver
+  `obras-sin-titulo/OBRAS-CON-INFO-FALTANTE.html`: 69, 82, 19, 72-75, 08-12, 32,
+  42, 70, 90, 111, 112). Quedan además 58 "Sin título" en `availableExtra.ts` y
+  105 en `featuredExtra.ts`.
+
+- **2026-11-17**: **Formularios conectados a Convex** (deployment de *desarrollo*
+  `amicable-octopus-169`, equipo `segundo-planes`). Formulario de `/contacto` ->
+  tabla `leads` (validación en servidor, máx. 5 por correo/hora, honeypot) y aviso por
+  correo vía Resend (dominio `segundoplanes.com` verificado; DNS agregado en Vercel):
+  desde `avisos@segundoplanes.com` hacia `segundoplanesobras@outlook.com`, con
+  `reply_to` del visitante. Si Convex falla, el formulario muestra los botones de
+  correo (plan B). Correo del pie -> tabla `subscribers` (sin duplicados; antes no
+  guardaba nada). Código en `convex/`, `lib/convexClient.ts`. Llaves (`RESEND_API_KEY`,
+  `NOTIFY_FROM`, `NOTIFY_TO`, `SITE_URL`) solo en las variables de entorno de Convex;
+  `.env.local` (ignorado por git) guarda la URL. **Pendiente:** deployment de producción
+  de Convex con sus variables, `NEXT_PUBLIC_CONVEX_URL` en Vercel y deploy. Cuenta de
+  Convex de este directorio: alias `segundo-planes` (la de Talisis sigue siendo `default`).
+
 ## Próximos pasos
 - Cuando se sume un segundo artista real a la galería: agregar su entrada en `data/galleryArtists.ts`, tagear sus exposiciones con su `artistId` en `data/exhibitions.ts`, y el filtro por artista en `/exposiciones` aparece solo (sin tocar componentes). Si en algún momento también se necesita que `/obra` y `/sobre-mi` sean multi-artista (hoy siguen asumiendo a Segundo Planes como único artista del sitio), eso es un cambio de modelo de datos más grande — brainstorming aparte cuando se necesite de verdad.
 - Confirmar con el artista: títulos definitivos, año y dimensiones exactas del resto de la serie Aviario (`obra-08`..`obra-12`, `obra-07` ya confirmada); citas reales de críticos (hoy son placeholder); reemplazar o retirar los placeholders restantes de Interiores/Derivas. **Esto también activa "Ver en tu pared"** por obra — en cuanto tenga `realDimensionsCm` cargado, el botón aparece solo.

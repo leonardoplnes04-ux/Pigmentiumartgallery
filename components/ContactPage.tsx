@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { api } from "@/convex/_generated/api";
+import { getConvex } from "@/lib/convexClient";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { artist } from "@/data/artist";
@@ -18,7 +20,7 @@ import {
   type ContactLead,
 } from "@/lib/contact";
 
-type Status = "idle" | "success";
+type Status = "idle" | "sending" | "success" | "error";
 
 const EMPTY: ContactLead = {
   name: "",
@@ -39,7 +41,7 @@ const fallbackBtn =
   "inline-flex min-h-[40px] items-center border border-line px-4 text-xs uppercase tracking-widest transition-colors hover:border-ink";
 
 export default function ContactPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const c = t.contactPage;
 
   const [lead, setLead] = useState<ContactLead>(EMPTY);
@@ -94,7 +96,7 @@ export default function ContactPage() {
   const gmailHref = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(artist.email)}&su=${encodeURIComponent(email.subject)}&body=${encodeURIComponent(email.body)}`;
   const outlookHref = `https://outlook.live.com/mail/0/deeplink/compose?to=${encodeURIComponent(artist.email)}&subject=${encodeURIComponent(email.subject)}&body=${encodeURIComponent(email.body)}`;
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitAttempted(true);
 
@@ -108,10 +110,35 @@ export default function ContactPage() {
       return;
     }
 
-    // Hand the pre-written email to the visitor's own mail app.
-    setPanelHeight(panelRef.current?.offsetHeight);
-    window.location.href = mailtoHref;
-    setStatus("success");
+    if (status === "sending") return;
+
+    // Honeypot: a bot filled the hidden field. Pretend it worked, store nothing.
+    if (lead.website.trim()) {
+      setPanelHeight(panelRef.current?.offsetHeight);
+      setStatus("success");
+      return;
+    }
+
+    setStatus("sending");
+    try {
+      const convex = getConvex();
+      if (!convex) throw new Error("convex_not_configured");
+      await convex.mutation(api.leads.submit, {
+        name: lead.name,
+        email: lead.email,
+        phone: lead.phone,
+        interest: lead.interest,
+        artwork: lead.artwork,
+        artworkImage: isArtworkImagePath(lead.artworkImage) ? lead.artworkImage : "",
+        message: lead.message,
+        lang: language,
+      });
+      setPanelHeight(panelRef.current?.offsetHeight);
+      setStatus("success");
+    } catch {
+      // Plan B: the visitor can still send the pre-written email themselves.
+      setStatus("error");
+    }
   }
 
   function reset() {
@@ -192,26 +219,6 @@ export default function ContactPage() {
                   {c.successTitle}
                 </h2>
                 <p className="mt-3 max-w-md leading-relaxed text-muted">{c.successBody}</p>
-
-                <div className="mt-8 w-full max-w-md border-t border-line pt-6">
-                  <p className="text-xs uppercase tracking-widest text-muted">{c.notOpened}</p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <a href={mailtoHref} className={fallbackBtn}>
-                      {c.openMailApp}
-                    </a>
-                    <a href={gmailHref} target="_blank" rel="noopener noreferrer" className={fallbackBtn}>
-                      Gmail
-                    </a>
-                    <a href={outlookHref} target="_blank" rel="noopener noreferrer" className={fallbackBtn}>
-                      Outlook
-                    </a>
-                    <CopyTextButton
-                      value={`${artist.email}\n\n${email.subject}\n\n${email.body}`}
-                      label={c.copyMessage}
-                      doneLabel={c.copiedMessage}
-                    />
-                  </div>
-                </div>
 
                 <button
                   type="button"
@@ -395,12 +402,39 @@ export default function ContactPage() {
                   <p className="max-w-xs text-xs leading-relaxed text-muted">{c.privacy}</p>
                   <button
                     type="submit"
-                    className="inline-flex min-h-[48px] shrink-0 items-center justify-center gap-2 bg-ink px-8 text-xs uppercase tracking-widest text-background transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+                    disabled={status === "sending"}
+                    className="inline-flex min-h-[48px] shrink-0 items-center justify-center gap-2 bg-ink px-8 text-xs uppercase tracking-widest text-background transition-opacity hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink disabled:cursor-wait disabled:opacity-60"
                   >
-                    {c.submit}
+                    {status === "sending" ? c.sending : c.submit}
                     <span aria-hidden="true">→</span>
                   </button>
                 </div>
+
+                {status === "error" && (
+                  <div role="alert" className="mt-6 border-t border-line pt-6">
+                    <p className={`text-sm ${errorText}`}>{c.sendError}</p>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      <a href={mailtoHref} className={fallbackBtn}>
+                        {c.openMailApp}
+                      </a>
+                      <a href={gmailHref} target="_blank" rel="noopener noreferrer" className={fallbackBtn}>
+                        Gmail
+                      </a>
+                      <a href={outlookHref} target="_blank" rel="noopener noreferrer" className={fallbackBtn}>
+                        Outlook
+                      </a>
+                      <CopyTextButton
+                        value={`${artist.email}
+
+${email.subject}
+
+${email.body}`}
+                        label={c.copyMessage}
+                        doneLabel={c.copiedMessage}
+                      />
+                    </div>
+                  </div>
+                )}
               </form>
             )}
           </section>
