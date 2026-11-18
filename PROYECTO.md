@@ -1064,6 +1064,22 @@ Todo lo relacionado con este proyecto vive aquí:
   y commit `9992db9` en `main`. Falta probar un envío real en vivo. Cuenta de
   Convex de este directorio: alias `segundo-planes` (la de Talisis sigue siendo `default`).
 
+- **2026-11-18**: **SEO, primera fase** (objetivo del usuario: que quien vea una
+  obra pida información y negocie; vender obra, atraer galerías y clientes
+  particulares; ninguna obra tiene precio público, se atiende por contacto).
+  (1) `lib/seo.ts`: `SITE_URL` pasa de `pigmentiumartgallery.vercel.app` a
+  `https://segundoplanes.com` (canonical, sitemap, robots, JSON-LD y enlaces del
+  correo del formulario apuntaban al subdominio de Vercel). (2) Títulos sin la
+  repetición "Segundo Planes — Segundo Planes": Inicio "Segundo Planes — Artista
+  plástico cubano", Obra "Obra de Segundo Planes — Pinturas disponibles",
+  Contacto "Contacto y adquisición de obra — Segundo Planes", resto
+  "<sección> — Segundo Planes". Hallazgos aún sin atender: el inglés no es
+  indexable (HTML siempre en español), solo hay JSON-LD `Person` (faltan
+  `VisualArtwork`/`Event`/`VideoObject`/FAQ), no hay Search Console ni analítica.
+  Siguiente propuesta: botón "Solicitar información y precio" en cada ficha de
+  obra con el texto "para recibir atención personalizada" (no mencionar el tema
+  fiscal, por indicación del usuario).
+
 ## Próximos pasos
 - Cuando se sume un segundo artista real a la galería: agregar su entrada en `data/galleryArtists.ts`, tagear sus exposiciones con su `artistId` en `data/exhibitions.ts`, y el filtro por artista en `/exposiciones` aparece solo (sin tocar componentes). Si en algún momento también se necesita que `/obra` y `/sobre-mi` sean multi-artista (hoy siguen asumiendo a Segundo Planes como único artista del sitio), eso es un cambio de modelo de datos más grande — brainstorming aparte cuando se necesite de verdad.
 - Confirmar con el artista: títulos definitivos, año y dimensiones exactas del resto de la serie Aviario (`obra-08`..`obra-12`, `obra-07` ya confirmada); citas reales de críticos (hoy son placeholder); reemplazar o retirar los placeholders restantes de Interiores/Derivas. **Esto también activa "Ver en tu pared"** por obra — en cuanto tenga `realDimensionsCm` cargado, el botón aparece solo.

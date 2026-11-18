@@ -47,7 +47,9 @@ const inter = Inter({
 // `metadata`/`generateMetadata` (currently just the homepage) — pages that
 // do set their own override title/description but inherit metadataBase,
 // icons, and the default OG/Twitter image from here.
-const title = `${artist.name} — ${site.name}`;
+// artist.name === site.name, so repeating both gave "Segundo Planes — Segundo
+// Planes". The descriptor adds the keywords people search with.
+const title = `${artist.name} — Artista plástico cubano`;
 const description = `${artist.shortBio.es} ${artist.tagline.es}.`;
 
 export const metadata: Metadata = {

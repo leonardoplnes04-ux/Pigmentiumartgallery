@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import BiographyPage from "@/components/BiographyPage";
 import { artist } from "@/data/artist";
-import { site } from "@/data/site";
 
 export const metadata: Metadata = {
-  title: `Biografía — ${artist.name} — ${site.name}`,
+  title: `Biografía — ${artist.name}`,
   description: artist.shortBio.es,
   alternates: { canonical: "/sobre-mi" },
 };
