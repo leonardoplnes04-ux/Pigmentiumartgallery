@@ -1058,8 +1058,10 @@ Todo lo relacionado con este proyecto vive aquí:
   correo (plan B). Correo del pie -> tabla `subscribers` (sin duplicados; antes no
   guardaba nada). Código en `convex/`, `lib/convexClient.ts`. Llaves (`RESEND_API_KEY`,
   `NOTIFY_FROM`, `NOTIFY_TO`, `SITE_URL`) solo en las variables de entorno de Convex;
-  `.env.local` (ignorado por git) guarda la URL. **Pendiente:** deployment de producción
-  de Convex con sus variables, `NEXT_PUBLIC_CONVEX_URL` en Vercel y deploy. Cuenta de
+  `.env.local` (ignorado por git) guarda la URL. **Producción (2026-11-17):** Convex prod
+  `combative-skunk-415` con las mismas variables (`SITE_URL=https://segundoplanes.com`),
+  `NEXT_PUBLIC_CONVEX_URL` (solo Production) en Vercel, deploy con `vercel deploy --prod`
+  y commit `9992db9` en `main`. Falta probar un envío real en vivo. Cuenta de
   Convex de este directorio: alias `segundo-planes` (la de Talisis sigue siendo `default`).
 
 ## Próximos pasos
