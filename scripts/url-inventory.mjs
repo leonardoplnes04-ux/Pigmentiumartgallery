@@ -24,7 +24,7 @@ function attrs(tag) {
 }
 
 function tags(html, name) {
-  return [...html.matchAll(new RegExp(`<${name}\b[^>]*>`, "g"))].map((m) => attrs(m[0]));
+  return [...html.matchAll(new RegExp(`<${name} [^>]*>`, "g"))].map((m) => attrs(m[0]));
 }
 
 function inspect(html) {
