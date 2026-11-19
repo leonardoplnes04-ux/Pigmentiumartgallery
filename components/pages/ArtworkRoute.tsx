@@ -18,7 +18,7 @@ export default function ArtworkRoute({ id, lang }: { id: string; lang: Language 
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: toJsonLd(artworkJsonLd(artwork)) }}
+        dangerouslySetInnerHTML={{ __html: toJsonLd(artworkJsonLd(artwork, lang)) }}
       />
       <script
         type="application/ld+json"

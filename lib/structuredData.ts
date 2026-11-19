@@ -3,6 +3,7 @@ import { seriesList } from "@/data/series";
 import type { Artwork, Exhibition, ExhibitionVideo } from "@/data/types";
 import type { FaqItem } from "@/data/faq";
 import { SITE_URL } from "@/lib/seo";
+import { toLang, type Language } from "@/lib/routes";
 
 // schema.org structured data (JSON-LD). Search engines and AI assistants read
 // this to know *what* each page is without guessing from the layout: who made
@@ -11,6 +12,9 @@ import { SITE_URL } from "@/lib/seo";
 // Facts here come only from data/artist.ts and data/artworks.ts — never
 // invent values. There is deliberately NO price anywhere: works are quoted
 // personally, so availability points to the contact form instead.
+//
+// Every builder takes the page language: names, descriptions, `inLanguage` and
+// URLs follow it (the Spanish output is the canonical one and stays as is).
 
 export const ARTIST_ID = `${SITE_URL}/#artista`;
 
@@ -25,17 +29,20 @@ const isConfirmed = (text: string) => !/por confirmar|to be confirmed/i.test(tex
 export const toJsonLd = (data: unknown) =>
   JSON.stringify(data).replace(/</g, "\\u003c");
 
+const other = (lang: Language): Language => (lang === "es" ? "en" : "es");
+
 // Site-wide identity of the artist. Birth data and schooling are taken
-// verbatim from the biography in data/artist.ts.
-export function artistJsonLd() {
+// verbatim from the biography in data/artist.ts. One @id in both languages.
+export function artistJsonLd(lang: Language) {
+  const es = lang === "es";
   return {
     "@context": "https://schema.org",
     "@type": "Person",
     "@id": ARTIST_ID,
     name: artist.name,
     url: SITE_URL,
-    jobTitle: "Artista plástico",
-    description: artist.shortBio.es,
+    jobTitle: es ? "Artista plástico" : "Visual artist",
+    description: artist.shortBio[lang],
     image: abs(artist.heroImage),
     birthDate: "1965-01-18",
     birthPlace: {
@@ -45,35 +52,38 @@ export function artistJsonLd() {
     nationality: { "@type": "Country", name: "Cuba" },
     alumniOf: {
       "@type": "CollegeOrUniversity",
-      name: "Instituto Superior de Arte (La Habana)",
+      name: es ? "Instituto Superior de Arte (La Habana)" : "Instituto Superior de Arte (Havana)",
     },
-    knowsAbout: ["Pintura", "Performance", "Arte contemporáneo cubano"],
+    knowsAbout: es
+      ? ["Pintura", "Performance", "Arte contemporáneo cubano"]
+      : ["Painting", "Performance", "Contemporary Cuban art"],
     sameAs: Object.values(artist.socials).filter(Boolean),
   };
 }
 
 // One artwork page. `creator` points at the Person above by @id so the work
 // and the artist are linked as a single entity graph.
-export function artworkJsonLd(artwork: Artwork) {
+export function artworkJsonLd(artwork: Artwork, lang: Language) {
   const series = seriesList.find((s) => s.id === artwork.seriesId);
-  const url = abs(`/obra/${artwork.id}`);
+  const url = abs(toLang(`/obra/${artwork.id}`, lang));
   const images = [artwork.image, ...(artwork.additionalImages ?? [])].map(abs);
   const dims = artwork.realDimensionsCm;
-  const mediumKnown = isConfirmed(artwork.medium.es);
-  const dimensionsKnown = isConfirmed(artwork.dimensions.es);
+  const mediumKnown = isConfirmed(artwork.medium[lang]);
+  const dimensionsKnown = isConfirmed(artwork.dimensions[lang]);
+  const otherTitle = artwork.title[other(lang)];
 
   return {
     "@context": "https://schema.org",
     "@type": "VisualArtwork",
     "@id": `${url}#obra`,
-    name: artwork.title.es,
-    alternateName: artwork.title.en !== artwork.title.es ? artwork.title.en : undefined,
+    name: artwork.title[lang],
+    alternateName: otherTitle !== artwork.title[lang] ? otherTitle : undefined,
     url,
     image: images,
     creator: { "@id": ARTIST_ID },
     dateCreated: artwork.year ? String(artwork.year) : undefined,
-    artMedium: mediumKnown ? artwork.medium.es : undefined,
-    artform: mediumKnown ? "Pintura" : undefined,
+    artMedium: mediumKnown ? artwork.medium[lang] : undefined,
+    artform: mediumKnown ? (lang === "es" ? "Pintura" : "Painting") : undefined,
     width: dims
       ? { "@type": "QuantitativeValue", value: dims.width, unitCode: "CMT" }
       : undefined,
@@ -82,16 +92,16 @@ export function artworkJsonLd(artwork: Artwork) {
       : undefined,
     description:
       [
-        mediumKnown ? artwork.medium.es : null,
+        mediumKnown ? artwork.medium[lang] : null,
         artwork.year ? String(artwork.year) : null,
-        dimensionsKnown ? artwork.dimensions.es : null,
+        dimensionsKnown ? artwork.dimensions[lang] : null,
       ]
         .filter(Boolean)
         .join(", ") || undefined,
     isPartOf: series
-      ? { "@type": "CreativeWorkSeries", name: series.name.es }
+      ? { "@type": "CreativeWorkSeries", name: series.name[lang] }
       : undefined,
-    inLanguage: "es",
+    inLanguage: lang,
     // No price on purpose: acquisition goes through the contact form.
     offers:
       artwork.status === "sold"
@@ -102,12 +112,13 @@ export function artworkJsonLd(artwork: Artwork) {
         : {
             "@type": "Offer",
             availability: "https://schema.org/InStock",
-            url: `${SITE_URL}/contacto`,
+            url: abs(toLang("/contacto", lang)),
           },
   };
 }
 
 // Breadcrumb trail shown by Google under the result: Inicio › Obra › <title>.
+// The caller passes names and paths already in the page's language.
 export function breadcrumbJsonLd(items: { name: string; path: string }[]) {
   return {
     "@context": "https://schema.org",
@@ -123,15 +134,15 @@ export function breadcrumbJsonLd(items: { name: string; path: string }[]) {
 
 // Preguntas y respuestas de /sobre-mi. Debe coincidir 1:1 con el texto visible
 // de la página (data/faq.ts), o Google lo ignora.
-export function faqJsonLd(items: FaqItem[]) {
+export function faqJsonLd(items: FaqItem[], lang: Language) {
   return {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    inLanguage: "es",
+    inLanguage: lang,
     mainEntity: items.map((item) => ({
       "@type": "Question",
-      name: item.q.es,
-      acceptedAnswer: { "@type": "Answer", text: item.a.es },
+      name: item.q[lang],
+      acceptedAnswer: { "@type": "Answer", text: item.a[lang] },
     })),
   };
 }
@@ -149,14 +160,14 @@ function isoDuration(text: string): string | undefined {
 // One exhibition page. Dates in the data are years only ("2024"), which is a
 // valid partial ISO date, so startDate is published exactly as recorded — no
 // invented day or month. The venue string is used verbatim as the place.
-export function exhibitionJsonLd(exhibition: Exhibition, image?: string) {
-  const url = abs(`/exposiciones/${exhibition.id}`);
+export function exhibitionJsonLd(exhibition: Exhibition, image: string | undefined, lang: Language) {
+  const url = abs(toLang(`/exposiciones/${exhibition.id}`, lang));
   return {
     "@context": "https://schema.org",
     "@type": "ExhibitionEvent",
     "@id": `${url}#exposicion`,
-    name: exhibition.title.es,
-    description: exhibition.description.es,
+    name: exhibition.title[lang],
+    description: exhibition.description[lang],
     url,
     startDate: exhibition.date,
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
@@ -169,14 +180,14 @@ export function exhibitionJsonLd(exhibition: Exhibition, image?: string) {
     image: image ? abs(image) : undefined,
     performer: { "@id": ARTIST_ID },
     organizer: { "@id": ARTIST_ID },
-    inLanguage: "es",
+    inLanguage: lang,
   };
 }
 
 // The /videos list as an ItemList of VideoObjects. `uploadDate` is left out on
 // purpose: the data only records the year of the show, not when the file was
 // published, and we never publish a guessed date.
-export function videosJsonLd(items: ExhibitionVideo[]) {
+export function videosJsonLd(items: ExhibitionVideo[], lang: Language) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -185,14 +196,14 @@ export function videosJsonLd(items: ExhibitionVideo[]) {
       position: i + 1,
       item: {
         "@type": "VideoObject",
-        name: video.title.es,
-        description: `${video.title.es}. ${video.venue}, ${video.date}.`,
+        name: video.title[lang],
+        description: `${video.title[lang]}. ${video.venue}, ${video.date}.`,
         thumbnailUrl: video.poster ? abs(video.poster) : undefined,
         contentUrl: abs(video.src),
         duration: video.duration ? isoDuration(video.duration) : undefined,
         dateCreated: video.date,
         creator: { "@id": ARTIST_ID },
-        inLanguage: "es",
+        inLanguage: lang,
       },
     })),
   };

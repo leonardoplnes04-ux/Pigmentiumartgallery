@@ -36,7 +36,7 @@ export default function RootDocument({
         <script
           type="application/ld+json"
           // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{ __html: toJsonLd(artistJsonLd()) }}
+          dangerouslySetInnerHTML={{ __html: toJsonLd(artistJsonLd(lang)) }}
         />
         {/* Homepage LCP image — start fetching it before the CSS/JS parse. */}
         <link rel="preload" as="image" href={artist.heroImage} fetchPriority="high" />

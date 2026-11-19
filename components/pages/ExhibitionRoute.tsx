@@ -22,7 +22,7 @@ export default function ExhibitionRoute({ id, lang }: { id: string; lang: Langua
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: toJsonLd(exhibitionJsonLd(exhibition, image)) }}
+        dangerouslySetInnerHTML={{ __html: toJsonLd(exhibitionJsonLd(exhibition, image, lang)) }}
       />
       <script
         type="application/ld+json"
