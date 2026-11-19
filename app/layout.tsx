@@ -3,6 +3,7 @@ import { Fraunces, Inter } from "next/font/google";
 import { artist } from "@/data/artist";
 import { site } from "@/data/site";
 import { SITE_URL } from "@/lib/seo";
+import { artistJsonLd, toJsonLd } from "@/lib/structuredData";
 import { LanguageProvider } from "@/hooks/useLanguage";
 import { ThemeProvider } from "@/hooks/useTheme";
 import ImageGuard from "@/components/ImageGuard";
@@ -11,21 +12,6 @@ import "./globals.css";
 // Runs before first paint so dark-mode visitors never see a light flash.
 // Keep in sync with hooks/useTheme.tsx: saved preference wins, else OS setting.
 const themeScript = `(function(){try{var t=localStorage.getItem("dartgallery-theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme: dark)").matches)){document.documentElement.classList.add("dark");}}catch(e){}})();`;
-
-// Structured data (schema.org Person) so Google can associate this site
-// directly with a search for "Segundo Planes" — e.g. a knowledge-panel-style
-// result rather than just a blue link. Lives on every page since the
-// artist identity is site-wide, not page-specific.
-const personJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  name: artist.name,
-  url: SITE_URL,
-  jobTitle: "Artista plástico",
-  description: artist.shortBio.es,
-  image: `${SITE_URL}${artist.heroImage}`,
-  sameAs: Object.values(artist.socials).filter(Boolean),
-};
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -109,7 +95,7 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: toJsonLd(artistJsonLd()) }}
         />
         {/* Homepage LCP image — start fetching it before the CSS/JS parse. */}
         <link rel="preload" as="image" href={artist.heroImage} fetchPriority="high" />

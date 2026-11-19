@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import ArtworkDetail from "@/components/ArtworkDetail";
 import { realArtworks, findRealArtwork } from "@/lib/artworks";
 import { artist } from "@/data/artist";
+import { artworkJsonLd, breadcrumbJsonLd, toJsonLd } from "@/lib/structuredData";
 
 export function generateStaticParams() {
   return realArtworks.map((artwork) => ({ id: artwork.id }));
@@ -45,6 +46,25 @@ export default async function ArtworkPage({
 
   return (
     <>
+      {/* Structured data: the work itself + its breadcrumb trail. */}
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: toJsonLd(artworkJsonLd(artwork)) }}
+      />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: toJsonLd(
+            breadcrumbJsonLd([
+              { name: "Inicio", path: "/" },
+              { name: "Obra", path: "/obra" },
+              { name: artwork.title.es, path: `/obra/${artwork.id}` },
+            ])
+          ),
+        }}
+      />
       <Header />
       <main>
         <ArtworkDetail artwork={artwork} />

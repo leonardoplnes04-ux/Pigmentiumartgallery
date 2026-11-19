@@ -1092,6 +1092,16 @@ Todo lo relacionado con este proyecto vive aquí:
   eyebrow "Consultar disponibilidad"/Estado "Consultar", JSON-LD por obra, inglés
   indexable, Search Console y medición del clic `data-cta="inquire-artwork"`.
 
+- **2026-11-18**: **SEO, fase 3 (datos estructurados).** Search Console: propiedad de
+  dominio `segundoplanes.com` verificada con TXT en el DNS de Vercel y sitemap enviado
+  (con URL completa, porque las propiedades de dominio no anteponen el sitio). Nuevo
+  `lib/structuredData.ts`: `Person` ampliado (con `@id`, fecha y lugar de nacimiento,
+  formación, sameAs; antes vivía en `app/layout.tsx`), `VisualArtwork` por obra (sin
+  precio; disponibilidad apunta a /contacto) y `BreadcrumbList`. Los campos "por
+  confirmar" (técnica/medidas) se omiten, nunca se publican como dato. Pendiente:
+  `Event` para exposiciones, `VideoObject`, inglés indexable, medición del clic
+  `data-cta="inquire-artwork"`.
+
 ## Próximos pasos
 - Cuando se sume un segundo artista real a la galería: agregar su entrada en `data/galleryArtists.ts`, tagear sus exposiciones con su `artistId` en `data/exhibitions.ts`, y el filtro por artista en `/exposiciones` aparece solo (sin tocar componentes). Si en algún momento también se necesita que `/obra` y `/sobre-mi` sean multi-artista (hoy siguen asumiendo a Segundo Planes como único artista del sitio), eso es un cambio de modelo de datos más grande — brainstorming aparte cuando se necesite de verdad.
 - Confirmar con el artista: títulos definitivos, año y dimensiones exactas del resto de la serie Aviario (`obra-08`..`obra-12`, `obra-07` ya confirmada); citas reales de críticos (hoy son placeholder); reemplazar o retirar los placeholders restantes de Interiores/Derivas. **Esto también activa "Ver en tu pared"** por obra — en cuanto tenga `realDimensionsCm` cargado, el botón aparece solo.
