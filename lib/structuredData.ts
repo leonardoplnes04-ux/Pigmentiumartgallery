@@ -1,6 +1,7 @@
 import { artist } from "@/data/artist";
 import { seriesList } from "@/data/series";
 import type { Artwork } from "@/data/types";
+import type { FaqItem } from "@/data/faq";
 import { SITE_URL } from "@/lib/seo";
 
 // schema.org structured data (JSON-LD). Search engines and AI assistants read
@@ -116,6 +117,21 @@ export function breadcrumbJsonLd(items: { name: string; path: string }[]) {
       position: i + 1,
       name: item.name,
       item: abs(item.path),
+    })),
+  };
+}
+
+// Preguntas y respuestas de /sobre-mi. Debe coincidir 1:1 con el texto visible
+// de la página (data/faq.ts), o Google lo ignora.
+export function faqJsonLd(items: FaqItem[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    inLanguage: "es",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.q.es,
+      acceptedAnswer: { "@type": "Answer", text: item.a.es },
     })),
   };
 }

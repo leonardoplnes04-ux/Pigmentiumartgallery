@@ -3,6 +3,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { artist } from "@/data/artist";
+import { faq, faqHeading } from "@/data/faq";
 import { useLanguage } from "@/hooks/useLanguage";
 
 export default function BiographyPage() {
@@ -52,6 +53,22 @@ export default function BiographyPage() {
               </div>
             </section>
           ))}
+
+          {/* Preguntas frecuentes — mismo texto que lee el JSON-LD FAQPage de
+              app/sobre-mi/page.tsx. */}
+          <section className="grid grid-cols-1 gap-3 py-8 md:grid-cols-[220px_1fr] md:gap-10 sm:py-10">
+            <h2 className="text-xs uppercase tracking-widest text-muted">
+              {pick(faqHeading)}
+            </h2>
+            <dl className="max-w-3xl space-y-6">
+              {faq.map((item, i) => (
+                <div key={i}>
+                  <dt className="font-serif text-lg">{pick(item.q)}</dt>
+                  <dd className="mt-2 leading-relaxed text-muted">{pick(item.a)}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
         </div>
       </main>
       <Footer />

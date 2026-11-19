@@ -1102,6 +1102,20 @@ Todo lo relacionado con este proyecto vive aquí:
   `Event` para exposiciones, `VideoObject`, inglés indexable, medición del clic
   `data-cta="inquire-artwork"`.
 
+- **2026-11-18**: **SEO, fase 4 (AEO/GEO).** Búsqueda real: ningún bloqueo a
+  rastreadores (GPTBot, OAI-SearchBot, Perplexity, etc. reciben 200); el sitio aún
+  no está indexado y las IA citan fuentes de terceros (cubanartresources.org,
+  askart, artspawn, mocaamericas). Hecho por el usuario: Search Console (cuenta
+  personal) con indexación solicitada para 4 URLs; Bing Webmaster importado desde
+  Search Console + sitemap enviado. Nuevo: `data/faq.ts` (8 preguntas es/en, solo con
+  datos de la biografía del artista: residencia Monterrey/La Habana, estudios
+  1975/1979/1989), sección "Preguntas frecuentes" al final de `/sobre-mi`,
+  JSON-LD `FAQPage` (`faqJsonLd` en `lib/structuredData.ts`) y `/llms.txt`
+  (`app/llms.txt/route.ts`). Pendiente: el usuario debe pedir enlaces al sitio oficial
+  desde AskArt, Cuban Art Resources, Artspawn, MOCA Americas, galerías y perfiles; agregar
+  el correo del negocio como segundo propietario de Search Console; inglés indexable;
+  `Event` de exposiciones; analítica.
+
 ## Próximos pasos
 - Cuando se sume un segundo artista real a la galería: agregar su entrada en `data/galleryArtists.ts`, tagear sus exposiciones con su `artistId` en `data/exhibitions.ts`, y el filtro por artista en `/exposiciones` aparece solo (sin tocar componentes). Si en algún momento también se necesita que `/obra` y `/sobre-mi` sean multi-artista (hoy siguen asumiendo a Segundo Planes como único artista del sitio), eso es un cambio de modelo de datos más grande — brainstorming aparte cuando se necesite de verdad.
 - Confirmar con el artista: títulos definitivos, año y dimensiones exactas del resto de la serie Aviario (`obra-08`..`obra-12`, `obra-07` ya confirmada); citas reales de críticos (hoy son placeholder); reemplazar o retirar los placeholders restantes de Interiores/Derivas. **Esto también activa "Ver en tu pared"** por obra — en cuanto tenga `realDimensionsCm` cargado, el botón aparece solo.
