@@ -7,6 +7,7 @@ import { artistJsonLd, toJsonLd } from "@/lib/structuredData";
 import { LanguageProvider } from "@/hooks/useLanguage";
 import { ThemeProvider } from "@/hooks/useTheme";
 import ImageGuard from "@/components/ImageGuard";
+import Analytics from "@/components/Analytics";
 import "./globals.css";
 
 // Runs before first paint so dark-mode visitors never see a light flash.
@@ -102,6 +103,7 @@ export default function RootLayout({
       </head>
       <body className="bg-background font-sans text-ink antialiased">
         <ImageGuard />
+        <Analytics />
         <ThemeProvider>
           <LanguageProvider>{children}</LanguageProvider>
         </ThemeProvider>

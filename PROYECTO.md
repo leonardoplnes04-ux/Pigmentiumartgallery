@@ -1116,6 +1116,32 @@ Todo lo relacionado con este proyecto vive aquí:
   el correo del negocio como segundo propietario de Search Console; inglés indexable;
   `Event` de exposiciones; analítica.
 
+- **2026-11-19**: **SEO, fase 5 (Event + VideoObject).** `lib/structuredData.ts`:
+  `exhibitionJsonLd` (`ExhibitionEvent` en cada `/exposiciones/[id]`, con `startDate`
+  = el año tal cual está en los datos, lugar = el texto de `venue`, artista como
+  `performer`/`organizer`) más `BreadcrumbList` Inicio › Exposiciones › muestra; y
+  `videosJsonLd` (`ItemList` de `VideoObject` en `app/videos/layout.tsx`, duración en ISO
+  8601). `uploadDate` se omite a propósito: solo se conoce el año de la muestra, no la
+  fecha de publicación. También: la ficha técnica y el modal de obra usan el mismo texto
+  que el eyebrow ("Consultar disponibilidad"), eliminando el "Consultar" suelto.
+  `npx tsc --noEmit` limpio; JSON-LD verificado en dev (`/exposiciones/exp-11`, `/videos`).
+  Sin commit ni deploy todavía. Pendiente: inglés indexable (rutas `/en`, cambio
+  grande), analítica y medición del clic `data-cta="inquire-artwork"` (decidir
+  herramienta), y lo que depende del usuario (enlaces desde AskArt/Cuban Art
+  Resources/Artspawn/MOCA, correo del negocio como segundo propietario en Search Console).
+
+- **2026-11-19**: **Google Analytics 4 (código listo, falta el ID).** `lib/analytics.ts`
+  (`GA_ID` desde `NEXT_PUBLIC_GA_ID`, `track()`), `components/Analytics.tsx` (carga gtag
+  y reporta como `cta_click` cualquier elemento con `data-cta`, p. ej. `inquire-artwork`)
+  montado en `app/layout.tsx`, y evento `generate_lead` en `ContactPage.tsx` solo cuando
+  el envío a Convex tiene éxito (parámetros `interest` y `from_artwork`, sin datos
+  personales; el honeypot no cuenta). Sin ID no carga nada. Consentimiento: UE/Reino
+  Unido/Suiza arrancan con `analytics_storage` denegado (sin banner, datos parciales);
+  el resto del mundo se mide normal. Verificado en navegador con un ID falso: carga
+  gtag, consent y config correctos, el clic emite `cta_click`. Pendiente: crear la
+  propiedad GA4, poner `NEXT_PUBLIC_GA_ID` en Vercel (Production), marcar `generate_lead`
+  como evento clave en GA, y commit + deploy.
+
 ## Próximos pasos
 - Cuando se sume un segundo artista real a la galería: agregar su entrada en `data/galleryArtists.ts`, tagear sus exposiciones con su `artistId` en `data/exhibitions.ts`, y el filtro por artista en `/exposiciones` aparece solo (sin tocar componentes). Si en algún momento también se necesita que `/obra` y `/sobre-mi` sean multi-artista (hoy siguen asumiendo a Segundo Planes como único artista del sitio), eso es un cambio de modelo de datos más grande — brainstorming aparte cuando se necesite de verdad.
 - Confirmar con el artista: títulos definitivos, año y dimensiones exactas del resto de la serie Aviario (`obra-08`..`obra-12`, `obra-07` ya confirmada); citas reales de críticos (hoy son placeholder); reemplazar o retirar los placeholders restantes de Interiores/Derivas. **Esto también activa "Ver en tu pared"** por obra — en cuanto tenga `realDimensionsCm` cargado, el botón aparece solo.

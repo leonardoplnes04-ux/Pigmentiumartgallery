@@ -1,6 +1,6 @@
 import { artist } from "@/data/artist";
 import { seriesList } from "@/data/series";
-import type { Artwork } from "@/data/types";
+import type { Artwork, Exhibition, ExhibitionVideo } from "@/data/types";
 import type { FaqItem } from "@/data/faq";
 import { SITE_URL } from "@/lib/seo";
 
@@ -132,6 +132,68 @@ export function faqJsonLd(items: FaqItem[]) {
       "@type": "Question",
       name: item.q.es,
       acceptedAnswer: { "@type": "Answer", text: item.a.es },
+    })),
+  };
+}
+
+// "2:12" / "1:02:03" -> ISO 8601 duration ("PT2M12S") as schema.org expects.
+function isoDuration(text: string): string | undefined {
+  const parts = text.split(":").map(Number);
+  if (parts.some((n) => Number.isNaN(n)) || parts.length < 2 || parts.length > 3) {
+    return undefined;
+  }
+  const [h, m, sec] = parts.length === 3 ? parts : [0, parts[0], parts[1]];
+  return `PT${h ? `${h}H` : ""}${m ? `${m}M` : ""}${sec ? `${sec}S` : ""}` || undefined;
+}
+
+// One exhibition page. Dates in the data are years only ("2024"), which is a
+// valid partial ISO date, so startDate is published exactly as recorded — no
+// invented day or month. The venue string is used verbatim as the place.
+export function exhibitionJsonLd(exhibition: Exhibition, image?: string) {
+  const url = abs(`/exposiciones/${exhibition.id}`);
+  return {
+    "@context": "https://schema.org",
+    "@type": "ExhibitionEvent",
+    "@id": `${url}#exposicion`,
+    name: exhibition.title.es,
+    description: exhibition.description.es,
+    url,
+    startDate: exhibition.date,
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    eventStatus: "https://schema.org/EventScheduled",
+    location: {
+      "@type": "Place",
+      name: exhibition.venue,
+      address: exhibition.venue,
+    },
+    image: image ? abs(image) : undefined,
+    performer: { "@id": ARTIST_ID },
+    organizer: { "@id": ARTIST_ID },
+    inLanguage: "es",
+  };
+}
+
+// The /videos list as an ItemList of VideoObjects. `uploadDate` is left out on
+// purpose: the data only records the year of the show, not when the file was
+// published, and we never publish a guessed date.
+export function videosJsonLd(items: ExhibitionVideo[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: items.map((video, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      item: {
+        "@type": "VideoObject",
+        name: video.title.es,
+        description: `${video.title.es}. ${video.venue}, ${video.date}.`,
+        thumbnailUrl: video.poster ? abs(video.poster) : undefined,
+        contentUrl: abs(video.src),
+        duration: video.duration ? isoDuration(video.duration) : undefined,
+        dateCreated: video.date,
+        creator: { "@id": ARTIST_ID },
+        inLanguage: "es",
+      },
     })),
   };
 }

@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { api } from "@/convex/_generated/api";
 import { getConvex } from "@/lib/convexClient";
+import { track } from "@/lib/analytics";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { artist } from "@/data/artist";
@@ -132,6 +133,10 @@ export default function ContactPage() {
         artworkImage: isArtworkImagePath(lead.artworkImage) ? lead.artworkImage : "",
         message: lead.message,
         lang: language,
+      });
+      track("generate_lead", {
+        interest: lead.interest,
+        from_artwork: Boolean(lead.artwork),
       });
       setPanelHeight(panelRef.current?.offsetHeight);
       setStatus("success");

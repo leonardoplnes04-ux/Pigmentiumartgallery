@@ -6,6 +6,7 @@ import ExhibitionDetail from "@/components/ExhibitionDetail";
 import { exhibitionGalleries } from "@/data/exhibitionGalleries";
 import { findExhibition, findExhibitionGallery } from "@/lib/exhibitions";
 import { artist } from "@/data/artist";
+import { breadcrumbJsonLd, exhibitionJsonLd, toJsonLd } from "@/lib/structuredData";
 
 export function generateStaticParams() {
   return Object.keys(exhibitionGalleries).map((id) => ({ id }));
@@ -50,8 +51,29 @@ export default async function ExhibitionPage({
   const gallery = findExhibitionGallery(id);
   if (!exhibition || !gallery) notFound();
 
+  const image = exhibition.image ?? gallery[0]?.src;
+
   return (
     <>
+      {/* Structured data: the show as an event + its breadcrumb trail. */}
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: toJsonLd(exhibitionJsonLd(exhibition, image)) }}
+      />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{
+          __html: toJsonLd(
+            breadcrumbJsonLd([
+              { name: "Inicio", path: "/" },
+              { name: "Exposiciones", path: "/exposiciones" },
+              { name: exhibition.title.es, path: `/exposiciones/${exhibition.id}` },
+            ])
+          ),
+        }}
+      />
       <Header />
       <main>
         <ExhibitionDetail exhibition={exhibition} gallery={gallery} />

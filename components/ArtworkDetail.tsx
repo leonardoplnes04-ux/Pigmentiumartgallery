@@ -102,7 +102,7 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
             </div>
             <div className="flex justify-between gap-4">
               <dt className="text-muted">{t.detail.status}</dt>
-              <dd>{t.status[artwork.status]}</dd>
+              <dd>{t.detail.statusEyebrow[artwork.status]}</dd>
             </div>
             {artwork.status !== "sold" && (
               <div className="flex justify-between gap-4">
