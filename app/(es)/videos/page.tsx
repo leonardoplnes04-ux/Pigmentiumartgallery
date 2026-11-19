@@ -12,7 +12,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 // video fits on the first screen. Rows show a still + duration; the actual
 // <video> only loads when one is opened in the lightbox player.
 export default function VideosPage() {
-  const { t, pick } = useLanguage();
+  const { t, pick, href } = useLanguage();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
 
@@ -51,7 +51,7 @@ export default function VideosPage() {
                 <div className="md:self-start">
                   {hasGallery ? (
                     <Link
-                      href={`/exposiciones/${item.exhibitionId}`}
+                      href={href(`/exposiciones/${item.exhibitionId}`)}
                       className="font-serif text-lg underline underline-offset-4"
                     >
                       {title}

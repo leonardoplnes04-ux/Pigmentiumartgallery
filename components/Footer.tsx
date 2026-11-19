@@ -11,13 +11,13 @@ import { useLanguage } from "@/hooks/useLanguage";
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [state, setState] = useState<"idle" | "sending" | "done" | "error">("idle");
-  const { t, pick, language } = useLanguage();
+  const { t, pick, language, href } = useLanguage();
 
   const footerNav = [
-    { href: "/obra", label: t.nav.obra },
-    { href: "/sobre-mi", label: t.nav.sobreMi },
-    { href: "/exposiciones", label: t.nav.exposiciones },
-    { href: "/contacto", label: t.nav.contacto },
+    { href: href("/obra"), label: t.nav.obra },
+    { href: href("/sobre-mi"), label: t.nav.sobreMi },
+    { href: href("/exposiciones"), label: t.nav.exposiciones },
+    { href: href("/contacto"), label: t.nav.contacto },
   ];
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {

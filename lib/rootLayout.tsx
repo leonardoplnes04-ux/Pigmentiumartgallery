@@ -45,7 +45,7 @@ export default function RootDocument({
         <ImageGuard />
         <Analytics />
         <ThemeProvider>
-          <LanguageProvider>{children}</LanguageProvider>
+          <LanguageProvider language={lang}>{children}</LanguageProvider>
         </ThemeProvider>
       </body>
     </html>

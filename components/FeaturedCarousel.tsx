@@ -23,7 +23,7 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
 
   const x = useMotionValue(0);
   const controls = useAnimationControls();
-  const { t, pick } = useLanguage();
+  const { t, pick, href } = useLanguage();
   const statusLabels: Record<Artwork["status"], string> = t.status;
 
   const [index, setIndex] = useState(0);
@@ -321,7 +321,7 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
                   // detail page to link to, so it's a plain figure.
                   <div className="block">{card}</div>
                 ) : (
-                  <Link href={`/obra/${artwork.id}`} className="block" draggable={false}>
+                  <Link href={href(`/obra/${artwork.id}`)} className="block" draggable={false}>
                     {card}
                   </Link>
                 )}

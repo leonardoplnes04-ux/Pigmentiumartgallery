@@ -18,10 +18,10 @@ export default function InquireBlock({
   artwork: Artwork;
   title: string;
 }) {
-  const { t } = useLanguage();
-  const href = `/contacto?obra=${encodeURIComponent(
+  const { t, href: localize } = useLanguage();
+  const href = localize(`/contacto?obra=${encodeURIComponent(
     `${artwork.year ? `${title} (${artwork.year})` : title} · ref. ${artwork.id}`
-  )}&img=${encodeURIComponent(artwork.image)}`;
+  )}&img=${encodeURIComponent(artwork.image)}`);
 
   return (
     <div>

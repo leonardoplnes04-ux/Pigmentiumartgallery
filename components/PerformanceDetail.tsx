@@ -11,12 +11,12 @@ export default function PerformanceDetail({
   performance: Performance;
   gallery: PerformanceGalleryImage[];
 }) {
-  const { t, pick } = useLanguage();
+  const { t, pick, href } = useLanguage();
 
   return (
     <article className="mx-auto max-w-3xl px-5 py-10 sm:px-6 sm:py-14 md:py-16">
       <Link
-        href="/performance"
+        href={href("/performance")}
         className="text-xs uppercase tracking-widest text-muted hover:text-ink"
       >
         {t.performanceDetail.back}

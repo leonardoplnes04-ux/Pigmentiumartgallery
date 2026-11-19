@@ -7,7 +7,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 import InquireBlock from "@/components/InquireBlock";
 
 export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
-  const { t, pick } = useLanguage();
+  const { t, pick, href } = useLanguage();
   const gallery = [artwork.image, ...(artwork.additionalImages ?? [])];
   const title = pick(artwork.title);
 
@@ -33,7 +33,7 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
   return (
     <article className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-14 md:py-16">
       <Link
-        href="/obra"
+        href={href("/obra")}
         className="text-xs uppercase tracking-widest text-muted hover:text-ink"
       >
         {t.detail.back}
@@ -116,7 +116,7 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
             <InquireBlock artwork={artwork} title={title} />
             {artwork.realDimensionsCm && (
               <Link
-                href={`/obra/${artwork.id}/simulador`}
+                href={href(`/obra/${artwork.id}/simulador`)}
                 className="mt-4 inline-block text-xs uppercase tracking-widest text-muted underline-offset-4 hover:text-ink hover:underline"
               >
                 {t.simulator.cta}

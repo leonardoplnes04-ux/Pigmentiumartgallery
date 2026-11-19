@@ -5,7 +5,7 @@ import { artist } from "@/data/artist";
 import { useLanguage } from "@/hooks/useLanguage";
 
 export default function Hero() {
-  const { t, pick } = useLanguage();
+  const { t, pick, href } = useLanguage();
 
   return (
     // Container matches the artwork's own aspect ratio (7:4) instead of a
@@ -43,31 +43,31 @@ export default function Hero() {
         </div>
         <div className="mt-5 flex flex-wrap gap-3 sm:mt-8">
           <Link
-            href="/obra"
+            href={href("/obra")}
             className="inline-block border border-white px-5 py-2.5 text-xs uppercase tracking-widest hover:bg-white hover:text-neutral-900 sm:px-6 sm:py-3"
           >
             {t.hero.cta}
           </Link>
           <Link
-            href="/exposiciones"
+            href={href("/exposiciones")}
             className="inline-block border border-white/60 px-5 py-2.5 text-xs uppercase tracking-widest hover:bg-white hover:text-neutral-900 sm:px-6 sm:py-3"
           >
             {t.hero.ctaSecondary}
           </Link>
           <Link
-            href="/obra?disponibles=1"
+            href={href("/obra?disponibles=1")}
             className="inline-block border border-white/60 px-5 py-2.5 text-xs uppercase tracking-widest hover:bg-white hover:text-neutral-900 sm:px-6 sm:py-3"
           >
             {t.hero.ctaTertiary}
           </Link>
           <Link
-            href="/videos"
+            href={href("/videos")}
             className="inline-block border border-white/60 px-5 py-2.5 text-xs uppercase tracking-widest hover:bg-white hover:text-neutral-900 sm:px-6 sm:py-3"
           >
             {t.hero.ctaVideos}
           </Link>
           <Link
-            href="/performance"
+            href={href("/performance")}
             className="inline-block border border-white/60 px-5 py-2.5 text-xs uppercase tracking-widest hover:bg-white hover:text-neutral-900 sm:px-6 sm:py-3"
           >
             {t.hero.ctaPerformance}

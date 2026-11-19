@@ -8,7 +8,7 @@ import { performanceGalleries } from "@/data/performanceGalleries";
 import { useLanguage } from "@/hooks/useLanguage";
 
 export default function PerformancePage() {
-  const { t, pick } = useLanguage();
+  const { t, pick, href } = useLanguage();
 
   return (
     <>
@@ -31,7 +31,7 @@ export default function PerformancePage() {
                 <p className="text-xs uppercase tracking-widest text-muted">{item.year}</p>
                 <div>
                   <Link
-                    href={`/performance/${item.id}`}
+                    href={href(`/performance/${item.id}`)}
                     className="font-serif text-lg underline underline-offset-4"
                   >
                     {item.title}
@@ -41,7 +41,7 @@ export default function PerformancePage() {
                 </div>
                 {cover && (
                   <Link
-                    href={`/performance/${item.id}`}
+                    href={href(`/performance/${item.id}`)}
                     className="block h-32 w-full overflow-hidden bg-line sm:h-40 md:h-full"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}

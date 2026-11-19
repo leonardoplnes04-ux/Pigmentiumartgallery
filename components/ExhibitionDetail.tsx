@@ -11,12 +11,12 @@ export default function ExhibitionDetail({
   exhibition: Exhibition;
   gallery: ExhibitionGalleryImage[];
 }) {
-  const { t, pick } = useLanguage();
+  const { t, pick, href } = useLanguage();
 
   return (
     <article className="mx-auto max-w-3xl px-5 py-10 sm:px-6 sm:py-14 md:py-16">
       <Link
-        href="/exposiciones"
+        href={href("/exposiciones")}
         className="text-xs uppercase tracking-widest text-muted hover:text-ink"
       >
         {t.exhibitionDetail.back}

@@ -12,7 +12,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 const ALL = "all";
 
 export default function ExposicionesPage() {
-  const { t, pick } = useLanguage();
+  const { t, pick, href } = useLanguage();
   const [selectedArtist, setSelectedArtist] = useState<string>(ALL);
 
   const filtered = useMemo(
@@ -74,7 +74,7 @@ export default function ExposicionesPage() {
                 <div>
                   {hasGallery ? (
                     <Link
-                      href={`/exposiciones/${item.id}`}
+                      href={href(`/exposiciones/${item.id}`)}
                       className="font-serif text-lg underline underline-offset-4"
                     >
                       {pick(item.title)}
@@ -92,7 +92,7 @@ export default function ExposicionesPage() {
                 {item.image &&
                   (hasGallery ? (
                     <Link
-                      href={`/exposiciones/${item.id}`}
+                      href={href(`/exposiciones/${item.id}`)}
                       className="block h-32 w-full overflow-hidden bg-line sm:h-40 md:h-full"
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}

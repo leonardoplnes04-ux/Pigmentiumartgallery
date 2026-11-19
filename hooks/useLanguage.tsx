@@ -1,41 +1,36 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import type { Language, LocalizedText } from "@/data/types";
+import { createContext, useContext, type ReactNode } from "react";
+import type { LocalizedText } from "@/data/types";
 import { translations } from "@/data/translations";
-
-const STORAGE_KEY = "dartgallery-lang";
+import { toLang, type Language } from "@/lib/routes";
 
 interface LanguageContextValue {
   language: Language;
-  setLanguage: (next: Language) => void;
   t: (typeof translations)[Language];
   pick: (text: LocalizedText) => string;
+  // Turns a Spanish canonical path ("/obra", "/contacto?obra=…") into the URL
+  // for the current language. Use it for every internal link.
+  href: (esPath: string) => string;
 }
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>("es");
-
-  // Read the saved preference after mount only — the server always
-  // renders "es", so this can only run client-side without causing a
-  // hydration mismatch. See "Límite aceptado" in the design doc.
-  useEffect(() => {
-    const saved = window.localStorage.getItem(STORAGE_KEY);
-    if (saved === "es" || saved === "en") setLanguageState(saved);
-  }, []);
-
-  function setLanguage(next: Language) {
-    window.localStorage.setItem(STORAGE_KEY, next);
-    setLanguageState(next);
-  }
-
+// The language comes from the route tree (app/(es) is "es", app/(en) is "en"),
+// so the server renders the right text on first paint. There is no saved
+// preference: switching language is a link to the equivalent URL.
+export function LanguageProvider({
+  language,
+  children,
+}: {
+  language: Language;
+  children: ReactNode;
+}) {
   const value: LanguageContextValue = {
     language,
-    setLanguage,
     t: translations[language],
     pick: (text) => text[language],
+    href: (esPath) => toLang(esPath, language),
   };
 
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;

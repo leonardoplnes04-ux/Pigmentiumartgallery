@@ -43,7 +43,7 @@ function applyOrder(base: Artwork[], ids: string[] | null): Artwork[] {
 }
 
 function ObraGrid() {
-  const { t } = useLanguage();
+  const { t, href } = useLanguage();
   // The "Obras disponibles" pieces have no detail route; clicking one opens
   // its spec sheet in a modal instead (see components/AvailableSpecModal).
   const [specArtwork, setSpecArtwork] = useState<Artwork | null>(null);
@@ -214,7 +214,7 @@ function ObraGrid() {
           ) : (
             <Link
               key={artwork.id}
-              href={`/obra/${artwork.id}`}
+              href={href(`/obra/${artwork.id}`)}
               className="mb-8 block break-inside-avoid"
             >
               <ArtworkCard artwork={artwork} />

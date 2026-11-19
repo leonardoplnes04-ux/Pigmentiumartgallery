@@ -5,7 +5,7 @@ import ArrowLink from "@/components/ArrowLink";
 import { useLanguage } from "@/hooks/useLanguage";
 
 export default function ArtistStatement() {
-  const { t, pick } = useLanguage();
+  const { t, pick, href } = useLanguage();
 
   return (
     <section className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-5 py-16 sm:gap-12 sm:px-6 sm:py-20 md:grid-cols-2 md:items-center md:py-24">
@@ -23,7 +23,7 @@ export default function ArtistStatement() {
       <div>
         <p className="text-xs uppercase tracking-widest text-muted">{t.statement.eyebrow}</p>
         <p className="mt-4 font-serif text-2xl leading-relaxed sm:text-3xl">{pick(artist.shortBio)}</p>
-        <ArrowLink href="/sobre-mi" className="mt-6">
+        <ArrowLink href={href("/sobre-mi")} className="mt-6">
           {t.statement.readMore}
         </ArrowLink>
       </div>

@@ -5,7 +5,7 @@ import ArrowLink from "@/components/ArrowLink";
 import { useLanguage } from "@/hooks/useLanguage";
 
 export default function SeriesGrid() {
-  const { t, pick } = useLanguage();
+  const { t, pick, href } = useLanguage();
 
   return (
     <section className="border-y border-line bg-line/10 px-5 py-16 sm:px-6 sm:py-20 md:py-24">
@@ -15,7 +15,7 @@ export default function SeriesGrid() {
             <p className="text-xs uppercase tracking-widest text-muted">{t.series.eyebrow}</p>
             <h2 className="mt-2 font-serif text-3xl sm:text-4xl">{t.series.title}</h2>
           </div>
-          <ArrowLink href="/obra">{t.series.viewAll}</ArrowLink>
+          <ArrowLink href={href("/obra")}>{t.series.viewAll}</ArrowLink>
         </div>
 
         <div className="mt-8 grid grid-cols-1 gap-8 sm:mt-12 md:grid-cols-2">

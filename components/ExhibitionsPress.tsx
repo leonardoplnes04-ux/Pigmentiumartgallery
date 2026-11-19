@@ -7,7 +7,7 @@ import ArrowLink from "@/components/ArrowLink";
 import { useLanguage } from "@/hooks/useLanguage";
 
 export default function ExhibitionsPress() {
-  const { t, pick } = useLanguage();
+  const { t, pick, href } = useLanguage();
 
   return (
     <section className="border-t border-line px-5 py-16 sm:px-6 sm:py-20 md:py-24">
@@ -17,7 +17,7 @@ export default function ExhibitionsPress() {
             <p className="text-xs uppercase tracking-widest text-muted">{t.exhibitions.eyebrow}</p>
             <h2 className="mt-2 font-serif text-3xl sm:text-4xl">{t.exhibitions.title}</h2>
           </div>
-          <ArrowLink href="/exposiciones">{t.exhibitions.viewAll}</ArrowLink>
+          <ArrowLink href={href("/exposiciones")}>{t.exhibitions.viewAll}</ArrowLink>
         </div>
 
         <ul className="mt-8 divide-y divide-line sm:mt-12">
@@ -34,7 +34,7 @@ export default function ExhibitionsPress() {
                 <div>
                   {hasGallery ? (
                     <Link
-                      href={`/exposiciones/${item.id}`}
+                      href={href(`/exposiciones/${item.id}`)}
                       className="font-serif text-lg underline underline-offset-4"
                     >
                       {pick(item.title)}
@@ -55,7 +55,7 @@ export default function ExhibitionsPress() {
                 {item.image &&
                   (hasGallery ? (
                     <Link
-                      href={`/exposiciones/${item.id}`}
+                      href={href(`/exposiciones/${item.id}`)}
                       className="block h-32 w-full overflow-hidden bg-line sm:h-40 md:h-full"
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}

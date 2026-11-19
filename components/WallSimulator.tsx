@@ -27,7 +27,7 @@ interface OverlayRect {
 type MeasuredArtwork = Artwork & { realDimensionsCm: { width: number; height: number } };
 
 export default function WallSimulator({ artwork }: { artwork: MeasuredArtwork }) {
-  const { t, pick } = useLanguage();
+  const { t, pick, href } = useLanguage();
   const title = pick(artwork.title);
   // Used only to keep the drag/resize bounds sane — the actual on-screen
   // and exported size follow the photographed artwork's own intrinsic
@@ -149,7 +149,7 @@ export default function WallSimulator({ artwork }: { artwork: MeasuredArtwork })
 
   return (
     <div className="mx-auto max-w-4xl px-5 py-10 sm:px-6 sm:py-14 md:py-16">
-      <Link href={`/obra/${artwork.id}`} className="text-xs uppercase tracking-widest text-muted hover:text-ink">
+      <Link href={href(`/obra/${artwork.id}`)} className="text-xs uppercase tracking-widest text-muted hover:text-ink">
         {t.simulator.back}
       </Link>
 

@@ -8,6 +8,8 @@ export interface UiStrings {
     contacto: string;
     tiendaAria: string;
   };
+  // Language names, written in the language of the page they appear on.
+  langNames: { es: string; en: string };
   menu: {
     open: string;
     close: string;
@@ -184,6 +186,7 @@ export const translations: Record<Language, UiStrings> = {
       contacto: "Contacto",
       tiendaAria: "Tienda",
     },
+    langNames: { es: "Español", en: "Inglés" },
     menu: {
       open: "Menú",
       close: "Cerrar",
@@ -369,6 +372,7 @@ export const translations: Record<Language, UiStrings> = {
       contacto: "Contact",
       tiendaAria: "Store",
     },
+    langNames: { es: "Spanish", en: "English" },
     menu: {
       open: "Menu",
       close: "Close",

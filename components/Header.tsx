@@ -2,9 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { site } from "@/data/site";
 import type { UiStrings } from "@/data/translations";
+import { counterpart, type Language } from "@/lib/routes";
 import { useLanguage } from "@/hooks/useLanguage";
+import { useLocationSearch } from "@/hooks/useLocationSearch";
 import { useTheme } from "@/hooks/useTheme";
 import type { Theme } from "@/hooks/useTheme";
 import { GlowButton } from "@/components/unlumen-ui/primitives/glow";
@@ -21,23 +24,31 @@ const GLOW_SCALE_DARK = 0.75;
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { language, setLanguage, t } = useLanguage();
+  const { language, t, href } = useLanguage();
   const { theme, toggleTheme } = useTheme();
+  // Language switch = link to the same page in the other language, keeping the
+  // query string (contact deep links, ?disponibles=1) once the page is mounted.
+  const pathname = usePathname();
+  const search = useLocationSearch();
+  const languageHrefs: Record<Language, string> = {
+    es: counterpart(pathname, "es") + search,
+    en: counterpart(pathname, "en") + search,
+  };
   const glowColors = theme === "dark" ? GLOW_COLORS_DARK : GLOW_COLORS_LIGHT;
   const glowScale = theme === "dark" ? GLOW_SCALE_DARK : GLOW_SCALE_LIGHT;
   const glowBlur = theme === "dark" ? "medium" : "strong";
 
   const navLinks = [
-    { href: "/obra", label: t.nav.obra },
-    { href: "/sobre-mi", label: t.nav.sobreMi },
-    { href: "/exposiciones", label: t.nav.exposiciones },
+    { href: href("/obra"), label: t.nav.obra },
+    { href: href("/sobre-mi"), label: t.nav.sobreMi },
+    { href: href("/exposiciones"), label: t.nav.exposiciones },
   ];
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-background">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 sm:px-6 sm:py-5">
         <Link
-          href="/"
+          href={href("/")}
           className="font-serif text-sm uppercase leading-tight tracking-wide sm:text-lg"
         >
           {site.name}
@@ -56,7 +67,7 @@ export default function Header() {
         </nav>
 
         <div className="hidden items-center gap-6 md:flex">
-          <LanguageToggle language={language} onChange={setLanguage} />
+          <LanguageToggle language={language} hrefs={languageHrefs} t={t} />
           <ThemeToggle theme={theme} onToggle={toggleTheme} t={t} />
           <GlowButton
             asChild
@@ -67,12 +78,12 @@ export default function Header() {
             colors={glowColors}
             className="bg-ink text-background shadow-sm hover:bg-ink/90"
           >
-            <Link href="/contacto">{t.nav.contacto}</Link>
+            <Link href={href("/contacto")}>{t.nav.contacto}</Link>
           </GlowButton>
         </div>
 
         <div className="flex items-center gap-4 md:hidden">
-          <LanguageToggle language={language} onChange={setLanguage} />
+          <LanguageToggle language={language} hrefs={languageHrefs} t={t} />
           <ThemeToggle theme={theme} onToggle={toggleTheme} t={t} />
           <button
             type="button"
@@ -93,7 +104,7 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
-          <Link href="/contacto" className="text-xs uppercase tracking-widest">
+          <Link href={href("/contacto")} className="text-xs uppercase tracking-widest">
             {t.nav.contacto}
           </Link>
         </nav>
@@ -153,36 +164,40 @@ function ThemeToggle({
   );
 }
 
+// Each option is a plain link to the same page in that language (a real URL,
+// so search engines can follow it). The current language is marked with
+// aria-current and is not a link target worth following, but stays a link so
+// the markup is identical in both languages.
 function LanguageToggle({
   language,
-  onChange,
+  hrefs,
+  t,
 }: {
-  language: "es" | "en";
-  onChange: (next: "es" | "en") => void;
+  language: Language;
+  hrefs: Record<Language, string>;
+  t: UiStrings;
 }) {
+  const options: Language[] = ["es", "en"];
   return (
     <div className="flex items-center gap-1.5 text-xs uppercase tracking-widest">
-      <button
-        type="button"
-        onClick={() => onChange("es")}
-        aria-current={language === "es"}
-        className={
-          language === "es" ? "font-semibold text-ink underline underline-offset-4" : "text-muted hover:text-ink"
-        }
-      >
-        Español
-      </button>
-      <span className="text-muted">|</span>
-      <button
-        type="button"
-        onClick={() => onChange("en")}
-        aria-current={language === "en"}
-        className={
-          language === "en" ? "font-semibold text-ink underline underline-offset-4" : "text-muted hover:text-ink"
-        }
-      >
-        Inglés
-      </button>
+      {options.map((option, index) => (
+        <span key={option} className="flex items-center gap-1.5">
+          {index > 0 && <span className="text-muted">|</span>}
+          <Link
+            href={hrefs[option]}
+            lang={option}
+            hrefLang={option}
+            aria-current={language === option}
+            className={
+              language === option
+                ? "font-semibold text-ink underline underline-offset-4"
+                : "text-muted hover:text-ink"
+            }
+          >
+            {t.langNames[option]}
+          </Link>
+        </span>
+      ))}
     </div>
   );
 }
