@@ -1138,9 +1138,14 @@ Todo lo relacionado con este proyecto vive aquí:
   personales; el honeypot no cuenta). Sin ID no carga nada. Consentimiento: UE/Reino
   Unido/Suiza arrancan con `analytics_storage` denegado (sin banner, datos parciales);
   el resto del mundo se mide normal. Verificado en navegador con un ID falso: carga
-  gtag, consent y config correctos, el clic emite `cta_click`. Pendiente: crear la
-  propiedad GA4, poner `NEXT_PUBLIC_GA_ID` en Vercel (Production), marcar `generate_lead`
-  como evento clave en GA, y commit + deploy.
+  gtag, consent y config correctos, el clic emite `cta_click`.
+  **En producción (2026-11-19):** propiedad GA4 creada por el usuario, ID `G-JVZ7KSL064`
+  en `NEXT_PUBLIC_GA_ID` (Vercel, solo Production), commit `8438332` y deploy con
+  `vercel deploy --prod`; verificado en vivo (ID en `/obra/obra-07`, `ExhibitionEvent`
+  en `/exposiciones/exp-11`, `VideoObject` en `/videos`). **El `git push` falló (403):** Git
+  usa la cuenta `leonardodddi` y el repo es de `leonardoplnes04-ux`; `main` en GitHub va
+  atrasado respecto a producción hasta resolverlo. Pendiente: marcar `generate_lead`
+  como evento clave en GA cuando lleguen los primeros eventos.
 
 ## Próximos pasos
 - Cuando se sume un segundo artista real a la galería: agregar su entrada en `data/galleryArtists.ts`, tagear sus exposiciones con su `artistId` en `data/exhibitions.ts`, y el filtro por artista en `/exposiciones` aparece solo (sin tocar componentes). Si en algún momento también se necesita que `/obra` y `/sobre-mi` sean multi-artista (hoy siguen asumiendo a Segundo Planes como único artista del sitio), eso es un cambio de modelo de datos más grande — brainstorming aparte cuando se necesite de verdad.
