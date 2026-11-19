@@ -5,13 +5,29 @@ import { exhibitions } from "@/data/exhibitions";
 import { exhibitionGalleries } from "@/data/exhibitionGalleries";
 import { performances } from "@/data/performances";
 import { performanceGalleries } from "@/data/performanceGalleries";
+import { toLang } from "@/lib/routes";
 
 // Auto-generated at /sitemap.xml by Next.js. Static routes are listed
 // directly; dynamic routes are derived from the same data the pages
 // themselves render from, so a new artwork/exhibition/performance shows up
 // here automatically — nothing to remember to update by hand.
+//
+// Every page is listed twice, Spanish (canonical URLs) and English (/en/...),
+// and each entry names both versions so search engines pair them.
+function bilingual(esPath: string): MetadataRoute.Sitemap {
+  // The Spanish home is the bare site URL (no trailing slash), as in its canonical.
+  const es = esPath === "/" ? SITE_URL : `${SITE_URL}${toLang(esPath, "es")}`;
+  const en = `${SITE_URL}${toLang(esPath, "en")}`;
+  const alternates = { languages: { es, en } };
+  const lastModified = new Date();
+  return [
+    { url: es, lastModified, alternates },
+    { url: en, lastModified, alternates },
+  ];
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes: MetadataRoute.Sitemap = [
+  const staticRoutes = [
     "",
     "/obra",
     "/sobre-mi",
@@ -19,33 +35,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/performance",
     "/videos",
     "/contacto",
-  ].map((path) => ({
-    url: `${SITE_URL}${path}`,
-    lastModified: new Date(),
-  }));
+  ].flatMap((path) => bilingual(path || "/"));
 
-  const artworkRoutes: MetadataRoute.Sitemap = realArtworks
+  const artworkRoutes = realArtworks
     .filter((artwork) => !artwork.noDetailPage && !artwork.featuredOnly)
-    .map((artwork) => ({
-      url: `${SITE_URL}/obra/${artwork.id}`,
-      lastModified: new Date(),
-    }));
+    .flatMap((artwork) => bilingual(`/obra/${artwork.id}`));
 
   // Only exhibitions/performances with a loaded photo gallery get a detail
   // page — same gate the list pages use to decide what's clickable.
-  const exhibitionRoutes: MetadataRoute.Sitemap = exhibitions
+  const exhibitionRoutes = exhibitions
     .filter((exhibition) => exhibitionGalleries[exhibition.id])
-    .map((exhibition) => ({
-      url: `${SITE_URL}/exposiciones/${exhibition.id}`,
-      lastModified: new Date(),
-    }));
+    .flatMap((exhibition) => bilingual(`/exposiciones/${exhibition.id}`));
 
-  const performanceRoutes: MetadataRoute.Sitemap = performances
+  const performanceRoutes = performances
     .filter((performance) => performanceGalleries[performance.id])
-    .map((performance) => ({
-      url: `${SITE_URL}/performance/${performance.id}`,
-      lastModified: new Date(),
-    }));
+    .flatMap((performance) => bilingual(`/performance/${performance.id}`));
 
   return [...staticRoutes, ...artworkRoutes, ...exhibitionRoutes, ...performanceRoutes];
 }

@@ -34,6 +34,35 @@ Se responde en un plazo de 48 horas hábiles.
 
 Nombre: ${artist.name}. Nacido en Pinar del Río, Cuba, el 18 de enero de 1965.
 Sitio oficial: ${SITE_URL}
+
+---
+
+# ${artist.name} (English)
+
+> ${artist.shortBio.en}
+
+Official website of the artist. Everything published here is endorsed by the artist.
+Currently based in Monterrey, Mexico, and Havana, Cuba.
+
+## Main pages (English)
+
+- [Biography and FAQ](${SITE_URL}/en/about): career, studies, exhibitions, awards and collections.
+- [Artwork](${SITE_URL}/en/works): catalogue of paintings, with size, technique and year when confirmed.
+- [Exhibitions](${SITE_URL}/en/exhibitions): solo and group exhibitions.
+- [Performance](${SITE_URL}/en/performance): performance work, of which he is a pioneer in Cuba.
+- [Videos](${SITE_URL}/en/videos): exhibition walkthroughs.
+- [Contact](${SITE_URL}/en/contact): acquiring artwork, commissions, exhibitions and press.
+
+## How to acquire an artwork
+
+Artworks have no public price: each one is handled personally.
+Request information and price from the artwork's page or from ${SITE_URL}/en/contact.
+Replies within 48 business hours.
+
+## To cite
+
+Name: ${artist.name}. Born in Pinar del Río, Cuba, on January 18, 1965.
+Official website: ${SITE_URL}/en
 `;
 
   return new Response(body, {
