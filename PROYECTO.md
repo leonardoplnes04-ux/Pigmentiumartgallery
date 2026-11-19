@@ -1147,6 +1147,35 @@ Todo lo relacionado con este proyecto vive aquí:
   atrasado respecto a producción hasta resolverlo. Pendiente: marcar `generate_lead`
   como evento clave en GA cuando lleguen los primeros eventos.
 
+- **2026-11-19**: **SEO, fase 6: inglés indexable (`/en/...`).** Diseño en
+  `docs/superpowers/specs/2026-11-19-english-indexable-design.md`, plan en
+  `docs/superpowers/plans/2026-11-19-english-indexable.md`. El sitio ya no decide el
+  idioma con `localStorage`: el idioma sale de la ruta. `app/(es)/` (lo de siempre,
+  mismas URLs) y `app/(en)/en/` (espejo) tienen layout raíz propio (`<html lang>`
+  correcto), ambos sobre `lib/rootLayout.tsx` / `lib/metadata.ts`. URLs en inglés:
+  `/en`, `/en/works[/id[/simulator]]`, `/en/about`, `/en/exhibitions[/id]`,
+  `/en/performance[/id]`, `/en/videos`, `/en/contact` (mapa en `lib/routes.ts`, con
+  pruebas: `npm test`). Cuerpos de página compartidos en `components/pages/`;
+  textos SEO en `data/seoText.ts`; `useLanguage().href(rutaEnEspañol)` localiza todos
+  los enlaces internos; el selector ES/EN es un enlace a la página equivalente y
+  conserva el query (`?obra=…`, `?disponibles=1`). Cada página lleva canonical propio y
+  `hreflang` es/en/x-default; JSON-LD por idioma (`lang` en cada constructor, un solo
+  `@id` de la persona); sitemap con las dos versiones y `alternates`; `llms.txt` con
+  sección en inglés; `track()` añade `page_language` a los eventos de GA (misma
+  propiedad `G-JVZ7KSL064`, nada nuevo que configurar). Sin redirección automática por
+  país/idioma. Verificación: `scripts/url-inventory.mjs` (capture/compare/reciprocity)
+  contra `next start`: 142 URLs en español idénticas a la línea base (mismo canonical,
+  título, descripción y hash de JSON-LD; solo se añaden `hreflang` y `og:locale es_ES`
+  en detalles, que antes no lo tenían), 142 en inglés con 200, `lang="en"` y canonical
+  propio, 284 URLs sin problemas de reciprocidad, ids inexistentes dan 404. Decisiones
+  mías: slugs en inglés, simulador espejado, traducción actual publicada tal cual, nombres
+  de idioma del selector en el idioma de cada página ("Español|Inglés" / "Spanish|English").
+  Límite: las páginas inexistentes fuera de las rutas conocidas muestran el 404 por
+  defecto de Next (con dos layouts raíz no hay `not-found` global). Pendiente menor:
+  títulos de obra "(detalle)" sin traducir en `data/artworks.ts`; el correo para el
+  artista sigue siempre en español. Para el dueño: reenviar `sitemap.xml` en Search
+  Console y Bing; opcional, registrar `page_language` como dimensión de evento en GA.
+
 ## Próximos pasos
 - Cuando se sume un segundo artista real a la galería: agregar su entrada en `data/galleryArtists.ts`, tagear sus exposiciones con su `artistId` en `data/exhibitions.ts`, y el filtro por artista en `/exposiciones` aparece solo (sin tocar componentes). Si en algún momento también se necesita que `/obra` y `/sobre-mi` sean multi-artista (hoy siguen asumiendo a Segundo Planes como único artista del sitio), eso es un cambio de modelo de datos más grande — brainstorming aparte cuando se necesite de verdad.
 - Confirmar con el artista: títulos definitivos, año y dimensiones exactas del resto de la serie Aviario (`obra-08`..`obra-12`, `obra-07` ya confirmada); citas reales de críticos (hoy son placeholder); reemplazar o retirar los placeholders restantes de Interiores/Derivas. **Esto también activa "Ver en tu pared"** por obra — en cuanto tenga `realDimensionsCm` cargado, el botón aparece solo.
