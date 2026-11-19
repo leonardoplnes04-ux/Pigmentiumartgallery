@@ -1,8 +1,5 @@
-import { notFound } from "next/navigation";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import WallSimulator from "@/components/WallSimulator";
-import { realArtworks, findMeasuredArtwork } from "@/lib/artworks";
+import SimulatorRoute from "@/components/pages/SimulatorRoute";
+import { realArtworks } from "@/lib/artworks";
 
 // Only artworks with confirmed real-world dimensions get this route —
 // see docs/specs/2026-08-17-wall-simulator-design.md.
@@ -16,16 +13,5 @@ export default async function SimuladorPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const artwork = findMeasuredArtwork(id);
-  if (!artwork) notFound();
-
-  return (
-    <>
-      <Header />
-      <main>
-        <WallSimulator artwork={artwork} />
-      </main>
-      <Footer />
-    </>
-  );
+  return <SimulatorRoute id={id} />;
 }

@@ -19,7 +19,7 @@ const [, , command, ...args] = process.argv;
 
 function attrs(tag) {
   const out = {};
-  for (const m of tag.matchAll(/([a-zA-Z:-]+)=(?:"([^"]*)"|'([^']*)')/g)) out[m[1]] = m[2] ?? m[3];
+  for (const m of tag.matchAll(/([a-zA-Z:-]+)=(?:"([^"]*)"|'([^']*)')/g)) out[m[1].toLowerCase()] = m[2] ?? m[3];
   return out;
 }
 

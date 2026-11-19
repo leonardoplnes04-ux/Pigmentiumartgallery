@@ -1,24 +1,9 @@
 import type { Metadata } from "next";
-import BiographyPage from "@/components/BiographyPage";
-import { artist } from "@/data/artist";
-import { faq } from "@/data/faq";
-import { faqJsonLd, toJsonLd } from "@/lib/structuredData";
+import AboutRoute from "@/components/pages/AboutRoute";
+import { sectionMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: `Biografía — ${artist.name}`,
-  description: artist.shortBio.es,
-  alternates: { canonical: "/sobre-mi" },
-};
+export const metadata: Metadata = sectionMetadata("about", "es");
 
 export default function SobreMiPage() {
-  return (
-    <>
-      <script
-        type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: toJsonLd(faqJsonLd(faq)) }}
-      />
-      <BiographyPage />
-    </>
-  );
+  return <AboutRoute lang="es" />;
 }

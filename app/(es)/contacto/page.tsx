@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
 import ContactPage from "@/components/ContactPage";
-import { artist } from "@/data/artist";
-import { site } from "@/data/site";
+import { sectionMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: `Contacto y adquisición de obra — ${artist.name}`,
-  description: `Adquirir obra, encargos, exposiciones y prensa: contacta a ${artist.name}, ${site.name}.`,
-  alternates: { canonical: "/contacto" },
-};
+export const metadata: Metadata = sectionMetadata("contact", "es");
 
 export default function ContactoPage() {
   return <ContactPage />;
