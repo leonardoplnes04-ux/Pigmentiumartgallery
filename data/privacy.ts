@@ -9,11 +9,11 @@ import type { LocalizedText } from "./types";
 
 export const PRIVACY_LAST_UPDATED = "2026-11-20";
 
-// Responsible party. The address was given by the owner on 2026-11-20 without
-// colonia, city or postal code: complete it here (see docs/privacidad).
+// Responsible party (address confirmed by the owner, 2026-11-20).
 export const controller = {
   name: "Segundo Planes",
-  address: "Luis Arizpe 126",
+  address:
+    "Calle Luis Arizpe #126, Colonia Lázaro Garza Ayala, San Pedro Garza García, Nuevo León, C.P. 66238, México",
   email: "segundoplanesobras@outlook.com",
 };
 
