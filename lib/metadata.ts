@@ -126,6 +126,16 @@ export function sectionMetadata(key: SectionKey, lang: Language): Metadata {
   };
 }
 
+// "<name> — Segundo Planes" within 65 characters: drop the artist suffix if it
+// doesn't fit, and as a last resort cut the name at a word with "…".
+const MAX_TITLE = 65;
+function fitTitle(name: string): string {
+  const full = `${name} — ${artist.name}`;
+  if (full.length <= MAX_TITLE) return full;
+  if (name.length <= MAX_TITLE) return name;
+  return `${name.slice(0, MAX_TITLE - 1).replace(/[\s,.;:]+\S*$/, "")}…`;
+}
+
 function detailMetadata(
   esPath: string,
   lang: Language,
@@ -158,7 +168,7 @@ export function artworkMetadata(artwork: Artwork, lang: Language): Metadata {
   return detailMetadata(
     `/obra/${artwork.id}`,
     lang,
-    `${artwork.title[lang]} — ${artist.name}`,
+    fitTitle(artwork.title[lang]),
     description,
     artwork.image
   );
@@ -182,7 +192,7 @@ export function exhibitionMetadata(
   return detailMetadata(
     `/exposiciones/${exhibition.id}`,
     lang,
-    `${exhibition.title[lang]} — ${artist.name}`,
+    fitTitle(exhibition.title[lang]),
     `${exhibition.venue}, ${exhibition.date}.`,
     image
   );
@@ -196,7 +206,7 @@ export function performanceMetadata(
   return detailMetadata(
     `/performance/${performance.id}`,
     lang,
-    `${performance.title} — ${artist.name}`,
+    fitTitle(performance.title),
     performance.venue ? `${performance.venue}, ${performance.year}.` : performance.year,
     image
   );

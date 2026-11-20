@@ -102,8 +102,8 @@ export const seoText: Record<SectionKey, { title: LocalizedText; description: Lo
       en: `How to acquire artwork by ${X}, Cuban artist`,
     },
     description: {
-      es: `Cómo consultar precio y disponibilidad de una obra de ${X}: desde la ficha o el contacto, con respuesta en 48 horas hábiles. Para coleccionistas y galerías.`,
-      en: `How to ask about price and availability of a work by ${X}: from the artwork page or contact form, reply within 48 business hours. For collectors and galleries.`,
+      es: `Cómo consultar precio y disponibilidad de una obra de ${X}: desde la ficha o el contacto, respuesta en 48 horas hábiles. Coleccionistas y galerías.`,
+      en: `How to ask about price and availability of a work by ${X}: from its page or the contact form, reply in 48 business hours. Collectors and galleries.`,
     },
   },
 };
