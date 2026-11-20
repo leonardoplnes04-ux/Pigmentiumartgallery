@@ -1,14 +1,15 @@
-import { v } from "convex/values";
+import { ConvexError, v } from "convex/values";
 import { internal } from "./_generated/api";
 import { internalAction, internalMutation, internalQuery, mutation } from "./_generated/server";
 
-const INTERESTS = ["purchase", "commission", "exhibition", "press", "other"];
+const INTERESTS = ["purchase", "commission", "exhibition", "press", "other", "image_request"];
 const INTEREST_LABELS_ES: Record<string, string> = {
   purchase: "Adquirir una obra",
   commission: "Encargo",
   exhibition: "Exposición o colaboración",
   press: "Prensa",
   other: "Otro",
+  image_request: "Solicitó imagen de obra",
 };
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const MAX_PER_HOUR = 5;
@@ -31,7 +32,8 @@ export const submit = mutation({
     const message = a.message.trim();
     if (name.length < 2 || name.length > 120) throw new Error("invalid_name");
     if (!EMAIL_RE.test(email) || email.length > 200) throw new Error("invalid_email");
-    if (!INTERESTS.includes(a.interest)) throw new Error("invalid_interest");
+    // image_request only comes from requestImage, never from the contact form.
+    if (!INTERESTS.includes(a.interest) || a.interest === "image_request") throw new Error("invalid_interest");
     if (message.length < 10 || message.length > 2000) throw new Error("invalid_message");
 
     const hourAgo = Date.now() - 60 * 60 * 1000;
@@ -55,6 +57,69 @@ export const submit = mutation({
     });
     await ctx.scheduler.runAfter(0, internal.leads.notifyArtist, { id });
     return id;
+  },
+});
+
+const IMAGE_MAX_PER_EMAIL_DAY = 3;
+const IMAGE_MAX_PER_IP_HOUR = 10;
+
+// "Recibir imagen por correo" (ficha de obra). La llama solo la ruta
+// app/api/imagen-obra/route.ts, que ya resolvió la obra por su id. Mismas
+// validaciones de nombre y correo que `submit`; límites: 3 por correo cada
+// 24 h y 10 por ipHash cada hora. El artista recibe el aviso como un lead más.
+// ConvexError (no Error) para que "rate_limited" llegue intacto a la ruta
+// también en producción, donde Convex oculta los mensajes de Error.
+export const requestImage = mutation({
+  args: {
+    name: v.string(),
+    email: v.string(),
+    artworkId: v.string(),
+    artworkTitle: v.string(),
+    artworkImage: v.string(),
+    lang: v.string(),
+    ipHash: v.string(),
+  },
+  handler: async (ctx, a) => {
+    const name = a.name.trim();
+    const email = a.email.trim().toLowerCase();
+    if (name.length < 2 || name.length > 120) throw new ConvexError("invalid_name");
+    if (!EMAIL_RE.test(email) || email.length > 200) throw new ConvexError("invalid_email");
+    if (!a.artworkId.trim() || !a.ipHash.trim()) throw new ConvexError("invalid_request");
+
+    const now = Date.now();
+    const dayAgo = now - 24 * 60 * 60 * 1000;
+    const byEmail = await ctx.db
+      .query("leads")
+      .withIndex("by_email", (q) => q.eq("email", email))
+      .filter((q) =>
+        q.and(q.gt(q.field("_creationTime"), dayAgo), q.eq(q.field("interest"), "image_request"))
+      )
+      .collect();
+    if (byEmail.length >= IMAGE_MAX_PER_EMAIL_DAY) throw new ConvexError("rate_limited");
+
+    const hourAgo = now - 60 * 60 * 1000;
+    const byIp = await ctx.db
+      .query("leads")
+      .withIndex("by_ipHash", (q) => q.eq("ipHash", a.ipHash))
+      .filter((q) => q.gt(q.field("_creationTime"), hourAgo))
+      .collect();
+    if (byIp.length >= IMAGE_MAX_PER_IP_HOUR) throw new ConvexError("rate_limited");
+
+    const title = a.artworkTitle.trim().slice(0, 160);
+    const id = await ctx.db.insert("leads", {
+      name: name.slice(0, 120),
+      email,
+      phone: "",
+      interest: "image_request",
+      artwork: `${title} · ref. ${a.artworkId.trim().slice(0, 40)}`,
+      artworkImage: a.artworkImage.trim().slice(0, 300),
+      message: `Solicitó la imagen de «${title}» desde la ficha de la obra.`,
+      lang: a.lang === "en" ? "en" : "es",
+      notified: false,
+      ipHash: a.ipHash.slice(0, 128),
+    });
+    await ctx.scheduler.runAfter(0, internal.leads.notifyArtist, { id });
+    return { ok: true as const };
   },
 });
 
@@ -95,7 +160,11 @@ export const notifyArtist = internalAction({
       `Obra de interés: ${lead.artwork || "—"}`,
     ];
     if (lead.artworkImage && siteUrl) lines.push(`Imagen de la obra: ${siteUrl}${lead.artworkImage}`);
-    const text = `${lines.join("\n")}\n\nMensaje:\n${lead.message}\n\n— Enviado desde el formulario de ${siteUrl}/contacto`;
+    const origin =
+      lead.interest === "image_request"
+        ? `«Recibir imagen por correo» en la ficha de la obra (${siteUrl})`
+        : `el formulario de ${siteUrl}/contacto`;
+    const text = `${lines.join("\n")}\n\nMensaje:\n${lead.message}\n\n— Enviado desde ${origin}`;
 
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
