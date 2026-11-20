@@ -6,6 +6,9 @@ import Footer from "@/components/Footer";
 import { performances } from "@/data/performances";
 import { performanceGalleries } from "@/data/performanceGalleries";
 import { useLanguage } from "@/hooks/useLanguage";
+import LinkedText from "@/components/LinkedText";
+import { performanceIntro } from "@/data/topicPages";
+import { SEO_PREVIEW } from "@/lib/seoPreview";
 
 export default function PerformanceListPage() {
   const { t, pick, href } = useLanguage();
@@ -16,6 +19,16 @@ export default function PerformanceListPage() {
       <main className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-14 md:py-16">
         <p className="text-xs uppercase tracking-widest text-muted">{t.performances.eyebrow}</p>
         <h1 className="mt-2 font-serif text-3xl sm:text-4xl">{t.performances.title}</h1>
+        {/* Intro (SEO preview flag only), from the biography. */}
+        {SEO_PREVIEW && (
+          <div className="mt-6 max-w-3xl space-y-4 leading-relaxed">
+            {performanceIntro.map((paragraph, i) => (
+              <p key={i}>
+                <LinkedText text={pick(paragraph)} />
+              </p>
+            ))}
+          </div>
+        )}
 
         <ul className="mt-8 divide-y divide-line sm:mt-12">
           {performances.map((item) => {

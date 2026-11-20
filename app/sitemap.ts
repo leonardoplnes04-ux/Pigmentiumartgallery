@@ -7,6 +7,7 @@ import { performances } from "@/data/performances";
 import { performanceGalleries } from "@/data/performanceGalleries";
 import { toLang } from "@/lib/routes";
 import { CONTENT_UPDATED } from "@/data/site";
+import { SEO_PREVIEW } from "@/lib/seoPreview";
 
 // Auto-generated at /sitemap.xml by Next.js. Static routes are listed
 // directly; dynamic routes are derived from the same data the pages
@@ -36,6 +37,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/performance",
     "/videos",
     "/contacto",
+    // New pages (block C): listed only when they are published (preview flag).
+    ...(SEO_PREVIEW ? ["/prensa", "/arte-cubano-generacion-80", "/como-adquirir-obra"] : []),
   ].flatMap((path) => bilingual(path || "/"));
 
   const artworkRoutes = realArtworks

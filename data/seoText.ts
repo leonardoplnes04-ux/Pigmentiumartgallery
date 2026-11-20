@@ -13,7 +13,11 @@ export type SectionKey =
   | "exhibitions"
   | "performance"
   | "videos"
-  | "contact";
+  | "contact"
+  // New pages (block C), published only with the preview flag on.
+  | "press"
+  | "cubanArt"
+  | "acquire";
 
 const X = artist.name;
 
@@ -73,6 +77,33 @@ export const seoText: Record<SectionKey, { title: LocalizedText; description: Lo
     description: {
       es: `Adquirir obra, encargos, exposiciones y prensa: contacta a ${X}, ${site.name}.`,
       en: `Acquire artwork, commissions, exhibitions and press: contact ${X}, ${site.name}.`,
+    },
+  },
+  press: {
+    title: { es: `Prensa y bibliografía — ${X}`, en: `Press and bibliography — ${X}` },
+    description: {
+      es: `Libro de 2010 (UANL y Fondo Editorial de Nuevo León), fuentes sobre su obra y exposiciones individuales del artista cubano ${X}.`,
+      en: `2010 book (UANL and Fondo Editorial de Nuevo León), sources on his work and solo exhibitions of the Cuban artist ${X}.`,
+    },
+  },
+  cubanArt: {
+    title: {
+      es: `${X} y la generación de los 80 del arte cubano`,
+      en: `${X} and the 1980s generation of Cuban art`,
+    },
+    description: {
+      es: `${X}, artista de la generación de los 80 y del renacimiento del arte cubano: formación en la ENA y el ISA, primera individual en 1983 y performance.`,
+      en: `${X}, artist of the 1980s generation and the Cuban art renaissance: training at the ENA and ISA, first solo show in 1983 and performance art.`,
+    },
+  },
+  acquire: {
+    title: {
+      es: `Cómo adquirir obra de ${X}, artista cubano`,
+      en: `How to acquire artwork by ${X}, Cuban artist`,
+    },
+    description: {
+      es: `Cómo consultar precio y disponibilidad de una obra de ${X}: desde la ficha o el contacto, con respuesta en 48 horas hábiles. Para coleccionistas y galerías.`,
+      en: `How to ask about price and availability of a work by ${X}: from the artwork page or contact form, reply within 48 business hours. For collectors and galleries.`,
     },
   },
 };

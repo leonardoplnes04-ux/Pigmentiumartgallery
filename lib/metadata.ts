@@ -109,6 +109,9 @@ const SECTION_PATH: Record<SectionKey, string> = {
   performance: "/performance",
   videos: "/videos",
   contact: "/contacto",
+  press: "/prensa",
+  cubanArt: "/arte-cubano-generacion-80",
+  acquire: "/como-adquirir-obra",
 };
 
 // Metadata of a section page. The home inherits its title and description from

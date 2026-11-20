@@ -12,6 +12,8 @@ import { realArtworks } from "@/lib/artworks";
 import { availableExtra } from "@/data/availableExtra";
 import type { Artwork } from "@/data/types";
 import { useLanguage } from "@/hooks/useLanguage";
+import { seoCopy } from "@/data/seoCopy";
+import { SEO_PREVIEW } from "@/lib/seoPreview";
 
 // Per-viewer, PROVISIONAL custom order for the "Obras disponibles" view.
 // Stored only in that browser; never affects the published order until
@@ -43,7 +45,7 @@ function applyOrder(base: Artwork[], ids: string[] | null): Artwork[] {
 }
 
 function ObraGrid() {
-  const { t, href } = useLanguage();
+  const { t, href, pick } = useLanguage();
   // The "Obras disponibles" pieces have no detail route; clicking one opens
   // its spec sheet in a modal instead (see components/AvailableSpecModal).
   const [specArtwork, setSpecArtwork] = useState<Artwork | null>(null);
@@ -183,6 +185,10 @@ function ObraGrid() {
       <h1 className="mt-2 font-serif text-3xl sm:text-4xl">
         {onlyAvailable ? t.hero.ctaTertiary : t.catalog.title}
       </h1>
+      {/* Intro (SEO preview flag only): two sentences before the grid. */}
+      {SEO_PREVIEW && !onlyAvailable && (
+        <p className="mt-4 max-w-3xl leading-relaxed text-muted">{pick(seoCopy.catalogIntro)}</p>
+      )}
 
       {/* /obra: CSS-columns masonry (packs under the shortest column).
           /obra?disponibles=1: a real CSS grid so the pieces read strictly

@@ -7,6 +7,8 @@ import Link from "next/link";
 import { artist } from "@/data/artist";
 import { site } from "@/data/site";
 import { useLanguage } from "@/hooks/useLanguage";
+import { seoCopy } from "@/data/seoCopy";
+import { SEO_PREVIEW } from "@/lib/seoPreview";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -18,6 +20,11 @@ export default function Footer() {
     { href: href("/sobre-mi"), label: t.nav.sobreMi },
     { href: href("/exposiciones"), label: t.nav.exposiciones },
     { href: href("/contacto"), label: t.nav.contacto },
+  ];
+  const topicLinks = [
+    { href: href("/arte-cubano-generacion-80"), label: pick(seoCopy.footerCubanArt) },
+    { href: href("/como-adquirir-obra"), label: pick(seoCopy.footerAcquire) },
+    { href: href("/prensa"), label: pick(seoCopy.footerPress) },
   ];
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -52,6 +59,13 @@ export default function Footer() {
                   {link.label}
                 </Link>
               ))}
+              {/* New pages (block C) — only with the SEO preview flag on. */}
+              {SEO_PREVIEW &&
+                topicLinks.map((link) => (
+                  <Link key={link.href} href={link.href} className="text-sm text-ink hover:text-muted">
+                    {link.label}
+                  </Link>
+                ))}
             </div>
           </nav>
 
