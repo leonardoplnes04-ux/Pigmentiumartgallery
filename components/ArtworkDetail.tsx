@@ -6,6 +6,7 @@ import type { Artwork } from "@/data/types";
 import { useLanguage } from "@/hooks/useLanguage";
 import InquireBlock from "@/components/InquireBlock";
 import { artworkAlt, artworkDescription } from "@/lib/artworkText";
+import { FEATURED_SECTION_ID, readFeaturedReturn } from "@/lib/featuredReturn";
 import { SEO_PREVIEW } from "@/lib/seoPreview";
 import { seoCopy } from "@/data/seoCopy";
 
@@ -21,6 +22,14 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
   // or null when closed. Escape closes it; body scroll is locked while open
   // so the page behind doesn't scroll under the overlay.
   const [fullscreenSrc, setFullscreenSrc] = useState<string | null>(null);
+
+  // Opened from the home "Obra destacada" carousel? Then "back" returns to
+  // that carousel (same card) instead of the /obra catalogue. Read after
+  // mount: the server render always shows the normal link.
+  const [fromFeatured, setFromFeatured] = useState(false);
+  useEffect(() => {
+    setFromFeatured(readFeaturedReturn()?.artworkId === artwork.id);
+  }, [artwork.id]);
 
   useEffect(() => {
     if (!fullscreenSrc) return;
@@ -39,10 +48,10 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
   return (
     <article className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-14 md:py-16">
       <Link
-        href={href("/obra")}
+        href={fromFeatured ? `${href("/")}#${FEATURED_SECTION_ID}` : href("/obra")}
         className="text-xs uppercase tracking-widest text-muted hover:text-ink"
       >
-        {t.detail.back}
+        {fromFeatured ? t.detail.backToFeatured : t.detail.back}
       </Link>
 
       <div className="mt-6 grid grid-cols-1 gap-8 sm:mt-8 sm:gap-10 md:grid-cols-[1.2fr_1fr] md:gap-16">

@@ -5,6 +5,7 @@ import { artworks } from "@/data/artworks";
 import { featuredExtra } from "@/data/featuredExtra";
 import type { Artwork } from "@/data/types";
 import { useLanguage } from "@/hooks/useLanguage";
+import { FEATURED_SECTION_ID } from "@/lib/featuredReturn";
 
 // Lead card of the carousel: the full-room shot of the 2015 "Ecua-error"
 // polyptych (the four panels obra-51..54 hung together, with the artist in
@@ -55,7 +56,11 @@ export default function FeaturedWorks() {
   const featured = [POLYPTYCH_LEAD, ...leadPanels, ...rest, ...featuredExtra];
 
   return (
-    <section className="mx-auto max-w-6xl px-5 py-16 sm:px-6 sm:py-20 md:py-24">
+    <section
+      id={FEATURED_SECTION_ID}
+      // scroll-mt: room for the sticky header when arriving via "#obra-destacada".
+      className="mx-auto max-w-6xl scroll-mt-16 px-5 py-16 sm:px-6 sm:py-20 md:py-24"
+    >
       <p className="text-xs uppercase tracking-widest text-muted">{t.featured.eyebrow}</p>
       <h2 className="mt-2 font-serif text-3xl sm:text-4xl">{t.featured.title}</h2>
 

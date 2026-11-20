@@ -125,6 +125,8 @@ export interface UiStrings {
   };
   detail: {
     back: string;
+    // Shown instead of `back` when the visitor came from the home carousel.
+    backToFeatured: string;
     year: string;
     yearTBD: string;
     technique: string;
@@ -313,6 +315,7 @@ export const translations: Record<Language, UiStrings> = {
     },
     detail: {
       back: "← Volver a obra",
+      backToFeatured: "← Volver a obra destacada",
       year: "Año",
       yearTBD: "Por confirmar",
       technique: "Técnica",
@@ -499,6 +502,7 @@ export const translations: Record<Language, UiStrings> = {
     },
     detail: {
       back: "← Back to work",
+      backToFeatured: "← Back to featured work",
       year: "Year",
       yearTBD: "To be confirmed",
       technique: "Technique",

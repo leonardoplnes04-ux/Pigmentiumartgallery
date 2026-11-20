@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { clearFeaturedReturn, readFeaturedReturn, saveFeaturedReturn } from "@/lib/featuredReturn";
 import { motion, useAnimationControls, useMotionValue } from "framer-motion";
 import type { Artwork } from "@/data/types";
 import { useLanguage } from "@/hooks/useLanguage";
@@ -109,6 +110,20 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
     },
     [controls, count, centerTarget]
   );
+
+  // Coming back from an artwork opened here: start on that same card,
+  // without animation, once the layout is measured. Runs once per mount.
+  const restoredRef = useRef(false);
+  useEffect(() => {
+    if (restoredRef.current || layout.length === 0) return;
+    restoredRef.current = true;
+    const saved = readFeaturedReturn();
+    if (!saved) return;
+    clearFeaturedReturn();
+    const target = Math.max(0, Math.min(saved.index, count - 1));
+    setIndex(target);
+    controls.set({ x: centerTarget(target) });
+  }, [layout, centerTarget, controls, count]);
 
   // Pause autoplay (and its per-tick re-render of every card) whenever the
   // carousel scrolls out of view.
@@ -321,7 +336,14 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
                   // detail page to link to, so it's a plain figure.
                   <div className="block">{card}</div>
                 ) : (
-                  <Link href={href(`/obra/${artwork.id}`)} className="block" draggable={false}>
+                  <Link
+                    href={href(`/obra/${artwork.id}`)}
+                    className="block"
+                    draggable={false}
+                    // Remember this card so the artwork page can send the
+                    // visitor back here (lib/featuredReturn.ts).
+                    onClick={() => saveFeaturedReturn(artwork.id, i)}
+                  >
                     {card}
                   </Link>
                 )}
