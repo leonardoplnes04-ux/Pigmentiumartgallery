@@ -1191,3 +1191,4 @@ Todo lo relacionado con este proyecto vive aquí:
 - Bloque B: 124 borradores de descripcion en `data/artworkDescriptions.ts` (approved: false); revision en `docs/seo/revision-descripciones.md`.
 - Bloques C y D detras de `NEXT_PUBLIC_SEO_PREVIEW=1`: /prensa, /arte-cubano-generacion-80, /como-adquirir-obra (+ /en), intros en /obra y /performance, enlaces en footer; boton "Recibir imagen por correo" -> `/api/imagen-obra` (sharp + Resend) y `leads:requestImage` en Convex (falta `npx convex deploy`).
 - Detalle, verificacion y pasos para publicar: `docs/seo/REPORTE-2026-11.md`.
+- 2026-11-20 (mas tarde): el bloque D (imagen con marca de agua por correo) se retiro por decision del dueno: revert de la ruta, el boton, la mutation `requestImage` y `sharp`. Ya no hace falta `npx convex deploy` para esta rama.
