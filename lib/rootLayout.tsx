@@ -7,6 +7,7 @@ import { LanguageProvider } from "@/hooks/useLanguage";
 import { ThemeProvider } from "@/hooks/useTheme";
 import ImageGuard from "@/components/ImageGuard";
 import Analytics from "@/components/Analytics";
+import CookieBanner from "@/components/CookieBanner";
 import "@/app/globals.css";
 
 // Runs before first paint so dark-mode visitors never see a light flash.
@@ -50,7 +51,10 @@ export default function RootDocument({
         <ImageGuard />
         <Analytics />
         <ThemeProvider>
-          <LanguageProvider language={lang}>{children}</LanguageProvider>
+          <LanguageProvider language={lang}>
+            {children}
+            <CookieBanner />
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>

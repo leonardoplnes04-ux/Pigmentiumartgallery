@@ -17,7 +17,8 @@ export type SectionKey =
   // New pages (block C), published only with the preview flag on.
   | "press"
   | "cubanArt"
-  | "acquire";
+  | "acquire"
+  | "privacy";
 
 const X = artist.name;
 
@@ -94,6 +95,13 @@ export const seoText: Record<SectionKey, { title: LocalizedText; description: Lo
     description: {
       es: `${X}, artista de la generación de los 80 y del renacimiento del arte cubano: formación en la ENA y el ISA, primera individual en 1983 y performance.`,
       en: `${X}, artist of the 1980s generation and the Cuban art renaissance: training at the ENA and ISA, first solo show in 1983 and performance art.`,
+    },
+  },
+  privacy: {
+    title: { es: `Aviso de privacidad y cookies — ${X}`, en: `Privacy and cookie notice — ${X}` },
+    description: {
+      es: `Qué datos recaba segundoplanes.com, para qué, con quién se comparten, cookies y cómo ejercer tus derechos ARCO y de protección de datos.`,
+      en: `What data segundoplanes.com collects, why, who it is shared with, cookies and how to exercise your data protection rights.`,
     },
   },
   acquire: {

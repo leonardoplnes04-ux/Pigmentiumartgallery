@@ -37,6 +37,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/performance",
     "/videos",
     "/contacto",
+    "/privacidad",
     // New pages (block C): listed only when they are published (preview flag).
     ...(SEO_PREVIEW ? ["/prensa", "/arte-cubano-generacion-80", "/como-adquirir-obra"] : []),
   ].flatMap((path) => bilingual(path || "/"));

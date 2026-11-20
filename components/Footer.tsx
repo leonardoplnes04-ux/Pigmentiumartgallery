@@ -8,6 +8,8 @@ import { artist } from "@/data/artist";
 import { site } from "@/data/site";
 import { useLanguage } from "@/hooks/useLanguage";
 import { seoCopy } from "@/data/seoCopy";
+import { privacyCopy } from "@/data/privacy";
+import { openConsentSettings } from "@/lib/consent";
 import { SEO_PREVIEW } from "@/lib/seoPreview";
 
 export default function Footer() {
@@ -105,6 +107,13 @@ export default function Footer() {
                 {state === "sending" ? t.footer.sending : t.footer.submit}
               </button>
             </div>
+            <p className="text-xs text-muted">
+              {pick(privacyCopy.newsletterNote)}{" "}
+              <Link href={href("/privacidad")} className="underline underline-offset-4 hover:text-ink">
+                {pick(privacyCopy.footerPrivacy).toLowerCase()}
+              </Link>
+              .
+            </p>
             {state === "done" && (
               <p role="status" className="text-xs text-muted">
                 {t.footer.thanks}
@@ -118,9 +127,19 @@ export default function Footer() {
           </form>
         </div>
 
-        <p className="border-t border-line pt-8 text-xs uppercase tracking-widest text-muted">
-          © {new Date().getFullYear()} {site.name}. {t.footer.rights}
-        </p>
+        <div className="flex flex-col gap-3 border-t border-line pt-8 text-xs uppercase tracking-widest text-muted sm:flex-row sm:items-center sm:justify-between">
+          <p>
+            © {new Date().getFullYear()} {site.name}. {t.footer.rights}
+          </p>
+          <div className="flex flex-wrap gap-x-6 gap-y-2">
+            <Link href={href("/privacidad")} className="hover:text-ink">
+              {pick(privacyCopy.footerPrivacy)}
+            </Link>
+            <button type="button" onClick={openConsentSettings} className="uppercase tracking-widest hover:text-ink">
+              {pick(privacyCopy.footerCookies)}
+            </button>
+          </div>
+        </div>
       </div>
     </footer>
   );

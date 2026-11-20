@@ -16,6 +16,7 @@ const ES_TO_EN: Record<string, string> = {
   prensa: "press",
   "arte-cubano-generacion-80": "cuban-art-1980s-generation",
   "como-adquirir-obra": "how-to-acquire-artwork",
+  privacidad: "privacy",
 };
 
 const EN_TO_ES: Record<string, string> = Object.fromEntries(

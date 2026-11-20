@@ -1,33 +1,57 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Script from "next/script";
 import { GA_ID, track } from "@/lib/analytics";
+import { CONSENT_EVENT, clearAnalyticsCookies, getConsent, type Consent } from "@/lib/consent";
 
 // Loads GA4 and measures the clicks that matter for selling work. Rendered once
-// in app/layout.tsx; renders nothing unless NEXT_PUBLIC_GA_ID is set.
+// in lib/rootLayout.tsx; renders nothing unless NEXT_PUBLIC_GA_ID is set.
 //
-// Consent: visitors from the EEA, UK and Switzerland start with analytics
-// storage denied (GA then only receives cookieless pings). The rest of the
-// world is measured normally. There is no banner, so in those regions the data
-// stays anonymous and partial — add a banner later if exact EU numbers matter.
-const EEA_UK_CH = [
-  "AT", "BE", "BG", "HR", "CY", "CZ", "DK", "EE", "FI", "FR", "DE", "GR", "HU", "IS",
-  "IE", "IT", "LV", "LI", "LT", "LU", "MT", "NL", "NO", "PL", "PT", "RO", "SK", "SI",
-  "ES", "SE", "GB", "CH",
-];
-
+// Consent (opt-in, every country): Google's script is NOT loaded at all until
+// the visitor accepts analytics in the cookie banner (components/
+// CookieBanner.tsx). No cookies and no requests to Google before that. If the
+// visitor later withdraws consent, GA is switched off, its cookies are
+// deleted and nothing more is sent.
 const bootstrap = `
 window.dataLayer=window.dataLayer||[];
 function gtag(){dataLayer.push(arguments);}
-gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',region:${JSON.stringify(EEA_UK_CH)}});
-gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});
+window.gtag=gtag;
+gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});
+gtag('consent','update',{analytics_storage:'granted'});
 gtag('js',new Date());
-gtag('config','${GA_ID}');
+gtag('config','${GA_ID}',{anonymize_ip:true,allow_google_signals:false,allow_ad_personalization_signals:false});
 `;
 
+type GtagWindow = Window & { gtag?: (...args: unknown[]) => void } & Record<string, unknown>;
+
 export default function Analytics() {
-  // Any element marked data-cta="<name>" reports a click as `cta_click`.
+  const [allowed, setAllowed] = useState(false);
+
+  useEffect(() => {
+    if (!GA_ID) return;
+    setAllowed(Boolean(getConsent()?.analytics));
+    function onConsent(event: Event) {
+      const consent = (event as CustomEvent<Consent>).detail;
+      const w = window as unknown as GtagWindow;
+      if (consent.analytics) {
+        w[`ga-disable-${GA_ID}`] = false;
+        w.gtag?.("consent", "update", { analytics_storage: "granted" });
+        setAllowed(true);
+      } else {
+        // Withdrawn: stop GA immediately and remove its cookies.
+        w[`ga-disable-${GA_ID}`] = true;
+        w.gtag?.("consent", "update", { analytics_storage: "denied" });
+        clearAnalyticsCookies();
+        setAllowed(false);
+      }
+    }
+    window.addEventListener(CONSENT_EVENT, onConsent);
+    return () => window.removeEventListener(CONSENT_EVENT, onConsent);
+  }, []);
+
+  // Any element marked data-cta="<name>" reports a click as `cta_click`
+  // (track() does nothing while GA is not loaded).
   useEffect(() => {
     if (!GA_ID) return;
     function onClick(e: MouseEvent) {
@@ -39,7 +63,7 @@ export default function Analytics() {
     return () => document.removeEventListener("click", onClick);
   }, []);
 
-  if (!GA_ID) return null;
+  if (!GA_ID || !allowed) return null;
   return (
     <>
       <Script id="ga-bootstrap" strategy="afterInteractive">

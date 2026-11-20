@@ -9,6 +9,8 @@ import Footer from "@/components/Footer";
 import { artist } from "@/data/artist";
 import { site } from "@/data/site";
 import { useLanguage } from "@/hooks/useLanguage";
+import Link from "next/link";
+import { privacyCopy } from "@/data/privacy";
 import {
   CONTACT_INTERESTS,
   MESSAGE_MAX,
@@ -42,7 +44,7 @@ const fallbackBtn =
   "inline-flex min-h-[40px] items-center border border-line px-4 text-xs uppercase tracking-widest transition-colors hover:border-ink";
 
 export default function ContactPage() {
-  const { t, language } = useLanguage();
+  const { t, language, pick, href } = useLanguage();
   const c = t.contactPage;
 
   const [lead, setLead] = useState<ContactLead>(EMPTY);
@@ -408,7 +410,12 @@ export default function ContactPage() {
                 </div>
 
                 <div className="mt-8 flex flex-col gap-4 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-between">
-                  <p className="max-w-xs text-xs leading-relaxed text-muted">{c.privacy}</p>
+                  <p className="max-w-xs text-xs leading-relaxed text-muted">
+                    {c.privacy}{" "}
+                    <Link href={href("/privacidad")} className="underline underline-offset-4 hover:text-ink">
+                      {pick(privacyCopy.contactNote)}
+                    </Link>
+                  </p>
                   <button
                     type="submit"
                     disabled={status === "sending"}
