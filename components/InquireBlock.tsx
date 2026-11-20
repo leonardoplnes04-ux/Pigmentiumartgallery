@@ -3,8 +3,6 @@
 import Link from "next/link";
 import type { Artwork } from "@/data/types";
 import { useLanguage } from "@/hooks/useLanguage";
-import ImageRequestForm from "@/components/ImageRequestForm";
-import { SEO_PREVIEW } from "@/lib/seoPreview";
 
 // Primary call to action of every artwork page (full page and the "disponibles"
 // modal). Opens /contacto with the piece already loaded (title, year, ref and
@@ -35,10 +33,6 @@ export default function InquireBlock({
         {t.detail.inquireCta}
       </Link>
       <p className="mt-3 text-sm text-muted">{t.detail.inquireNote}</p>
-      {/* "Recibir imagen por correo" — only with the SEO preview flag on. */}
-      {SEO_PREVIEW && !artwork.noDetailPage && !artwork.featuredOnly && (
-        <ImageRequestForm artworkId={artwork.id} />
-      )}
     </div>
   );
 }
