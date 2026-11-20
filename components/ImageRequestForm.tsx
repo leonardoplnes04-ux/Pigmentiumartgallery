@@ -78,6 +78,7 @@ export default function ImageRequestForm({ artworkId }: { artworkId: string }) {
 
   return (
     <form onSubmit={handleSubmit} noValidate className="mt-4 space-y-4 border-t border-line pt-4">
+      <p className="text-sm text-muted">{pick(c.intro)}</p>
       <div>
         <label htmlFor={`${id}-name`} className="text-xs uppercase tracking-widest text-muted">
           {pick(c.nameLabel)}
