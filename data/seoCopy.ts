@@ -23,10 +23,6 @@ export const seoCopy = {
   // "Get this image by email" (block D).
   imageRequest: {
     cta: { es: "Recibir imagen por correo", en: "Get this image by email" },
-    intro: {
-      es: "Te enviamos la imagen de esta obra a tu correo, preparada con tu nombre.",
-      en: "We'll email you an image of this work, prepared with your name.",
-    },
     nameLabel: { es: "Nombre o galería", en: "Name or gallery" },
     emailLabel: { es: "Correo electrónico", en: "Email" },
     submit: { es: "Enviar imagen", en: "Send image" },
