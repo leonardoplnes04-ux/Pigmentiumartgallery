@@ -6,11 +6,16 @@ import { crumbs } from "@/data/seoText";
 import { findRealArtwork } from "@/lib/artworks";
 import { toLang, type Language } from "@/lib/routes";
 import { artworkJsonLd, breadcrumbJsonLd, toJsonLd } from "@/lib/structuredData";
+import { artworkDescription } from "@/lib/artworkText";
+import { SEO_PREVIEW } from "@/lib/seoPreview";
 
 // /obra/[id] and /en/works/[id]. 404 when the id is not a published artwork.
 export default function ArtworkRoute({ id, lang }: { id: string; lang: Language }) {
   const artwork = findRealArtwork(id);
   if (!artwork) notFound();
+  // The visual description goes into the JSON-LD only when it is also shown
+  // on the page (preview flag on) — never as data hidden from visitors.
+  const visible = SEO_PREVIEW ? artworkDescription(artwork, lang) : null;
 
   return (
     <>
@@ -18,7 +23,7 @@ export default function ArtworkRoute({ id, lang }: { id: string; lang: Language 
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: toJsonLd(artworkJsonLd(artwork, lang)) }}
+        dangerouslySetInnerHTML={{ __html: toJsonLd(artworkJsonLd(artwork, lang, visible?.text)) }}
       />
       <script
         type="application/ld+json"

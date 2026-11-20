@@ -5,7 +5,9 @@ import Link from "next/link";
 import type { Artwork } from "@/data/types";
 import { useLanguage } from "@/hooks/useLanguage";
 import InquireBlock from "@/components/InquireBlock";
-import { artworkAlt } from "@/lib/artworkText";
+import { artworkAlt, artworkDescription } from "@/lib/artworkText";
+import { SEO_PREVIEW } from "@/lib/seoPreview";
+import { seoCopy } from "@/data/seoCopy";
 
 export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
   const { t, pick, href, language } = useLanguage();
@@ -13,6 +15,7 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
   const title = pick(artwork.title);
   // Descriptive alt from confirmed data (or the approved visual description).
   const alt = artworkAlt(artwork, language);
+  const description = artworkDescription(artwork, language);
 
   // Fullscreen lightbox — holds the src currently being viewed full-screen,
   // or null when closed. Escape closes it; body scroll is locked while open
@@ -126,6 +129,23 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
               </Link>
             )}
           </div>
+
+          {/* Sobre la obra — approved visual description (data/
+              artworkDescriptions.ts), only with the SEO preview flag on. In
+              `next dev` drafts show too, marked "Borrador". */}
+          {SEO_PREVIEW && description && (
+            <div className="mt-10 space-y-3 border-t border-line pt-6">
+              <p className="flex items-center gap-3 text-xs uppercase tracking-widest text-muted">
+                {pick(seoCopy.aboutWork)}
+                {description.draft && (
+                  <span className="border border-line px-1.5 py-0.5 text-[10px] tracking-widest">
+                    {pick(seoCopy.draftBadge)}
+                  </span>
+                )}
+              </p>
+              <p className="leading-relaxed">{description.text}</p>
+            </div>
+          )}
 
           {/* Comentarios de críticos */}
           {artwork.criticReviews && artwork.criticReviews.length > 0 && (
