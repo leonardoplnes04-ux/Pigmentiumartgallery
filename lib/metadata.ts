@@ -5,6 +5,7 @@ import { seoText, type SectionKey } from "@/data/seoText";
 import type { Artwork, Exhibition, Performance } from "@/data/types";
 import { SITE_URL } from "@/lib/seo";
 import { toLang, type Language } from "@/lib/routes";
+import { artworkMetaDescription } from "@/lib/artworkText";
 
 // Metadata builders shared by the Spanish routes (app/(es)) and their English
 // mirror (app/(en)/en). Server-rendered metadata is fixed per route tree
@@ -81,6 +82,22 @@ export function rootMetadata(lang: Language): Metadata {
       index: true,
       follow: true,
     },
+    ...searchVerification(),
+  };
+}
+
+// Google Search Console / Bing Webmaster verification tags. The tokens live in
+// NEXT_PUBLIC_GSC_VERIFICATION and NEXT_PUBLIC_BING_VERIFICATION; an empty one
+// renders nothing.
+function searchVerification(): Pick<Metadata, "verification"> {
+  const google = process.env.NEXT_PUBLIC_GSC_VERIFICATION?.trim();
+  const bing = process.env.NEXT_PUBLIC_BING_VERIFICATION?.trim();
+  if (!google && !bing) return {};
+  return {
+    verification: {
+      ...(google ? { google } : {}),
+      ...(bing ? { other: { "msvalidate.01": bing } } : {}),
+    },
   };
 }
 
@@ -133,9 +150,8 @@ function detailMetadata(
 }
 
 export function artworkMetadata(artwork: Artwork, lang: Language): Metadata {
-  const description = artwork.year
-    ? `${artwork.medium[lang]}, ${artwork.year}.`
-    : `${artwork.medium[lang]}.`;
+  // Confirmed facts only (or the approved visual description), ≤ 160 chars.
+  const description = artworkMetaDescription(artwork, lang);
   return detailMetadata(
     `/obra/${artwork.id}`,
     lang,
@@ -143,6 +159,16 @@ export function artworkMetadata(artwork: Artwork, lang: Language): Metadata {
     description,
     artwork.image
   );
+}
+
+// Wall simulator (/obra/[id]/simulador): a tool, not content. Kept out of the
+// index (links still followed) and canonicalised to the artwork page.
+export function simulatorMetadata(artwork: Artwork, lang: Language): Metadata {
+  return {
+    title: `${artwork.title[lang]} — ${lang === "es" ? "Simulador de pared" : "Wall simulator"} — ${artist.name}`,
+    alternates: { canonical: toLang(`/obra/${artwork.id}`, lang) },
+    robots: { index: false, follow: true },
+  };
 }
 
 export function exhibitionMetadata(

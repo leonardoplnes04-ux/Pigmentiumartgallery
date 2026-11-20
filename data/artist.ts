@@ -84,5 +84,8 @@ export const artist: Artist = {
   email: "segundoplanesobras@outlook.com",
   socials: {
     instagram: "https://www.instagram.com/segundoplanes/",
+    cubanArtResources: "https://www.cubanartresources.org/segundo-planes",
+    askart: "https://www.askart.com/bio/Segundo_Planes/11185679/segundo-planes",
+    mocaa: "https://www.mocaamericas.org/author/planes-segundo",
   },
 };

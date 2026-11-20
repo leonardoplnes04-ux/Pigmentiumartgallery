@@ -5,11 +5,14 @@ import Link from "next/link";
 import type { Artwork } from "@/data/types";
 import { useLanguage } from "@/hooks/useLanguage";
 import InquireBlock from "@/components/InquireBlock";
+import { artworkAlt } from "@/lib/artworkText";
 
 export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
-  const { t, pick, href } = useLanguage();
+  const { t, pick, href, language } = useLanguage();
   const gallery = [artwork.image, ...(artwork.additionalImages ?? [])];
   const title = pick(artwork.title);
+  // Descriptive alt from confirmed data (or the approved visual description).
+  const alt = artworkAlt(artwork, language);
 
   // Fullscreen lightbox — holds the src currently being viewed full-screen,
   // or null when closed. Escape closes it; body scroll is locked while open
@@ -47,7 +50,7 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={src}
-                alt={i === 0 ? title : `${title} — ${t.detail.detailAltSuffix} ${i + 1}`}
+                alt={i === 0 ? alt : `${title} — ${t.detail.detailAltSuffix} ${i + 1}`}
                 draggable={false}
                 loading={i === 0 ? undefined : "lazy"}
                 decoding="async"
@@ -178,7 +181,7 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={fullscreenSrc}
-            alt={title}
+            alt={alt}
             draggable={false}
             decoding="async"
             onClick={(e) => e.stopPropagation()}

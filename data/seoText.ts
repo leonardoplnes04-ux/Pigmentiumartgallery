@@ -18,26 +18,34 @@ export type SectionKey =
 const X = artist.name;
 
 export const seoText: Record<SectionKey, { title: LocalizedText; description: LocalizedText }> = {
+  // Titles ≤ 65 characters and descriptions ≤ 160 (checked by
+  // scripts/seo-lengths.mjs). Facts come from data/artist.ts.
   home: {
-    title: { es: `${X} — Artista plástico cubano`, en: `${X} — Cuban visual artist` },
+    title: {
+      es: `${X} — Artista cubano | Arte contemporáneo cubano`,
+      en: `${X} — Cuban visual artist | Contemporary Cuban art`,
+    },
     description: {
-      es: `${artist.shortBio.es} ${artist.tagline.es}.`,
-      en: `${artist.shortBio.en} ${artist.tagline.en}.`,
+      es: `Sitio oficial de ${X} (Pinar del Río, Cuba, 1965), artista de la generación de los 80 y precursor del performance en Cuba. ${artist.tagline.es}.`,
+      en: `Official site of ${X} (Pinar del Río, Cuba, 1965), artist of the 1980s generation and pioneer of performance art in Cuba. ${artist.tagline.en}.`,
     },
   },
   works: {
     title: {
-      es: `Obra de ${X} — Pintura cubana contemporánea`,
+      es: `Obra de ${X} — Pintura contemporánea cubana`,
       en: `Artwork by ${X} — Contemporary Cuban painting`,
     },
     description: {
-      es: `Catálogo de obra de ${X}: pinturas y piezas disponibles.`,
-      en: `Catalogue of artwork by ${X}: paintings and available pieces.`,
+      es: `Catálogo de pintura de ${X}, artista cubano de la generación de los 80: obras disponibles, técnica, medidas y año.`,
+      en: `Painting catalogue of ${X}, Cuban artist of the 1980s generation: available works, technique, dimensions and year.`,
     },
   },
   about: {
     title: { es: `Biografía — ${X}`, en: `Biography — ${X}` },
-    description: { es: artist.shortBio.es, en: artist.shortBio.en },
+    description: {
+      es: `Biografía de ${X} (Pinar del Río, Cuba, 1965): formación en la ENA y el ISA, exposiciones, bienales, premios y colecciones.`,
+      en: `Biography of ${X} (Pinar del Río, Cuba, 1965): training at the ENA and ISA, exhibitions, biennials, awards and collections.`,
+    },
   },
   exhibitions: {
     title: { es: `Exposiciones — ${X}`, en: `Exhibitions — ${X}` },

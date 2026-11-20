@@ -151,5 +151,10 @@ export interface Artist {
   socials: {
     instagram?: string;
     twitter?: string;
+    // External reference pages about the artist. Used only as `sameAs` in the
+    // Person JSON-LD; no component renders them.
+    cubanArtResources?: string;
+    askart?: string;
+    mocaa?: string;
   };
 }

@@ -6,6 +6,7 @@ import { exhibitionGalleries } from "@/data/exhibitionGalleries";
 import { performances } from "@/data/performances";
 import { performanceGalleries } from "@/data/performanceGalleries";
 import { toLang } from "@/lib/routes";
+import { CONTENT_UPDATED } from "@/data/site";
 
 // Auto-generated at /sitemap.xml by Next.js. Static routes are listed
 // directly; dynamic routes are derived from the same data the pages
@@ -19,7 +20,7 @@ function bilingual(esPath: string): MetadataRoute.Sitemap {
   const es = esPath === "/" ? SITE_URL : `${SITE_URL}${toLang(esPath, "es")}`;
   const en = `${SITE_URL}${toLang(esPath, "en")}`;
   const alternates = { languages: { es, en } };
-  const lastModified = new Date();
+  const lastModified = CONTENT_UPDATED;
   return [
     { url: es, lastModified, alternates },
     { url: en, lastModified, alternates },

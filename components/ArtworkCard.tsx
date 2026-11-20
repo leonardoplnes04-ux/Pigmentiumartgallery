@@ -3,6 +3,7 @@
 import type { Artwork } from "@/data/types";
 import { aspectRatioOf } from "@/data/imageDimensions";
 import { useLanguage } from "@/hooks/useLanguage";
+import { artworkAlt } from "@/lib/artworkText";
 
 export default function ArtworkCard({
   artwork,
@@ -13,7 +14,7 @@ export default function ArtworkCard({
   // "Obras disponibles" grid, where the spec appears on click instead).
   hideCaption?: boolean;
 }) {
-  const { t, pick } = useLanguage();
+  const { t, pick, language } = useLanguage();
 
   // Reserve the card's height BEFORE the image loads so the CSS-columns
   // masonry in /obra doesn't reflow as each photo arrives (big CLS win on
@@ -35,7 +36,7 @@ export default function ArtworkCard({
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={artwork.image}
-          alt={pick(artwork.title)}
+          alt={artworkAlt(artwork, language)}
           draggable={false}
           loading="lazy"
           decoding="async"

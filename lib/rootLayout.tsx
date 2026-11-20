@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { artist } from "@/data/artist";
-import { artistJsonLd, toJsonLd } from "@/lib/structuredData";
+import { artistJsonLd, toJsonLd, websiteJsonLd } from "@/lib/structuredData";
 import { fraunces, inter } from "@/lib/fonts";
 import type { Language } from "@/lib/routes";
 import { LanguageProvider } from "@/hooks/useLanguage";
@@ -37,6 +37,11 @@ export default function RootDocument({
           type="application/ld+json"
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: toJsonLd(artistJsonLd(lang)) }}
+        />
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: toJsonLd(websiteJsonLd(lang)) }}
         />
         {/* Homepage LCP image — start fetching it before the CSS/JS parse. */}
         <link rel="preload" as="image" href={artist.heroImage} fetchPriority="high" />

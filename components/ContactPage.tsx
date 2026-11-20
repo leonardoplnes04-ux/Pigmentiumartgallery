@@ -134,9 +134,13 @@ export default function ContactPage() {
         message: lead.message,
         lang: language,
       });
+      // No personal data: only the kind of lead and the artwork reference.
+      const artworkId = lead.artwork.match(/ref\. ([\w-]+)/)?.[1];
       track("generate_lead", {
+        method: "contact_form",
         interest: lead.interest,
         from_artwork: Boolean(lead.artwork),
+        ...(artworkId ? { artwork_id: artworkId } : {}),
       });
       setPanelHeight(panelRef.current?.offsetHeight);
       setStatus("success");

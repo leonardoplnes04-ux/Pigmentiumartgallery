@@ -4,6 +4,7 @@ import type { Artwork, Exhibition, ExhibitionVideo } from "@/data/types";
 import type { FaqItem } from "@/data/faq";
 import { SITE_URL } from "@/lib/seo";
 import { toLang, type Language } from "@/lib/routes";
+import { isConfirmed } from "@/lib/artworkText";
 
 // schema.org structured data (JSON-LD). Search engines and AI assistants read
 // this to know *what* each page is without guessing from the layout: who made
@@ -22,8 +23,22 @@ const abs = (path: string) => `${SITE_URL}${path}`;
 
 // Many catalogue pieces still carry the placeholder "Técnica por confirmar" /
 // "por confirmar" (see PROYECTO.md). Never publish that as a fact in the
-// structured data: an unconfirmed field is simply left out.
-const isConfirmed = (text: string) => !/por confirmar|to be confirmed/i.test(text);
+// structured data: an unconfirmed field is simply left out. (Shared helper in
+// lib/artworkText.ts so alt text and meta descriptions follow the same rule.)
+
+export const WEBSITE_ID = `${SITE_URL}/#sitio`;
+
+// The 2010 monograph on the artist (UANL / Fondo Editorial de Nuevo León).
+export const ARTIST_BOOK = {
+  "@type": "Book",
+  name: "Segundo Planes",
+  datePublished: "2010",
+  publisher: [
+    { "@type": "Organization", name: "Universidad Autónoma de Nuevo León" },
+    { "@type": "Organization", name: "Fondo Editorial de Nuevo León" },
+  ],
+  url: "https://fondoeditorialnl.gob.mx/newsite2023/pdfs/planessegundo.pdf",
+} as const;
 
 // JSON-LD sits inside a <script>; escape "<" so a title can never close it.
 export const toJsonLd = (data: unknown) =>
@@ -58,12 +73,60 @@ export function artistJsonLd(lang: Language) {
       ? ["Pintura", "Performance", "Arte contemporáneo cubano"]
       : ["Painting", "Performance", "Contemporary Cuban art"],
     sameAs: Object.values(artist.socials).filter(Boolean),
+    subjectOf: ARTIST_BOOK,
+  };
+}
+
+// The site itself, published by the artist. Injected site-wide next to Person.
+export function websiteJsonLd(lang: Language) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": WEBSITE_ID,
+    name: artist.name,
+    url: lang === "es" ? SITE_URL : abs("/en"),
+    inLanguage: lang,
+    publisher: { "@id": ARTIST_ID },
+  };
+}
+
+// /sobre-mi and /en/about: the page is ABOUT the artist (Person above).
+export function profilePageJsonLd(lang: Language) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    url: abs(toLang("/sobre-mi", lang)),
+    inLanguage: lang,
+    isPartOf: { "@id": WEBSITE_ID },
+    mainEntity: { "@id": ARTIST_ID },
+  };
+}
+
+// A content page about the artist (press, thematic pages).
+export function aboutArtistPageJsonLd(
+  type: "CollectionPage" | "WebPage",
+  esPath: string,
+  name: string,
+  description: string,
+  lang: Language
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": type,
+    name,
+    description,
+    url: abs(toLang(esPath, lang)),
+    inLanguage: lang,
+    isPartOf: { "@id": WEBSITE_ID },
+    about: { "@id": ARTIST_ID },
   };
 }
 
 // One artwork page. `creator` points at the Person above by @id so the work
 // and the artist are linked as a single entity graph.
-export function artworkJsonLd(artwork: Artwork, lang: Language) {
+// `visualDescription`: the approved description of the piece, passed ONLY when
+// the page also shows it as visible text (preview flag on).
+export function artworkJsonLd(artwork: Artwork, lang: Language, visualDescription?: string) {
   const series = seriesList.find((s) => s.id === artwork.seriesId);
   const url = abs(toLang(`/obra/${artwork.id}`, lang));
   const images = [artwork.image, ...(artwork.additionalImages ?? [])].map(abs);
@@ -91,6 +154,7 @@ export function artworkJsonLd(artwork: Artwork, lang: Language) {
       ? { "@type": "QuantitativeValue", value: dims.height, unitCode: "CMT" }
       : undefined,
     description:
+      visualDescription ||
       [
         mediumKnown ? artwork.medium[lang] : null,
         artwork.year ? String(artwork.year) : null,

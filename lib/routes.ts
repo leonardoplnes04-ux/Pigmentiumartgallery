@@ -13,6 +13,9 @@ const ES_TO_EN: Record<string, string> = {
   videos: "videos",
   contacto: "contact",
   simulador: "simulator",
+  prensa: "press",
+  "arte-cubano-generacion-80": "cuban-art-1980s-generation",
+  "como-adquirir-obra": "how-to-acquire-artwork",
 };
 
 const EN_TO_ES: Record<string, string> = Object.fromEntries(
