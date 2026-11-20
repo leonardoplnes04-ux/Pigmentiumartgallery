@@ -9,7 +9,7 @@ Borradores generados el 2026-11-20 a partir de las fotografías de cada obra (12
 3. Para aprobarla, agrega `true` como tercer argumento: `d("…", "…", true)`. Eso equivale a `approved: true`.
 4. Si quieres corregir el texto, edítalo ahí mismo (y ajusta el inglés para que siga siendo traducción fiel).
 
-Una descripción aprobada se usa, en este orden: (1) texto alternativo de la imagen, (2) `description` del JSON-LD `VisualArtwork` (solo si también se muestra visible, con la bandera de vista previa), (3) meta description si cabe en 160 caracteres, (4) con `NEXT_PUBLIC_SEO_PREVIEW=1`, un párrafo visible «Sobre la obra».
+Una descripción aprobada se usa, en este orden: (1) texto alternativo de la imagen, (2) `description` del JSON-LD `VisualArtwork` (solo si también se muestra visible, con la bandera de vista previa), (3) meta description si cabe en 160 caracteres, (4) con `NEXT_PUBLIC_SEO_PREVIEW=1`, un desplegable cerrado «Sobre la obra +» en la ficha (se abre con un clic).
 
 Para verlas en contexto antes de aprobar: `NEXT_PUBLIC_SEO_PREVIEW=1` en `.env.local` y `npm run dev`; en desarrollo todas aparecen en la ficha con la etiqueta «BORRADOR».
 

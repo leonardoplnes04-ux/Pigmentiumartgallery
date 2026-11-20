@@ -132,19 +132,25 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
 
           {/* Sobre la obra — approved visual description (data/
               artworkDescriptions.ts), only with the SEO preview flag on. In
-              `next dev` drafts show too, marked "Borrador". */}
+              `next dev` drafts show too, marked "Borrador".
+              A closed <details> disclosure: one discreet line on the page, the
+              text opens on click. The text is in the HTML and visible on
+              demand, so search engines index it (not hidden text). */}
           {SEO_PREVIEW && description && (
-            <div className="mt-10 space-y-3 border-t border-line pt-6">
-              <p className="flex items-center gap-3 text-xs uppercase tracking-widest text-muted">
+            <details className="group mt-8 border-t border-line pt-4">
+              <summary className="flex cursor-pointer list-none items-center gap-3 text-xs uppercase tracking-widest text-muted transition-colors hover:text-ink [&::-webkit-details-marker]:hidden">
                 {pick(seoCopy.aboutWork)}
                 {description.draft && (
                   <span className="border border-line px-1.5 py-0.5 text-[10px] tracking-widest">
                     {pick(seoCopy.draftBadge)}
                   </span>
                 )}
-              </p>
-              <p className="leading-relaxed">{description.text}</p>
-            </div>
+                <span aria-hidden="true" className="ml-auto text-base leading-none transition-transform group-open:rotate-45">
+                  +
+                </span>
+              </summary>
+              <p className="mt-3 text-sm leading-relaxed text-muted">{description.text}</p>
+            </details>
           )}
 
           {/* Comentarios de críticos */}

@@ -19,7 +19,7 @@ Rama `seo-ia-2026-11` (varios commits sobre `main`, **sin push, merge ni deploy*
 
 **Bloque B — descripciones de obra (pendientes de tu aprobación)**
 - 124 borradores (es/en, de 40 a 70 palabras) en `data/artworkDescriptions.ts`, todos con `approved: false`.
-- Se usan solo los aprobados: en el alt, en la meta description, en el JSON-LD (solo si también se ven en la página) y en el párrafo visible «Sobre la obra» (con la bandera encendida). En `npm run dev` con la bandera encendida aparecen todos, marcados como «BORRADOR».
+- Se usan solo los aprobados: en el alt, en la meta description, en el JSON-LD (solo si también se ven en la página) y en un desplegable cerrado «Sobre la obra +» (con la bandera encendida; el texto está en la página y se abre con un clic, así que Google lo indexa sin ser texto oculto). En `npm run dev` con la bandera encendida aparecen todos, marcados como «BORRADOR».
 
 **Bloque C — contenido nuevo (detrás de la bandera; con la bandera apagada esas URLs devuelven 404)**
 - `/prensa` (`/en/press`): el libro con enlace al PDF, otras fuentes externas y las exposiciones individuales. JSON-LD `CollectionPage`.
