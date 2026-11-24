@@ -68,7 +68,9 @@ export default function FeaturedWorks() {
           vertical padding (see FeaturedCarousel) so the focused card can
           scale up without its top reaching the "Obra destacada" heading or
           being clipped. */}
-      <div className="mt-6 sm:mt-10">
+      {/* Phones: the carousel bleeds to the screen edges so the previous and
+          next artworks peek in from the sides. */}
+      <div className="-mx-5 mt-6 sm:mx-0 sm:mt-10">
         <FeaturedCarousel artworks={featured} />
       </div>
     </section>

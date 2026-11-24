@@ -256,7 +256,7 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
       <div ref={viewportRef} className="overflow-hidden py-10 sm:py-14 lg:py-20">
         <motion.div
           ref={trackRef}
-          className="flex cursor-grab gap-6 active:cursor-grabbing"
+          className="flex cursor-grab gap-3 active:cursor-grabbing max-sm:px-[max(16vw,calc(50vw_-_180px))] sm:gap-6"
           drag="x"
           style={{ x, touchAction: "pan-y" }}
           animate={controls}
@@ -275,7 +275,7 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
                   }}
                   whileHover={i === index ? { y: -6 } : undefined}
                   transition={{ type: "spring", stiffness: 300, damping: 24 }}
-                  className="group relative flex w-[360px] flex-col sm:w-[460px] lg:w-[560px]"
+                  className="group relative flex w-[68vw] max-w-[360px] flex-col sm:w-[460px] sm:max-w-none lg:w-[560px]"
                 >
                   {/* No card, no mat, no frame: the artwork sits directly on
                       the page. object-contain shows the WHOLE piece at its
@@ -290,7 +290,9 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
                       layout never shifts once an image finishes loading
                       (see the measure() comment above). Non-focused cards
                       just shrink and fade (plain opacity). */}
-                  <div className="h-[440px] sm:h-[560px] lg:h-[680px]">
+                  {/* Phones: a 4:5 box sized from the screen width, so the focused
+                      card (×1.06) fits with its neighbours peeking in. */}
+                  <div className="aspect-[4/5] sm:aspect-auto sm:h-[560px] lg:h-[680px]">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={artwork.image}
@@ -306,10 +308,10 @@ export default function FeaturedCarousel({ artworks }: { artworks: Artwork[] }) 
                       background — keeps the "floating artwork" feel. */}
                   <div className="mt-5 flex items-baseline justify-between gap-3">
                     <div className="min-w-0">
-                      <h3 className="truncate font-serif text-lg text-ink">
+                      <h3 className="font-serif text-lg text-ink max-sm:break-words max-sm:leading-snug sm:truncate">
                         {pick(artwork.title)}
                       </h3>
-                      <p className="truncate text-xs text-muted">
+                      <p className="text-xs text-muted sm:truncate">
                         {pick(artwork.medium)}
                         {artwork.year ? `, ${artwork.year}` : ""}
                       </p>

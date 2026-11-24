@@ -25,8 +25,31 @@ export default function PrivacyPage() {
     timeZone: "UTC",
   }).format(new Date(`${PRIVACY_LAST_UPDATED}T12:00:00Z`));
 
+  // Phones get stacked cards (no sideways scrolling); from `sm` up the table
+  // is unchanged.
+  const cards = (category: CookieRow["category"]) => (
+    <div className="sm:hidden">
+      <p className="pb-2 text-xs uppercase tracking-widest text-muted">
+        {pick(category === "necessary" ? c.cookieTable.necessary : c.cookieTable.analytics)}
+      </p>
+      <dl className="divide-y divide-line border-y border-line text-sm">
+        {cookieTable
+          .filter((row) => row.category === category)
+          .map((row) => (
+            <div key={row.name} className="py-3">
+              <dt className="break-all font-mono text-xs">{row.name}</dt>
+              <dd className="mt-1">{pick(row.purpose)}</dd>
+              <dd className="mt-1 text-xs text-muted">
+                {row.provider} · {pick(row.duration)}
+              </dd>
+            </div>
+          ))}
+      </dl>
+    </div>
+  );
+
   const table = (category: CookieRow["category"]) => (
-    <div className="overflow-x-auto">
+    <div className="hidden overflow-x-auto sm:block">
       <table className="w-full min-w-[520px] text-left text-sm">
         <caption className="pb-2 text-left text-xs uppercase tracking-widest text-muted">
           {pick(category === "necessary" ? c.cookieTable.necessary : c.cookieTable.analytics)}
@@ -90,7 +113,9 @@ export default function PrivacyPage() {
                   : null}
                 {section.id === "cookies" && (
                   <div className="space-y-8 pt-2">
+                    {cards("necessary")}
                     {table("necessary")}
+                    {cards("analytics")}
                     {table("analytics")}
                     <button
                       type="button"

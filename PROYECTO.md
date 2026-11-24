@@ -1192,3 +1192,12 @@ Todo lo relacionado con este proyecto vive aquí:
 - Bloques C y D detras de `NEXT_PUBLIC_SEO_PREVIEW=1`: /prensa, /arte-cubano-generacion-80, /como-adquirir-obra (+ /en), intros en /obra y /performance, enlaces en footer; boton "Recibir imagen por correo" -> `/api/imagen-obra` (sharp + Resend) y `leads:requestImage` en Convex (falta `npx convex deploy`).
 - Detalle, verificacion y pasos para publicar: `docs/seo/REPORTE-2026-11.md`.
 - 2026-11-20 (mas tarde): el bloque D (imagen con marca de agua por correo) se retiro por decision del dueno: revert de la ruta, el boton, la mutation `requestImage` y `sharp`. Ya no hace falta `npx convex deploy` para esta rama.
+
+### 2026-11-24 — Celular: barra de contacto y que todo quepa en pantalla
+
+- Barra fija "Contacto" en celular (`components/ContactDock.tsx`, montada en `lib/rootLayout.tsx`), en todas las páginas menos /contacto y /en/contact (`isContactPath` en `lib/routes.ts`, con prueba). Abre una hoja con WhatsApp (`wa.me/528126905176`, chat en blanco; número en `artist.whatsapp`) y correo (`mailto:` a `artist.email`, sin asunto ni cuerpo). Textos en `translations.contactDock`. Capas: barra z-40 (debajo de los modales z-50 y del banner de cookies z-60), hoja z-70. Diseño y plan en `docs/superpowers/specs|plans/2026-11-24-mobile-contact-dock*`.
+- Auditoría móvil (18 rutas ES/EN a 360/375 px): ninguna página se desbordaba, pero había recortes dentro de componentes. Arreglos solo por debajo de `sm` (640 px); computadora intacta:
+  - Obra destacada: tarjeta 68vw (máx. 360 px), caja 4:5, carrusel a todo el ancho con margen interno para centrar la primera/última; obra central completa con las vecinas asomándose; títulos completos en varias líneas.
+  - Catálogo: cada obra cabe en la pantalla (alto máx. 100svh − 10rem, verticales más angostas y centradas).
+  - Privacidad: tablas de cookies como fichas apiladas.
+  - Detalle en `docs/superpowers/specs/2026-11-24-mobile-fit-design.md`. Verificado a 375/393/430 px (iPhone) y en escritorio; sin revisar a mano: simulador al arrastrar y errores del formulario.

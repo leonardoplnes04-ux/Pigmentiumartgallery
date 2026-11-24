@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import type { Artwork } from "@/data/types";
 import { aspectRatioOf } from "@/data/imageDimensions";
 import { useLanguage } from "@/hooks/useLanguage";
@@ -26,12 +27,21 @@ export default function ArtworkCard({
   const ratio = artwork.realDimensionsCm
     ? `${artwork.realDimensionsCm.width} / ${artwork.realDimensionsCm.height}`
     : aspectRatioOf(artwork.image);
+  // Width/height as a number, so phones can cap a tall piece to the screen
+  // height and narrow it to match (whole piece visible, centred).
+  const ratioNumber = ratio
+    ? (([w, h]) => w / h)(ratio.split("/").map((n) => Number(n.trim())))
+    : undefined;
 
   return (
     <article className="group">
       <div
-        className="relative overflow-hidden bg-line"
-        style={ratio ? { aspectRatio: ratio } : undefined}
+        className="relative overflow-hidden bg-line max-sm:mx-auto max-sm:w-[min(100%,calc((100svh_-_10rem)*var(--ar)))]"
+        style={
+          ratio
+            ? ({ aspectRatio: ratio, "--ar": ratioNumber } as CSSProperties)
+            : undefined
+        }
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
