@@ -7,7 +7,7 @@ import { useLanguage } from "@/hooks/useLanguage";
 import InquireBlock from "@/components/InquireBlock";
 import Magnifier from "@/components/zoom/Magnifier";
 import ZoomViewer from "@/components/zoom/ZoomViewer";
-import { artworkAlt, artworkDescription } from "@/lib/artworkText";
+import { artworkAlt, artworkDescription, isConfirmed } from "@/lib/artworkText";
 import { FEATURED_SECTION_ID, readFeaturedReturn } from "@/lib/featuredReturn";
 import { SEO_PREVIEW } from "@/lib/seoPreview";
 import { seoCopy } from "@/data/seoCopy";
@@ -19,6 +19,13 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
   // Descriptive alt from confirmed data (or the approved visual description).
   const alt = artworkAlt(artwork, language);
   const description = artworkDescription(artwork, language);
+  // Only critic quotes with a real, named critic. The Aviario series carries
+  // placeholder quotes (critic "Por confirmar") kept in data/artworks.ts until
+  // real ones arrive; they are not shown (owner, 2026-11-24 — filler quotes
+  // read as fake and hurt trust/E-E-A-T).
+  const criticReviews = (artwork.criticReviews ?? []).filter((review) =>
+    isConfirmed(review.critic.es)
+  );
 
   // Fullscreen lightbox — holds the src currently being viewed full-screen,
   // or null when closed. Escape closes it; body scroll is locked while open
@@ -138,14 +145,35 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
             )}
           </div>
 
-          {/* Sobre la obra — approved visual description (data/
-              artworkDescriptions.ts), only with the SEO preview flag on. In
-              `next dev` drafts show too, marked "Borrador".
-              A closed <details> disclosure: one discreet line on the page, the
-              text opens on click. The text is in the HTML and visible on
-              demand, so search engines index it (not hidden text). */}
+          {/* Comentarios de críticos */}
+          {criticReviews.length > 0 && (
+            <div className="mt-10 space-y-6 border-t border-line pt-6">
+              <p className="text-xs uppercase tracking-widest text-muted">
+                {t.detail.criticEyebrow}
+              </p>
+              {criticReviews.map((review, i) => (
+                <blockquote key={i}>
+                  <p className="font-serif text-lg leading-relaxed">
+                    “{pick(review.quote)}”
+                  </p>
+                  <footer className="mt-2 text-xs uppercase tracking-widest text-muted">
+                    {pick(review.critic)} — {pick(review.role)}
+                  </footer>
+                </blockquote>
+              ))}
+            </div>
+          )}
+
+          {/* Sobre la obra — visual description (data/artworkDescriptions.ts),
+              only with the SEO preview flag on. In `next dev` drafts show too,
+              marked "Borrador". Last element of the column on purpose (owner,
+              2026-11-24: published for SEO before he verifies them, so they
+              must be discreet). A closed <details> disclosure: one quiet line,
+              the text opens on click. It is in the HTML and visible on demand,
+              so search engines index it — never hide it with display:none or
+              similar (Google treats that as hidden-text spam). */}
           {SEO_PREVIEW && description && (
-            <details className="group mt-8 border-t border-line pt-4">
+            <details className="group mt-10 border-t border-line pt-4">
               <summary className="flex cursor-pointer list-none items-center gap-3 text-xs uppercase tracking-widest text-muted transition-colors hover:text-ink [&::-webkit-details-marker]:hidden">
                 {pick(seoCopy.aboutWork)}
                 {description.draft && (
@@ -159,25 +187,6 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
               </summary>
               <p className="mt-3 text-sm leading-relaxed text-muted">{description.text}</p>
             </details>
-          )}
-
-          {/* Comentarios de críticos */}
-          {artwork.criticReviews && artwork.criticReviews.length > 0 && (
-            <div className="mt-10 space-y-6 border-t border-line pt-6">
-              <p className="text-xs uppercase tracking-widest text-muted">
-                {t.detail.criticEyebrow}
-              </p>
-              {artwork.criticReviews.map((review, i) => (
-                <blockquote key={i}>
-                  <p className="font-serif text-lg leading-relaxed">
-                    “{pick(review.quote)}”
-                  </p>
-                  <footer className="mt-2 text-xs uppercase tracking-widest text-muted">
-                    {pick(review.critic)} — {pick(review.role)}
-                  </footer>
-                </blockquote>
-              ))}
-            </div>
           )}
         </div>
       </div>

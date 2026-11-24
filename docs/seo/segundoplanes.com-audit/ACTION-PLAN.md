@@ -3,6 +3,17 @@
 Objetivo: crecer tráfico, clics e impresiones lo antes posible.
 Orden = impacto esperado ÷ esfuerzo. "Dueño" = solo lo puede hacer el artista o quien administra sus cuentas.
 
+## Actualización 2026-11-24 con datos reales de Search Console
+
+- Primeras impresiones: 2026-11-18. 90 días: 8 clics, 24 impresiones, CTR 33 %. Consulta "segundo planes" en
+  posición 1.8 → **el sitio SÍ sale en Google con el nombre del artista** (la búsqueda web de abajo no era Google).
+- Portada marcada como duplicado: Google eligió `www.segundoplanes.com/` como canónica (rastreada el 13-nov con
+  canonical a `pigmentiumartgallery.vercel.app`); `www` redirigía con **307 temporal**. Arreglado: `www` añadido al
+  proyecto en Vercel con **308 permanente** (verificado). Pendiente opcional: `pigmentiumartgallery.vercel.app` sigue con 307.
+- "Descubiertas, sin indexar": Exposiciones, Performance, Cómo adquirir y las fichas de obra. "Desconocidas": `/en/about`, `/videos`.
+- Indexación solicitada el 2026-11-24 en: `/`, `/exposiciones`, `/performance`, `/como-adquirir-obra`, `/en/about`, `/videos`.
+- Puntos 3, 5 y 6 desplegados (commit 4929740). Datos crudos en `raw/gsc-*` (no se suben: repo público).
+
 ## Contexto que manda sobre todo lo demás
 
 - El sitio es nuevo: no aparece en Common Crawl (corte ago–oct 2026) y, en una búsqueda web del nombre

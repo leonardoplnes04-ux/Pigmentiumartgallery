@@ -6,7 +6,7 @@ import { crumbs } from "@/data/seoText";
 import { findRealArtwork } from "@/lib/artworks";
 import { toLang, type Language } from "@/lib/routes";
 import { artworkJsonLd, breadcrumbJsonLd, toJsonLd } from "@/lib/structuredData";
-import { artworkDescription } from "@/lib/artworkText";
+import { artworkDescription, isConfirmed } from "@/lib/artworkText";
 import { SEO_PREVIEW } from "@/lib/seoPreview";
 
 // /obra/[id] and /en/works/[id]. 404 when the id is not a published artwork.
@@ -40,7 +40,14 @@ export default function ArtworkRoute({ id, lang }: { id: string; lang: Language 
       />
       <Header />
       <main>
-        <ArtworkDetail artwork={artwork} />
+        {/* Placeholder critic quotes (critic "Por confirmar") are dropped
+            here, on the server, so they never reach the page payload. */}
+        <ArtworkDetail
+          artwork={{
+            ...artwork,
+            criticReviews: artwork.criticReviews?.filter((review) => isConfirmed(review.critic.es)),
+          }}
+        />
       </main>
       <Footer />
     </>

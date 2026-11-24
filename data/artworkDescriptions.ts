@@ -12,7 +12,11 @@ export interface ArtworkDescription {
   approved: boolean;
 }
 
-const d = (es: string, en: string, approved = false): ArtworkDescription => ({ es, en, approved });
+// 2026-11-24: the owner asked to publish ALL descriptions now, unverified, for
+// SEO (shown only in the closed "Sobre la obra" disclosure at the end of the
+// artwork page). He will review them later; until then the default is `true`.
+// To pull one back, pass `false` as the third argument.
+const d = (es: string, en: string, approved = true): ArtworkDescription => ({ es, en, approved });
 
 export const artworkDescriptions: Record<string, ArtworkDescription> = {
   "obra-13": d(
