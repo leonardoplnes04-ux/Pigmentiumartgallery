@@ -5,6 +5,8 @@ import Link from "next/link";
 import type { Artwork } from "@/data/types";
 import { useLanguage } from "@/hooks/useLanguage";
 import InquireBlock from "@/components/InquireBlock";
+import Magnifier from "@/components/zoom/Magnifier";
+import ZoomViewer from "@/components/zoom/ZoomViewer";
 import { artworkAlt, artworkDescription } from "@/lib/artworkText";
 import { FEATURED_SECTION_ID, readFeaturedReturn } from "@/lib/featuredReturn";
 import { SEO_PREVIEW } from "@/lib/seoPreview";
@@ -59,15 +61,12 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
         <div className="flex flex-col gap-3">
           {gallery.map((src, i) => (
             <div key={src} className="group relative overflow-hidden rounded-2xl bg-line">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Magnifier
                 src={src}
                 alt={i === 0 ? alt : `${title} — ${t.detail.detailAltSuffix} ${i + 1}`}
-                draggable={false}
                 loading={i === 0 ? undefined : "lazy"}
-                decoding="async"
                 className="h-auto w-full cursor-zoom-in"
-                onClick={() => setFullscreenSrc(src)}
+                onOpen={() => setFullscreenSrc(src)}
               />
               <button
                 type="button"
@@ -197,7 +196,7 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
             type="button"
             aria-label={t.detail.closeFullscreenAria}
             onClick={() => setFullscreenSrc(null)}
-            className="absolute right-4 top-4 flex h-11 w-11 items-center justify-center rounded-full border border-ink/15 bg-ink/5 text-ink shadow-md backdrop-blur-md transition hover:bg-ink/10 sm:right-6 sm:top-6"
+            className="absolute right-4 top-4 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-ink/15 bg-ink/5 text-ink shadow-md backdrop-blur-md transition hover:bg-ink/10 sm:right-6 sm:top-6"
           >
             <svg
               viewBox="0 0 24 24"
@@ -213,15 +212,7 @@ export default function ArtworkDetail({ artwork }: { artwork: Artwork }) {
               <path d="M6 6l12 12" />
             </svg>
           </button>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={fullscreenSrc}
-            alt={alt}
-            draggable={false}
-            decoding="async"
-            onClick={(e) => e.stopPropagation()}
-            className="max-h-full max-w-full object-contain"
-          />
+          <ZoomViewer key={fullscreenSrc} src={fullscreenSrc} alt={alt} onClose={() => setFullscreenSrc(null)} />
         </div>
       )}
     </article>

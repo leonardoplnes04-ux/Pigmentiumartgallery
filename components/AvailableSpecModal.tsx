@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import type { Artwork } from "@/data/types";
 import { useLanguage } from "@/hooks/useLanguage";
 import InquireBlock from "@/components/InquireBlock";
+import Magnifier from "@/components/zoom/Magnifier";
+import ZoomViewer from "@/components/zoom/ZoomViewer";
 
 // Spec sheet ("ficha técnica") for an "Obras disponibles" piece. These
 // works have no /obra/[id] route (see data/availableExtra.ts), so instead
@@ -78,18 +80,17 @@ export default function AvailableSpecModal({
         <div className="grid grid-cols-1 gap-6 p-5 sm:p-8 md:grid-cols-[1.9fr_1fr] md:gap-12 lg:p-10">
           <div>
             <div className="group relative flex items-center justify-center bg-line">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Magnifier
+                key={current}
                 src={current}
                 alt={
                   activeImg === 0
                     ? title
                     : `${title} — ${t.detail.detailAltSuffix} ${activeImg + 1}`
                 }
-                draggable={false}
-                decoding="async"
-                onClick={() => setZoomSrc(current)}
-                className="max-h-[80vh] w-full cursor-zoom-in object-contain lg:max-h-[85vh]"
+                onOpen={() => setZoomSrc(current)}
+                buttonClassName="absolute bottom-3 left-3"
+                className="max-h-[80vh] w-auto max-w-full cursor-zoom-in lg:max-h-[85vh]"
               />
               {/* Expand to full screen — same control as the /obra detail view. */}
               <button
@@ -207,19 +208,11 @@ export default function AvailableSpecModal({
           type="button"
           aria-label={t.detail.closeFullscreenAria}
           onClick={() => setZoomSrc(null)}
-          className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border border-white/40 bg-white/20 text-xl text-neutral-900 shadow-md backdrop-blur-md transition hover:bg-white/50"
+          className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/40 bg-white/20 text-xl text-neutral-900 shadow-md backdrop-blur-md transition hover:bg-white/50"
         >
           ×
         </button>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={zoomSrc}
-          alt={title}
-          draggable={false}
-          decoding="async"
-          onClick={(e) => e.stopPropagation()}
-          className="max-h-full max-w-full object-contain"
-        />
+        <ZoomViewer key={zoomSrc} src={zoomSrc} alt={title} onClose={() => setZoomSrc(null)} />
       </div>
     )}
    </>

@@ -1201,3 +1201,9 @@ Todo lo relacionado con este proyecto vive aquí:
   - Catálogo: cada obra cabe en la pantalla (alto máx. 100svh − 10rem, verticales más angostas y centradas).
   - Privacidad: tablas de cookies como fichas apiladas.
   - Detalle en `docs/superpowers/specs/2026-11-24-mobile-fit-design.md`. Verificado a 375/393/430 px (iPhone) y en escritorio; sin revisar a mano: simulador al arrastrar y errores del formulario.
+
+### 2026-11-24 — Zoom tipo lupa en las obras
+
+- Ficha de obra y ventana de Obras disponibles: lupa en la vista normal (`components/zoom/Magnifier.tsx`; cursor en computadora, botón de lupa en celular con la lupa arriba del dedo, aumento hasta 4×) y zoom libre en pantalla completa (`components/zoom/ZoomViewer.tsx`; rueda, pellizco, doble toque, arrastre, controles − % + Ajustar, teclas + − 0).
+- Máximo = resolución real de la foto (1 px de foto = 1 px CSS); fotos con lado largo < 1000 px sin lupa ni zoom (decisión del dueño). Matemática pura en `lib/zoom.ts` con pruebas. Sin dependencias nuevas.
+- Verificado en computadora y con toques simulados; pendiente prueba con dedo real en iPhone. Diseño y plan: `docs/superpowers/specs|plans/2026-11-24-artwork-zoom*`.

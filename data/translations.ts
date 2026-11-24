@@ -157,6 +157,13 @@ export interface UiStrings {
     detailAltSuffix: string; // "<title> — <detailAltSuffix> N"
     viewFullscreenAria: string;
     closeFullscreenAria: string;
+    // Magnifier (lupa) and full-screen zoom controls.
+    lensOnAria: string;
+    lensOffAria: string;
+    zoomInAria: string;
+    zoomOutAria: string;
+    zoomFitAria: string;
+    zoomFit: string;
   };
   footer: {
     navLabel: string;
@@ -356,6 +363,12 @@ export const translations: Record<Language, UiStrings> = {
       detailAltSuffix: "detalle",
       viewFullscreenAria: "Ver en pantalla completa",
       closeFullscreenAria: "Cerrar pantalla completa",
+      lensOnAria: "Activar lupa",
+      lensOffAria: "Desactivar lupa",
+      zoomInAria: "Acercar",
+      zoomOutAria: "Alejar",
+      zoomFitAria: "Ajustar a la pantalla",
+      zoomFit: "Ajustar",
     },
     footer: {
       navLabel: "Navegar",
@@ -553,6 +566,12 @@ export const translations: Record<Language, UiStrings> = {
       detailAltSuffix: "detail",
       viewFullscreenAria: "View fullscreen",
       closeFullscreenAria: "Close fullscreen",
+      lensOnAria: "Turn on magnifier",
+      lensOffAria: "Turn off magnifier",
+      zoomInAria: "Zoom in",
+      zoomOutAria: "Zoom out",
+      zoomFitAria: "Fit to screen",
+      zoomFit: "Fit",
     },
     footer: {
       navLabel: "Browse",
