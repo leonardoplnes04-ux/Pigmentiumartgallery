@@ -148,6 +148,8 @@ export interface Artist {
   portraitCredit?: string;
   heroImage: string;
   email: string;
+  // WhatsApp number, digits only with country code (Mexico: 52), as wa.me expects.
+  whatsapp: string;
   socials: {
     instagram?: string;
     twitter?: string;

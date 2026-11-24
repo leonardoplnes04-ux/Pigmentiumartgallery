@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/hooks/useTheme";
 import ImageGuard from "@/components/ImageGuard";
 import Analytics from "@/components/Analytics";
 import CookieBanner from "@/components/CookieBanner";
+import ContactDock from "@/components/ContactDock";
 import "@/app/globals.css";
 
 // Runs before first paint so dark-mode visitors never see a light flash.
@@ -54,6 +55,7 @@ export default function RootDocument({
           <LanguageProvider language={lang}>
             {children}
             <CookieBanner />
+            <ContactDock />
           </LanguageProvider>
         </ThemeProvider>
       </body>

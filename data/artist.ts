@@ -82,6 +82,7 @@ export const artist: Artist = {
   portraitCredit: "Foto: 32 Reales",
   heroImage: "/images/hero-segundo-planes.jpg",
   email: "segundoplanesobras@outlook.com",
+  whatsapp: "528126905176",
   socials: {
     instagram: "https://www.instagram.com/segundoplanes/",
     cubanArtResources: "https://www.cubanartresources.org/segundo-planes",

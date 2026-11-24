@@ -60,3 +60,10 @@ export function toLang(esPath: string, lang: Language): string {
 export function counterpart(path: string, to: Language): string {
   return toLang(esPathOf(path), to);
 }
+
+// True for the contact page in either language ("/contacto", "/en/contact"),
+// with or without a query string or hash. Prefix look-alikes ("/contactos")
+// are not the contact page.
+export function isContactPath(path: string): boolean {
+  return split(esPathOf(path)).segments[0] === "contacto";
+}

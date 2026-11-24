@@ -10,6 +10,17 @@ export interface UiStrings {
   };
   // Language names, written in the language of the page they appear on.
   langNames: { es: string; en: string };
+  // Floating contact bar (mobile) and the sheet it opens.
+  contactDock: {
+    bar: string;
+    eyebrow: string;
+    title: string;
+    whatsapp: string;
+    whatsappSub: string;
+    email: string;
+    close: string;
+    closeAria: string;
+  };
   menu: {
     open: string;
     close: string;
@@ -189,6 +200,16 @@ export const translations: Record<Language, UiStrings> = {
       tiendaAria: "Tienda",
     },
     langNames: { es: "Español", en: "Inglés" },
+    contactDock: {
+      bar: "Contacto",
+      eyebrow: "Contacto",
+      title: "¿Cómo prefieres escribirnos?",
+      whatsapp: "WhatsApp",
+      whatsappSub: "Chat directo",
+      email: "Correo electrónico",
+      close: "Cerrar",
+      closeAria: "Cerrar opciones de contacto",
+    },
     menu: {
       open: "Menú",
       close: "Cerrar",
@@ -376,6 +397,16 @@ export const translations: Record<Language, UiStrings> = {
       tiendaAria: "Store",
     },
     langNames: { es: "Spanish", en: "English" },
+    contactDock: {
+      bar: "Contact",
+      eyebrow: "Contact",
+      title: "How would you like to reach us?",
+      whatsapp: "WhatsApp",
+      whatsappSub: "Direct chat",
+      email: "Email",
+      close: "Close",
+      closeAria: "Close contact options",
+    },
     menu: {
       open: "Menu",
       close: "Close",
