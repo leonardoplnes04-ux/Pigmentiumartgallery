@@ -17,3 +17,6 @@ obras-sin-titulo
 
 .superpowers/
 .verify/
+
+# Datos crudos de auditorías SEO (incluyen Search Console; repo público)
+docs/seo/*-audit/raw/

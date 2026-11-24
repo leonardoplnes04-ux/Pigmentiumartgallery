@@ -31,6 +31,36 @@ export function pageAlternates(esPath: string, lang: Language): NonNullable<Meta
   };
 }
 
+// Open Graph + Twitter card for one page. Next.js replaces (does not merge) a
+// parent's `openGraph`/`twitter` object, so a page that sets none inherits the
+// root's — og:url = home and the home's title on every subpage (SEO audit
+// 2026-11-24). Every page builds its own with og:url = its canonical.
+function socialMetadata(
+  esPath: string,
+  lang: Language,
+  title: string,
+  description: string,
+  image: string = artist.heroImage
+): Pick<Metadata, "openGraph" | "twitter"> {
+  return {
+    openGraph: {
+      type: "website",
+      url: toLang(esPath, lang),
+      siteName: site.name,
+      title,
+      description,
+      images: [{ url: image }],
+      ...ogLocales(lang),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+    },
+  };
+}
+
 // Site-wide base metadata for one language. Pages override title/description
 // and set their own `alternates`; this carries metadataBase, keywords, the
 // default Open Graph/Twitter image and robots.
@@ -118,13 +148,13 @@ const SECTION_PATH: Record<SectionKey, string> = {
 // Metadata of a section page. The home inherits its title and description from
 // the root layout, so it only declares its alternates.
 export function sectionMetadata(key: SectionKey, lang: Language): Metadata {
-  const alternates = pageAlternates(SECTION_PATH[key], lang);
-  if (key === "home") return { alternates };
-  return {
-    title: seoText[key].title[lang],
-    description: seoText[key].description[lang],
-    alternates,
-  };
+  const path = SECTION_PATH[key];
+  const alternates = pageAlternates(path, lang);
+  const title = seoText[key].title[lang];
+  const description = seoText[key].description[lang];
+  const social = socialMetadata(path, lang, title, description);
+  if (key === "home") return { alternates, ...social };
+  return { title, description, alternates, ...social };
 }
 
 // "<name> — Segundo Planes" within 65 characters: drop the artist suffix if it
@@ -148,18 +178,7 @@ function detailMetadata(
     title,
     description,
     alternates: pageAlternates(esPath, lang),
-    openGraph: {
-      title,
-      description,
-      images: image ? [{ url: image }] : undefined,
-      ...ogLocales(lang),
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: image ? [image] : undefined,
-    },
+    ...socialMetadata(esPath, lang, title, description, image),
   };
 }
 

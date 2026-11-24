@@ -16,17 +16,25 @@ import { SEO_PREVIEW } from "@/lib/seoPreview";
 //
 // Every page is listed twice, Spanish (canonical URLs) and English (/en/...),
 // and each entry names both versions so search engines pair them.
-function bilingual(esPath: string): MetadataRoute.Sitemap {
+//
+// `images` (absolute URLs) become <image:image> entries: the artwork photos
+// are listed so Google Images can find and attribute them to their page
+// (SEO audit 2026-11-24 — the sitemap had none).
+function bilingual(esPath: string, images?: string[]): MetadataRoute.Sitemap {
   // The Spanish home is the bare site URL (no trailing slash), as in its canonical.
   const es = esPath === "/" ? SITE_URL : `${SITE_URL}${toLang(esPath, "es")}`;
   const en = `${SITE_URL}${toLang(esPath, "en")}`;
   const alternates = { languages: { es, en } };
   const lastModified = CONTENT_UPDATED;
+  const imageEntry = images && images.length > 0 ? { images } : {};
   return [
-    { url: es, lastModified, alternates },
-    { url: en, lastModified, alternates },
+    { url: es, lastModified, alternates, ...imageEntry },
+    { url: en, lastModified, alternates, ...imageEntry },
   ];
 }
+
+const absoluteImage = (path: string) =>
+  path.startsWith("http") ? path : `${SITE_URL}${path}`;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
@@ -44,7 +52,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const artworkRoutes = realArtworks
     .filter((artwork) => !artwork.noDetailPage && !artwork.featuredOnly)
-    .flatMap((artwork) => bilingual(`/obra/${artwork.id}`));
+    .flatMap((artwork) =>
+      bilingual(
+        `/obra/${artwork.id}`,
+        [artwork.image, ...(artwork.additionalImages ?? [])].map(absoluteImage)
+      )
+    );
 
   // Only exhibitions/performances with a loaded photo gallery get a detail
   // page — same gate the list pages use to decide what's clickable.

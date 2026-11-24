@@ -28,7 +28,7 @@ export const seoText: Record<SectionKey, { title: LocalizedText; description: Lo
   home: {
     title: {
       es: `${X} — Artista cubano | Arte contemporáneo cubano`,
-      en: `${X} — Cuban visual artist | Contemporary Cuban art`,
+      en: `${X} — Cuban artist | Contemporary Cuban art`,
     },
     description: {
       es: `Sitio oficial de ${X} (Pinar del Río, Cuba, 1965), artista de la generación de los 80 y precursor del performance en Cuba. ${artist.tagline.es}.`,
@@ -46,22 +46,34 @@ export const seoText: Record<SectionKey, { title: LocalizedText; description: Lo
     },
   },
   about: {
-    title: { es: `Biografía — ${X}`, en: `Biography — ${X}` },
+    title: {
+      es: `Biografía de ${X}, pintor cubano (1965)`,
+      en: `${X} biography, Cuban painter (b. 1965)`,
+    },
     description: {
       es: `Biografía de ${X} (Pinar del Río, Cuba, 1965): formación en la ENA y el ISA, exposiciones, bienales, premios y colecciones.`,
       en: `Biography of ${X} (Pinar del Río, Cuba, 1965): training at the ENA and ISA, exhibitions, biennials, awards and collections.`,
     },
   },
   exhibitions: {
-    title: { es: `Exposiciones — ${X}`, en: `Exhibitions — ${X}` },
+    title: {
+      es: `Exposiciones de ${X}, pintor cubano`,
+      en: `${X} exhibitions, Cuban painter`,
+    },
     description: {
-      es: `Exposiciones y muestras de ${X}.`,
-      en: `Exhibitions and shows by ${X}.`,
+      es: `Exposiciones individuales y colectivas de ${X}, artista cubano de la generación de los 80, con una trayectoria entre Cuba, México, Europa y Estados Unidos.`,
+      en: `Solo and group exhibitions of ${X}, Cuban artist of the 1980s generation, with a career spanning Cuba, Mexico, Europe and the United States.`,
     },
   },
   performance: {
-    title: { es: `Performance — ${X}`, en: `Performance — ${X}` },
-    description: { es: `Performances de ${X}.`, en: `Performances by ${X}.` },
+    title: {
+      es: `Performance de ${X}, precursor en Cuba`,
+      en: `${X} performance art, a pioneer in Cuba`,
+    },
+    description: {
+      es: `Performances de ${X}, artista de la generación de los 80 y precursor del performance en Cuba.`,
+      en: `Performances by ${X}, artist of the 1980s generation and a pioneer of performance art in Cuba.`,
+    },
   },
   videos: {
     title: { es: `Videos — ${X}`, en: `Videos — ${X}` },

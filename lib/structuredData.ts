@@ -142,7 +142,17 @@ export function artworkJsonLd(artwork: Artwork, lang: Language, visualDescriptio
     name: artwork.title[lang],
     alternateName: otherTitle !== artwork.title[lang] ? otherTitle : undefined,
     url,
-    image: images,
+    // ImageObject with author and credit so Google Images attributes the
+    // photo to the artist. No `license`/`acquireLicensePage` on purpose: the
+    // artist has not published image-licensing terms (owner's decision).
+    image: images.map((src) => ({
+      "@type": "ImageObject",
+      contentUrl: src,
+      url: src,
+      creator: { "@id": ARTIST_ID },
+      creditText: artist.name,
+      copyrightNotice: `© ${artist.name}`,
+    })),
     creator: { "@id": ARTIST_ID },
     dateCreated: artwork.year ? String(artwork.year) : undefined,
     artMedium: mediumKnown ? artwork.medium[lang] : undefined,
