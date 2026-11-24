@@ -1207,3 +1207,8 @@ Todo lo relacionado con este proyecto vive aquí:
 - Ficha de obra y ventana de Obras disponibles: lupa en la vista normal (`components/zoom/Magnifier.tsx`; cursor en computadora, botón de lupa en celular con la lupa arriba del dedo, aumento hasta 4×) y zoom libre en pantalla completa (`components/zoom/ZoomViewer.tsx`; rueda, pellizco, doble toque, arrastre, controles − % + Ajustar, teclas + − 0).
 - Máximo = resolución real de la foto (1 px de foto = 1 px CSS); fotos con lado largo < 1000 px sin lupa ni zoom (decisión del dueño). Matemática pura en `lib/zoom.ts` con pruebas. Sin dependencias nuevas.
 - Verificado en computadora y con toques simulados; pendiente prueba con dedo real en iPhone. Diseño y plan: `docs/superpowers/specs|plans/2026-11-24-artwork-zoom*`.
+
+### 2026-11-24 — Auditoría GEO y catálogo visible para rastreadores
+
+- Auditoría GEO (`geo-optimizer` 4.28) de 11 páginas en producción: 67–81/100. Reporte y prioridades en `docs/seo/AUDITORIA-GEO-2026-11-24.md`.
+- Arreglado (local, sin commit): `/obra` y `/en/works` se renderizaban solo en cliente por `useSearchParams` → el HTML no tenía H1 ni enlaces a fichas. Ahora `CatalogPage.tsx` lee la query con `useSyncExternalStore` y un `SearchChangeWatcher` vacío en su propio `<Suspense>` capta navegaciones suaves. HTML con H1 + 124 enlaces; disponibles, `orden=1`, Hero, menú, atrás/adelante e idioma verificados en Chrome.

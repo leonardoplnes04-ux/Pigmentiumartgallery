@@ -1,6 +1,13 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useState } from "react";
+import {
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -27,6 +34,26 @@ const DisponiblesReorder = dynamic(
   () => import("@/components/DisponiblesReorder"),
   { ssr: false }
 );
+
+function subscribeToSearch(onChange: () => void) {
+  window.addEventListener("popstate", onChange);
+  return () => window.removeEventListener("popstate", onChange);
+}
+const getSearch = () => window.location.search;
+const getServerSearch = () => "";
+
+// Soft navigations inside /obra (e.g. header "Obra" from ?disponibles=1)
+// change the query without any event useSyncExternalStore can hear. This
+// renders nothing and only reports query changes; it is the ONLY consumer
+// of useSearchParams, inside its own Suspense, so only this empty node
+// skips prerendering and the catalogue HTML stays in the static page.
+function SearchChangeWatcher({ onChange }: { onChange: () => void }) {
+  const query = useSearchParams().toString();
+  useEffect(() => {
+    onChange();
+  }, [query, onChange]);
+  return null;
+}
 
 function applyOrder(base: Artwork[], ids: string[] | null): Artwork[] {
   if (!ids || ids.length === 0) return base;
@@ -139,13 +166,32 @@ function ObraGrid() {
   //                        + PROYECTO.md). Its result is pasted back and
   //                        baked into data/availableExtra.ts, which is
   //                        already in the owner's curated order.
-  const params = useSearchParams();
+  //
+  // The query is read with useSyncExternalStore, NOT useSearchParams: the
+  // latter made the whole page bail out to client-side rendering, so the
+  // prerendered /obra and /en/works HTML had no H1, no cards and no links
+  // to the artwork pages (invisible to AI crawlers; GEO audit 2026-11-24).
+  // Server snapshot "" -> the full catalogue is prerendered; on hydration
+  // React re-renders with the real query; on client navigation it reads
+  // window.location.search right away (no flash of the full catalogue).
+  // SearchChangeWatcher (below) bumps this state on soft navigations so the
+  // snapshot is read again.
+  const search = useSyncExternalStore(subscribeToSearch, getSearch, getServerSearch);
+  const [, setQueryTick] = useState(0);
+  const onQueryChange = useCallback(() => setQueryTick((n) => n + 1), []);
+  const watcher = (
+    <Suspense fallback={null}>
+      <SearchChangeWatcher onChange={onQueryChange} />
+    </Suspense>
+  );
+  const params = new URLSearchParams(search);
   const onlyAvailable = params.get("disponibles") === "1";
   const reorderMode = onlyAvailable && params.get("orden") === "1";
 
   if (reorderMode) {
     return (
       <main className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-14 md:py-16">
+        {watcher}
         <p className="text-xs uppercase tracking-widest text-muted">
           {t.catalog.eyebrow}
         </p>
@@ -181,6 +227,7 @@ function ObraGrid() {
           : "mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-14 md:py-16"
       }
     >
+      {watcher}
       <p className="text-xs uppercase tracking-widest text-muted">{t.catalog.eyebrow}</p>
       <h1 className="mt-2 font-serif text-3xl sm:text-4xl">
         {onlyAvailable ? t.hero.ctaTertiary : t.catalog.title}
@@ -241,9 +288,7 @@ export default function CatalogPage() {
   return (
     <>
       <Header />
-      <Suspense fallback={null}>
-        <ObraGrid />
-      </Suspense>
+      <ObraGrid />
       <Footer />
     </>
   );
